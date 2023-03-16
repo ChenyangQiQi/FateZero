@@ -131,7 +131,9 @@ CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_posch
       primaryClass={cs.CV}
 }
 ``` -->
-
+## Results
+![Teaser](./docs/result.png)
+Please check our [Project Page](https://fate-zero-edit.github.io/) for more video editing results.
 ## Acknowledgements
 
 This repository borrows heavily from [Tune-A-Video](https://github.com/showlab/Tune-A-Video) and [prompt-to-prompt](https://github.com/google/prompt-to-prompt/). thanks the authors for sharing their code and models.

@@ -6,6 +6,7 @@ result/**
 ckpt/**
 **.whl
 stable-diffusion-v1-4
+trash
 # data/**
 
 # Initially taken from Github's Python gitignore file
