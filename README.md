@@ -136,6 +136,10 @@ CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_posch
 ## Results
 ![Teaser](./docs/result.png)
 Please check our [Project Page](https://fate-zero-edit.github.io/) for more video editing results.
+
+
+https://user-images.githubusercontent.com/45789244/225698509-79c14793-3153-4bba-9d6e-ede7d811d7f8.mp4
+
 ## Acknowledgements
 
 This repository borrows heavily from [Tune-A-Video](https://github.com/showlab/Tune-A-Video) and [prompt-to-prompt](https://github.com/google/prompt-to-prompt/). thanks the authors for sharing their code and models.
@@ -143,3 +147,4 @@ This repository borrows heavily from [Tune-A-Video](https://github.com/showlab/T
 ## Maintenance
 
 This is the codebase for our research work. We are still working hard to update this repo and more details are coming in days. If you have any questions or ideas to discuss, feel free to contact [Chenyang Qi](cqiaa@connect.ust.hk) or [Xiaodong Cun](vinthony@gmail.com).
+
