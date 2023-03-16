@@ -1,8 +1,6 @@
-# FateZero
+## FateZero: Fusing Attentions for Zero-shot Text-based Video Editing
 
-The official implementation of the paper "___FateZero: Fusing Attentions for Zero-shot Text-based Video Editing___"
-
-By [Chenyang Qi](https://chenyangqiqi.github.io/), [Xiaodong Cun](http://vinthony.github.io/), [Yong Zhang](https://yzhang2016.github.io), [Chenyang Lei](https://chenyanglei.github.io/), [Xintao Wang](https://xinntao.github.io/), [Ying Shan](https://scholar.google.com/citations?hl=zh-CN&user=4oXBp9UAAAAJ), and [Qifeng Chen](https://cqf.io)
+[Chenyang Qi](https://chenyangqiqi.github.io/), [Xiaodong Cun](http://vinthony.github.io/), [Yong Zhang](https://yzhang2016.github.io), [Chenyang Lei](https://chenyanglei.github.io/), [Xintao Wang](https://xinntao.github.io/), [Ying Shan](https://scholar.google.com/citations?hl=zh-CN&user=4oXBp9UAAAAJ), and [Qifeng Chen](https://cqf.io)
 
 [Paper]() | [Project Page](https://fate-zero-edit.github.io/) | [Code](https://github.com/ChenyangQiQi/FateZero)
 
@@ -37,6 +35,10 @@ zero-shot shape-aware editing ability based on the text-tovideo
 model. Extensive experiments demonstrate our
 superior temporal consistency and editing capability than
 previous works.
+
+## Changelog
+
+- 2023.03.17 Release Code and Paper!
 
 ## Todo
 
