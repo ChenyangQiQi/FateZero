@@ -59,11 +59,11 @@ validation_sample_logger_config:
         1:
             cross_replace_steps: 
                 default_: 0.8
-            self_replace_steps: 0.9
+            self_replace_steps: 0.8
             
             eq_params: 
                 words: ["watercolor"]
-                values: [5] # amplify attention to the word "tiger" by *2 
+                values: [10] # amplify attention to the word "tiger" by *2 
             use_inversion_attention: True
             is_replace_controller: False
 
@@ -79,7 +79,7 @@ model_config:
     lora: 160
     # temporal_downsample_time: 4
     SparseCausalAttention_index: ['mid'] 
-    least_sc_channel: 1280
+    least_sc_channel: 640
     # least_sc_channel: 100000
 
 test_pipeline_config:
