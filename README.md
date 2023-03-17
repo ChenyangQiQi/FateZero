@@ -4,7 +4,7 @@
 
 [Paper](https://arxiv.org/abs/2303.09535) | [Project Page](https://fate-zero-edit.github.io/) | [Code](https://github.com/ChenyangQiQi/FateZero)
 
-![fatezero_demo](https://user-images.githubusercontent.com/4397546/225914242-16739e86-bb31-4d45-9da7-861d6ce85369.gif)
+![fatezero_demo](./docs/teaser.png)
 
 
 ## Abstract
