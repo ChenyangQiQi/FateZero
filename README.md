@@ -2,7 +2,7 @@
 
 [Chenyang Qi](https://chenyangqiqi.github.io/), [Xiaodong Cun](http://vinthony.github.io/), [Yong Zhang](https://yzhang2016.github.io), [Chenyang Lei](https://chenyanglei.github.io/), [Xintao Wang](https://xinntao.github.io/), [Ying Shan](https://scholar.google.com/citations?hl=zh-CN&user=4oXBp9UAAAAJ), and [Qifeng Chen](https://cqf.io)
 
-[Paper]() | [Project Page](https://fate-zero-edit.github.io/) | [Code](https://github.com/ChenyangQiQi/FateZero)
+[Paper](https://arxiv.org/abs/2303.09535) | [Project Page](https://fate-zero-edit.github.io/) | [Code](https://github.com/ChenyangQiQi/FateZero)
 
 ![Teaser](./docs/teaser.png)
 
@@ -121,18 +121,19 @@ Run following command to get the result:
 CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_posche.yaml
 ```
 
-<!-- ## Citing MetaPortrait
+## Citation 
 
 ```
-@misc{zhang2022metaportrait,
-      title={MetaPortrait: Identity-Preserving Talking Head Generation with Fast Personalized Adaptation}, 
-      author={Bowen Zhang and Chenyang Qi and Pan Zhang and Bo Zhang and HsiangTao Wu and Dong Chen and Qifeng Chen and Yong Wang and Fang Wen},
-      year={2022},
-      eprint={2212.08062},
+@misc{qi2023fatezero,
+      title={FateZero: Fusing Attentions for Zero-shot Text-based Video Editing}, 
+      author={Chenyang Qi and Xiaodong Cun and Yong Zhang and Chenyang Lei and Xintao Wang and Ying Shan and Qifeng Chen},
+      year={2023},
+      eprint={2303.09535},
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
-``` -->
+``` 
+
 ## Results
 ![Teaser](./docs/result.png)
 Please check our [Project Page](https://fate-zero-edit.github.io/) for more video editing results.
