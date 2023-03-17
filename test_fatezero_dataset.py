@@ -1,4 +1,3 @@
-# CUDA_VISIBLE_DEVICES=0 python test_p2p_dataset.py --edit_config /apdcephfs/share_1290939/chenyangqi/video_editing/config/supp/style/0313_style_edit_warp_640_replace_50_steps_gpu_mem.yaml 
 
 
 from test_fatezero import *
