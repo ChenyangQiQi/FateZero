@@ -121,6 +121,15 @@ Run following command to get the result:
 CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_posche.yaml
 ```
 
+## Results
+![Teaser](./docs/result.png)
+Please check our [Project Page](https://fate-zero-edit.github.io/) for more video editing results.
+
+## Demo Video
+
+https://user-images.githubusercontent.com/45789244/225698509-79c14793-3153-4bba-9d6e-ede7d811d7f8.mp4
+
+
 ## Citation 
 
 ```
@@ -134,13 +143,6 @@ CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_posch
 }
 ``` 
 
-## Results
-![Teaser](./docs/result.png)
-Please check our [Project Page](https://fate-zero-edit.github.io/) for more video editing results.
-
-## Demo Video
-
-https://user-images.githubusercontent.com/45789244/225698509-79c14793-3153-4bba-9d6e-ede7d811d7f8.mp4
 
 ## Acknowledgements
 
