@@ -130,7 +130,7 @@ train_sample is the input video;
 
 
 
-## Style Editing Results
+## Style Editing Results with Stable Diffusion
 Note mp4 and gif files in this github page are compressed.
 
 Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files of original video editing results.
@@ -165,7 +165,7 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 </tr>
 </table>
 
-## Attribute Editing Results
+## Attribute Editing Results with Stable Diffusion
 <table class="center">
 
 <tr>
@@ -212,7 +212,37 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 
 </table>
 
+## Shape and large motion editing with Tune-A-Video
+<table class="center">
 
+<tr>
+  <td><img src="docs/gif_results/shape/17_car_posche_01_concat_result.gif"></td>
+  <td><img src="docs/gif_results/shape/18_swan_01_concat_result.gif"></td>
+    <td><img src="docs/gif_results/shape/18_swan_02_concat_result.gif"></td>
+  <!-- <td><img src="https://tuneavideo.github.io/assets/results/tuneavideo/man-skiing/wonder-woman.gif"></td>              
+  <td><img src="https://tuneavideo.github.io/assets/results/tuneavideo/man-skiing/pink-sunset.gif"></td> -->
+</tr>
+<tr>
+  <td width=25% style="text-align:center;">"Cat ➜ Posche Car"</td>
+  <td width=25% style="text-align:center;">"Swan ➜ White Duck"</td>
+  <td width=25% style="text-align:center;">"Swan ➜ Pink flamingo"</td>
+</tr>
+
+<tr>
+  <td><img src="docs/gif_results/shape/19_man_wonder_01_concat_result.gif"></td>
+  <td><img src="docs/gif_results/shape/19_man_wonder_02_concat_result.gif"></td>
+  <td><img src="docs/gif_results/shape/19_man_wonder_03_concat_result.gif"></td>
+
+</tr>
+<tr>
+
+</tr>
+<tr>
+  <td width=25% style="text-align:center;">"A man ➜ A Wonder Woman, With cowboy hat"</td>
+  <td width=25% style="text-align:center;">"A man ➜ A Batman"</td>
+  <td width=25% style="text-align:center;">"A man ➜ A Spider-Man"</td>
+</tr>
+</table>
 
 
 ## Demo Video
