@@ -238,8 +238,8 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 
 </tr>
 <tr>
-  <td width=25% style="text-align:center;">"A man ➜ A Wonder Woman, With cowboy hat"</td>
   <td width=25% style="text-align:center;">"A man ➜ A Batman"</td>
+  <td width=25% style="text-align:center;">"A man ➜ A Wonder Woman, With cowboy hat"</td>
   <td width=25% style="text-align:center;">"A man ➜ A Spider-Man"</td>
 </tr>
 </table>
