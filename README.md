@@ -131,8 +131,9 @@ train_sample is the input video;
 
 
 ## Style Editing Results with Stable Diffusion
-Note mp4 and gif files in this github page are compressed.
+We show the difference of source prompt and target prompt in the box below each video.
 
+Note mp4 and gif files in this github page are compressed. 
 Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files of original video editing results.
 <table class="center">
 
