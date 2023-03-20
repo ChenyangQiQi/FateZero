@@ -4,11 +4,21 @@
 
 [Paper](https://arxiv.org/abs/2303.09535) | [Project Page](https://fate-zero-edit.github.io/) | [Code](https://github.com/ChenyangQiQi/FateZero)
 
-![fatezero_demo](./docs/teaser.png)
+<!-- ![fatezero_demo](./docs/teaser.png) -->
 
+<table class="center">
+  <td><img src="docs/gif_results/17_car_posche_01_concat_result.gif"></td>
+  <td><img src="docs/gif_results/3_sunflower_vangogh_conat_result.gif"></td>
+  <tr>
+  <td width=25% style="text-align:center;">"Cat ➜ Posche Car*"</td>
+  <td width=25% style="text-align:center;">"+ Van Gogh Style”</td>
+  <!-- <td width=25% style="text-align:center;">"Wonder Woman, wearing a cowboy hat, is skiing"</td>
+  <td width=25% style="text-align:center;">"A man, wearing pink clothes, is skiing at sunset"</td> -->
+</tr>
+</table >
 
 ## Abstract
-
+TL;DR: Using FateZero, Edits your video via pretrained Diffusion models without training.
 > The diffusion-based generative models have achieved
 remarkable success in text-based image generation. However,
 since it contains enormous randomness in generation
@@ -44,7 +54,7 @@ previous works.
 
 - [x] Release the edit config for teaser
 - [ ] Memory and runtime profiling and tune-a-video optimization
-- [ ] More detailed description of our environment and More Hands-on guidance
+- [ ] More detailed description of our environment and Hands-on guidance of hyperparameters tuning
 - [ ] Release configs for other result and in-the-wild dataset
 - [ ] Release more application
 
@@ -80,13 +90,14 @@ git clone https://huggingface.co/CompVis/stable-diffusion-v1-4
 cd ./ckpt
 ln -s ../stable-diffusion-v1-4 .
 ```
+We also provide a `Tune-A-Video` [checkpoint](https://hkustconnect-my.sharepoint.com/:f:/g/personal/cqiaa_connect_ust_hk/EviSTWoAOs1EmHtqZruq50kBZu1E8gxDknCPigSvsS96uQ?e=492khj). You may download the it and move it to `./ckpt/jeep_tuned_200/`.
 <!-- We provide the [Tune-a-Video](https://drive.google.com/file/d/166eNbabM6TeJVy7hxol2gL1kUGKHi3Do/view?usp=share_link), you could download the data, unzip and put it to `data`. : -->
 The directory structure should like this:
 
 ```
 ckpt
 ├── stable-diffusion-v1-4
-├── stable-diffusion-v1-5
+├── jeep_tuned_200
 ...
 data
 ├── car-turn
@@ -99,12 +110,14 @@ video_diffusion
 You could generate style editing result in our teaser by running:
 ```bash
 CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_watercolor.yaml
+CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_posche.yaml
 ```
 The result is saved as follows:
 ```
 
 result
 ├── teaser
+│   ├── jeep_posche
 │   ├── jeep_watercolor
 │           ├── cross-attention
 │           ├── sample
@@ -115,20 +128,99 @@ where `cross-attention` is the visualization of cross-attention during inversion
 sample is the result videos obtained from target prompt;
 train_sample is the input video;
 
-We also provide a `Tune-A-Video` [checkpoint](https://hkustconnect-my.sharepoint.com/:f:/g/personal/cqiaa_connect_ust_hk/EviSTWoAOs1EmHtqZruq50kBZu1E8gxDknCPigSvsS96uQ?e=492khj). You may download the check point is this link and move it to `./ckpt/jeep_tuned_200/`.
-Run following command to get the result:
-```bash
-CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_posche.yaml
-```
 
-## Results
-![Teaser](./docs/result.png)
-Please check our [Project Page](https://fate-zero-edit.github.io/) for more video editing results.
+
+## Style Editing Results
+Note mp4 and gif files in this github page are compressed.
+
+Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files of original video editing results.
+<table class="center">
+
+<tr>
+  <td><img src="docs/gif_results/style/1_surf_ukiyo_01_concat_result.gif"></td>
+  <td><img src="docs/gif_results/style/2_car_watercolor_01_concat_result.gif"></td>
+    <td><img src="docs/gif_results/style/6_lily_monet_01_concat_result.gif"></td>
+  <!-- <td><img src="https://tuneavideo.github.io/assets/results/tuneavideo/man-skiing/wonder-woman.gif"></td>              
+  <td><img src="https://tuneavideo.github.io/assets/results/tuneavideo/man-skiing/pink-sunset.gif"></td> -->
+</tr>
+<tr>
+  <td width=25% style="text-align:center;">"todo"</td>
+  <td width=25% style="text-align:center;">"todo”</td>
+  <td width=25% style="text-align:center;">"todo”</td>
+</tr>
+
+<tr>
+  <td><img src="docs/gif_results/style/4_rabit_pokemon_01_concat_result.gif"></td>
+  <td><img src="/home/cqiaa/diffusion/video_editing_release/FateZero/docs/gif_results/style/5_train_shikai_01_concat_result.gif"></td>
+  <td><img src="docs/gif_results/style/7_swan_carton_01_concat_result.gif"></td>
+  <!-- <td><img src="https://tuneavideo.github.io/assets/results/tuneavideo/rabbit-watermelon/cat.gif"></td>              
+  <td><img src="https://tuneavideo.github.io/assets/results/tuneavideo/rabbit-watermelon/puppy.gif"></td> -->
+</tr>
+<tr>
+
+</tr>
+<tr>
+  <td width=25% style="text-align:center;">"todo"</td>
+  <td width=25% style="text-align:center;">"todo”</td>
+  <td width=25% style="text-align:center;">"todo”</td>
+</tr>
+</table>
+
+## Attribute Editing Results
+<table class="center">
+
+<tr>
+
+  <td><img src="docs/gif_results/attri/16_sq_eat_04_concat_result.gif"></td>
+  <td><img src="docs/gif_results/attri/16_sq_eat_02_concat_result.gif"></td>
+  <td><img src="docs/gif_results/attri/16_sq_eat_03_concat_result.gif"></td>
+
+</tr>
+<tr>
+  <td width=25% style="text-align:center;">"Cat ➜ Posche Car*"</td>
+  <td width=25% style="text-align:center;">"+ Van Gogh Style”</td>
+  <td width=25% style="text-align:center;">"+ Van Gogh Style”</td>
+
+</tr>
+
+<tr>
+
+  <td><img src="/home/cqiaa/diffusion/video_editing_release/FateZero/docs/gif_results/attri/13_bear_tiger_leopard_lion_01_concat_result.gif"></td>
+  <td><img src="/home/cqiaa/diffusion/video_editing_release/FateZero/docs/gif_results/attri/13_bear_tiger_leopard_lion_02_concat_result.gif"></td>
+  <td><img src="/home/cqiaa/diffusion/video_editing_release/FateZero/docs/gif_results/attri/13_bear_tiger_leopard_lion_03_concat_result.gif"></td>
+
+</tr>
+<tr>
+  <td width=25% style="text-align:center;">"Cat ➜ Posche Car*"</td>
+  <td width=25% style="text-align:center;">"+ Van Gogh Style”</td>
+  <td width=25% style="text-align:center;">"+ Van Gogh Style”</td>
+
+</tr>
+<tr>
+
+  <td><img src="docs/gif_results/attri/14_cat_grass_tiger_corgin_02_concat_result.gif"></td>
+  <td><img src="docs/gif_results/attri/14_cat_grass_tiger_corgin_03_concat_result.gif"></td>
+  <td><img src="docs/gif_results/attri/14_cat_grass_tiger_corgin_04_concat_result.gif"></td>
+
+</tr>
+<tr>
+  <td width=25% style="text-align:center;">"Cat ➜ Posche Car*"</td>
+  <td width=25% style="text-align:center;">"+ Van Gogh Style”</td>
+  <td width=25% style="text-align:center;">"+ Van Gogh Style”</td>
+
+</tr>
+
+
+</table>
+
+
+
 
 ## Demo Video
 
 https://user-images.githubusercontent.com/45789244/225698509-79c14793-3153-4bba-9d6e-ede7d811d7f8.mp4
 
+(The video here is compressed due to the size limit.)
 
 ## Citation 
 
