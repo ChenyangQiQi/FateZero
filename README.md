@@ -184,9 +184,9 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 
 <tr>
 
-  <td><img src="/home/cqiaa/diffusion/video_editing_release/FateZero/docs/gif_results/attri/13_bear_tiger_leopard_lion_01_concat_result.gif"></td>
-  <td><img src="/home/cqiaa/diffusion/video_editing_release/FateZero/docs/gif_results/attri/13_bear_tiger_leopard_lion_02_concat_result.gif"></td>
-  <td><img src="/home/cqiaa/diffusion/video_editing_release/FateZero/docs/gif_results/attri/13_bear_tiger_leopard_lion_03_concat_result.gif"></td>
+  <td><img src="docs/gif_results/attri/13_bear_tiger_leopard_lion_01_concat_result.gif"></td>
+  <td><img src="docs/gif_results/attri/13_bear_tiger_leopard_lion_02_concat_result.gif"></td>
+  <td><img src="docs/gif_results/attri/13_bear_tiger_leopard_lion_03_concat_result.gif"></td>
 
 </tr>
 <tr>
