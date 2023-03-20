@@ -19,6 +19,10 @@
 
 ## Abstract
 TL;DR: Using FateZero, Edits your video via pretrained Diffusion models without training.
+
+<details><summary>CLICK for full abstract</summary>
+
+
 > The diffusion-based generative models have achieved
 remarkable success in text-based image generation. However,
 since it contains enormous randomness in generation
@@ -45,6 +49,7 @@ zero-shot shape-aware editing ability based on the text-tovideo
 model. Extensive experiments demonstrate our
 superior temporal consistency and editing capability than
 previous works.
+</details>
 
 ## Changelog
 
@@ -67,17 +72,26 @@ conda activate fatezero38
 
 pip install -r requirements.txt
 ```
-`xformers` is recommended for A100 GPU to save memory and running time. We find its installation not stable. You may try the following wheel:
+
+`xformers` is recommended for A100 GPU to save memory and running time. 
+
+<details><summary>Click for xformers installation </summary>
+
+We find its installation not stable. You may try the following wheel:
 ```bash
 wget https://github.com/ShivamShrirao/xformers-wheels/releases/download/4c06c79/xformers-0.0.15.dev0+4c06c79.d20221201-cp38-cp38-linux_x86_64.whl
 pip install xformers-0.0.15.dev0+4c06c79.d20221201-cp38-cp38-linux_x86_64.whl
 ```
+
+</details>
+
 Validate the installation by 
 ```
 python test_install.py
 ```
 
 Our environment is similar to Tune-A-video ([official](https://github.com/showlab/Tune-A-Video), [unofficial](https://github.com/bryandlee/Tune-A-Video))  and [prompt-to-prompt](https://github.com/google/prompt-to-prompt/). You may check them for more details.
+
 
 ## FateZero Editing
 
@@ -92,6 +106,9 @@ ln -s ../stable-diffusion-v1-4 .
 ```
 We also provide a `Tune-A-Video` [checkpoint](https://hkustconnect-my.sharepoint.com/:f:/g/personal/cqiaa_connect_ust_hk/EviSTWoAOs1EmHtqZruq50kBZu1E8gxDknCPigSvsS96uQ?e=492khj). You may download the it and move it to `./ckpt/jeep_tuned_200/`.
 <!-- We provide the [Tune-a-Video](https://drive.google.com/file/d/166eNbabM6TeJVy7hxol2gL1kUGKHi3Do/view?usp=share_link), you could download the data, unzip and put it to `data`. : -->
+
+<details><summary>Click for directory structure </summary>
+
 The directory structure should like this:
 
 ```
@@ -107,11 +124,16 @@ data
 video_diffusion
 ```
 
+</details>
+
 You could generate style editing result in our teaser by running:
 ```bash
 CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_watercolor.yaml
 CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_posche.yaml
 ```
+
+<details><summary>Click for result structure </summary>
+
 The result is saved as follows:
 ```
 
@@ -128,7 +150,7 @@ where `cross-attention` is the visualization of cross-attention during inversion
 sample is the result videos obtained from target prompt;
 train_sample is the input video;
 
-
+</details>
 
 ## Style Editing Results with Stable Diffusion
 We show the difference of source prompt and target prompt in the box below each video.
