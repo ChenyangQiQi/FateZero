@@ -11,7 +11,7 @@
   <td><img src="docs/gif_results/3_sunflower_vangogh_conat_result.gif"></td>
   <tr>
   <td width=25% style="text-align:center;">"Cat ➜ Posche Car*"</td>
-  <td width=25% style="text-align:center;">"+ Van Gogh Style”</td>
+  <td width=25% style="text-align:center;">"+ Van Gogh Style"</td>
   <!-- <td width=25% style="text-align:center;">"Wonder Woman, wearing a cowboy hat, is skiing"</td>
   <td width=25% style="text-align:center;">"A man, wearing pink clothes, is skiing at sunset"</td> -->
 </tr>
@@ -144,25 +144,24 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
   <td><img src="https://tuneavideo.github.io/assets/results/tuneavideo/man-skiing/pink-sunset.gif"></td> -->
 </tr>
 <tr>
-  <td width=25% style="text-align:center;">"todo"</td>
-  <td width=25% style="text-align:center;">"todo”</td>
-  <td width=25% style="text-align:center;">"todo”</td>
+  <td width=25% style="text-align:center;">"+ Ukiyo-e Style"</td>
+  <td width=25% style="text-align:center;">"+ Watercolor Painting"</td>
+  <td width=25% style="text-align:center;">"+ Monet Style"</td>
 </tr>
 
 <tr>
   <td><img src="docs/gif_results/style/4_rabit_pokemon_01_concat_result.gif"></td>
-  <td><img src="/home/cqiaa/diffusion/video_editing_release/FateZero/docs/gif_results/style/5_train_shikai_01_concat_result.gif"></td>
+  <td><img src="docs/gif_results/style/5_train_shikai_01_concat_result.gif"></td>
   <td><img src="docs/gif_results/style/7_swan_carton_01_concat_result.gif"></td>
-  <!-- <td><img src="https://tuneavideo.github.io/assets/results/tuneavideo/rabbit-watermelon/cat.gif"></td>              
-  <td><img src="https://tuneavideo.github.io/assets/results/tuneavideo/rabbit-watermelon/puppy.gif"></td> -->
+
 </tr>
 <tr>
 
 </tr>
 <tr>
-  <td width=25% style="text-align:center;">"todo"</td>
-  <td width=25% style="text-align:center;">"todo”</td>
-  <td width=25% style="text-align:center;">"todo”</td>
+  <td width=25% style="text-align:center;">"+ Pokémon Cartoon Style"</td>
+  <td width=25% style="text-align:center;">"+ Makoto Shinkai Style"</td>
+  <td width=25% style="text-align:center;">"+ Cartoon Style"</td>
 </tr>
 </table>
 
@@ -177,9 +176,9 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 
 </tr>
 <tr>
-  <td width=25% style="text-align:center;">"Cat ➜ Posche Car*"</td>
-  <td width=25% style="text-align:center;">"+ Van Gogh Style”</td>
-  <td width=25% style="text-align:center;">"+ Van Gogh Style”</td>
+  <td width=25% style="text-align:center;">"Squirrel ➜ robot squirrel"</td>
+  <td width=25% style="text-align:center;">"Squirrel, Carrot ➜ Rabbit, Eggplant"</td>
+  <td width=25% style="text-align:center;">"Squirrel, Carrot ➜ Robot mouse, Screwdriver"</td>
 
 </tr>
 
@@ -191,9 +190,9 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 
 </tr>
 <tr>
-  <td width=25% style="text-align:center;">"Cat ➜ Posche Car*"</td>
-  <td width=25% style="text-align:center;">"+ Van Gogh Style”</td>
-  <td width=25% style="text-align:center;">"+ Van Gogh Style”</td>
+  <td width=25% style="text-align:center;">"Bear ➜ A Red Tiger"</td>
+  <td width=25% style="text-align:center;">"Bear ➜ A yellow leopard"</td>
+  <td width=25% style="text-align:center;">"Bear ➜ A yellow lion"</td>
 
 </tr>
 <tr>
@@ -204,9 +203,9 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 
 </tr>
 <tr>
-  <td width=25% style="text-align:center;">"Cat ➜ Posche Car*"</td>
-  <td width=25% style="text-align:center;">"+ Van Gogh Style”</td>
-  <td width=25% style="text-align:center;">"+ Van Gogh Style”</td>
+  <td width=25% style="text-align:center;">"Cat ➜ Black Cat, Grass..."</td>
+  <td width=25% style="text-align:center;">"Cat ➜ Red Tiger"</td>
+  <td width=25% style="text-align:center;">"Cat ➜ Shiba-Inu"</td>
 
 </tr>
 
