@@ -249,7 +249,8 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 
 https://user-images.githubusercontent.com/45789244/225698509-79c14793-3153-4bba-9d6e-ede7d811d7f8.mp4
 
-(The video here is compressed due to the size limit.)
+The video here is compressed due to the size limit of github.
+The original full resolution video is [here](https://hkustconnect-my.sharepoint.com/:v:/g/personal/cqiaa_connect_ust_hk/EXKDI_nahEhKtiYPvvyU9SkBDTG2W4G1AZ_vkC7ekh3ENw?e=Xhgtmk).
 
 ## Citation 
 
