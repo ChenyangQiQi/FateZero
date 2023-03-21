@@ -1,14 +1,21 @@
 import os
-import requests
+import math
+import textwrap
+
+import imageio
+import numpy as np
 from typing import Sequence
+import requests
+import cv2
+from PIL import Image, ImageDraw, ImageFont
 
 import torch
+from torchvision import transforms
 from einops import rearrange
 
 
-import math
-import textwrap
-from PIL import Image, ImageDraw, ImageFont
+
+
 
 
 IMAGE_EXTENSION = (".jpg", ".jpeg", ".png", ".ppm", ".bmp", ".pgm", ".tif", ".tiff", ".webp")
@@ -77,7 +84,6 @@ def save_images_as_gif(
     duration=100,
     optimize=False,
 ) -> None:
-    # from PIL import Image
 
     images[0].save(
         save_path,
@@ -88,8 +94,6 @@ def save_images_as_gif(
         duration=duration,
     )
 
-import imageio
-import numpy as np
 def save_images_as_mp4(
     images: Sequence[Image.Image],
     save_path: str,
@@ -111,7 +115,7 @@ def save_images_as_mp4(
     writer_edit.close()
 
 
-import cv2
+
 def save_images_as_folder(
     images: Sequence[Image.Image],
     save_path: str,
@@ -123,8 +127,6 @@ def save_images_as_folder(
             cv2.imwrite(os.path.join(save_path, f"{index:05d}.png"), np.array(init_image)[:, :, ::-1])
         else:
             cv2.imwrite(os.path.join(save_path, f"{index:05d}.png"), np.array(init_image))
-    
-    
 
 def log_train_samples(
     train_dataloader,
@@ -164,9 +166,9 @@ def log_train_reg_samples(
     # save_images_as_gif(train_samples, save_path)
     save_gif_mp4_folder_type(train_samples, save_path)
 
-from torchvision import transforms
+
 def save_gif_mp4_folder_type(images, save_path, save_gif=False):
-    
+
     if isinstance(images[0], np.ndarray):
         images = [Image.fromarray(i) for i in images]
     elif isinstance(images[0], torch.Tensor):

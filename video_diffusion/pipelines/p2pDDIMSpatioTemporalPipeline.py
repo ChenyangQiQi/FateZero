@@ -1,19 +1,18 @@
 # code mostly taken from https://github.com/huggingface/diffusers
-import inspect
+
 from typing import Callable, List, Optional, Union
+import os
 import PIL
 import torch
 import numpy as np
 from einops import rearrange
 from tqdm import trange, tqdm
-import os
+
 from transformers import CLIPTextModel, CLIPTokenizer
-from video_diffusion.prompt_attention.attention_util import make_controller
+
 from diffusers.utils import deprecate, logging
 from diffusers.pipelines.stable_diffusion import StableDiffusionPipelineOutput
-from diffusers.configuration_utils import FrozenDict
 from diffusers.models import AutoencoderKL
-from diffusers.pipeline_utils import DiffusionPipeline
 from diffusers.schedulers import (
     DDIMScheduler,
     DPMSolverMultistepScheduler,
@@ -23,6 +22,7 @@ from diffusers.schedulers import (
     PNDMScheduler,
 )
 
+from video_diffusion.prompt_attention.attention_util import make_controller
 from ..models.unet_3d_condition import UNetPseudo3DConditionModel
 from .stable_diffusion import SpatioTemporalStableDiffusionPipeline
 from ..prompt_attention import attention_util
@@ -31,11 +31,11 @@ logger = logging.get_logger(__name__)  # pylint: disable=invalid-name
 
 class p2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
     def __init__(
-        self, 
-        vae: AutoencoderKL, 
-        text_encoder: CLIPTextModel, 
-        tokenizer: CLIPTokenizer, 
-        unet: UNetPseudo3DConditionModel, 
+        self,
+        vae: AutoencoderKL,
+        text_encoder: CLIPTextModel,
+        tokenizer: CLIPTokenizer,
+        unet: UNetPseudo3DConditionModel,
         scheduler: Union[DDIMScheduler, PNDMScheduler, LMSDiscreteScheduler, EulerDiscreteScheduler, EulerAncestralDiscreteScheduler, DPMSolverMultistepScheduler,]):
         super().__init__(vae, text_encoder, tokenizer, unet, scheduler)
         self.store_controller = attention_util.AttentionStore()
@@ -63,23 +63,15 @@ class p2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
                 f"`callback_steps` has to be a positive integer but is {callback_steps} of type"
                 f" {type(callback_steps)}."
             )
-
     
     @torch.no_grad()
     def prepare_latents_ddim_inverted(self, image, batch_size, num_images_per_prompt, 
-                                    #   dtype, device, 
-                                      text_embeddings,
-                                      store_attention=False, prompt=None,
-                                      generator=None,
-                                      LOW_RESOURCE = True,
-                                      save_path = None
+                                        text_embeddings,
+                                        store_attention=False, prompt=None,
+                                        generator=None,
+                                        LOW_RESOURCE = True,
+                                        save_path = None
                                       ):
-         
-        # self.unet.eval()
-        # self.vae.eval()
-        # self.vae.eval()
-        # Not sure if image need to change device and type
-        # image = image.to(device=device, dtype=dtype)
         self.prepare_before_train_loop()
         if store_attention:
             attention_util.register_attention_control(self, self.store_controller)
@@ -128,11 +120,7 @@ class p2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
             attention_output = attention_util.show_cross_attention(self.tokenizer, prompt, 
                                                                    self.store_controller, 16, ["up", "down"],
                                                                    save_path = save_path+'/cross_attention')
-            dict_output = {
-                "ddim_latents_all_step" : ddim_latents_all_step,
-                "attention_output"   : attention_output
-            }
-            # FIXME 
+
             # Detach the controller for safety
             attention_util.register_attention_control(self, self.empty_controller)
         self.store_controller.LOW_RESOURCE = resource_default_value
@@ -148,8 +136,9 @@ class p2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
         print(' Invert clean image to noise latents by DDIM and Unet')
         for i in trange(len(self.scheduler.timesteps)):
             t = self.scheduler.timesteps[len(self.scheduler.timesteps) - i - 1]
-            # noise_pred = self.get_noise_pred_single(latent, t, cond_embeddings)
-            noise_pred = self.unet(latent, t, encoder_hidden_states=cond_embeddings)["sample"] # [1, 4, 8, 64, 64] ->  [1, 4, 8, 64, 64])
+            
+            # [1, 4, 8, 64, 64] ->  [1, 4, 8, 64, 64])
+            noise_pred = self.unet(latent, t, encoder_hidden_states=cond_embeddings)["sample"]
             
             latent = self.next_clean2noise_step(noise_pred, t, latent)
             if controller is not None: controller.step_callback(latent)
@@ -222,25 +211,12 @@ class p2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
                                                                edit_controller, 16, ["up", "down"])
         else:
             attention_output = None
-        # Save controller during debug
-        # self.target_store_controller = attention_util.AttentionStore()
-        # attention_util.register_attention_control(self, self.target_store_controller)
-
-        # sdimage_output = self.sd_ddim_pipeline(
-        #     controller = self.target_store_controller, 
-        #     # target_prompt = kwargs['prompts'][1],
-        #     **kwargs)
-        # attention_output = attention_util.show_cross_attention(self.tokenizer, kwargs['prompt'], 
-        #                                                        self.target_store_controller, 16, ["up", "down"])
-
         dict_output = {
                 "sdimage_output" : sdimage_output,
                 "attention_output" : attention_output,
                 "mask_list" : mask_list,
             }
         attention_util.register_attention_control(self, self.empty_controller)
-        
-        # ptp_utils.view_images(images)
         return dict_output
 
     
@@ -253,19 +229,12 @@ class p2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
         if edit_type is None:
             return self.sd_ddim_pipeline(controller = None, **kwargs)
 
-            # sdimage_output = self.sd_ddim_pipeline(controller = None, **kwargs)
-            # return {
-            #     "sdimage_output": sdimage_output
-            # }
-        elif edit_type == 'save':
+        if edit_type == 'save':
             del self.store_controller
             self.store_controller = attention_util.AttentionStore()
             attention_util.register_attention_control(self, self.store_controller)
             sdimage_output = self.sd_ddim_pipeline(controller = self.store_controller, **kwargs)
             
-            # if hasattr(self.store_controller.local_blend, 'mask_list'):
-            #     mask_list = self.store_controller.local_blend.mask_list
-            # else:
             mask_list = None
             
             attention_output = attention_util.show_cross_attention(self.tokenizer, kwargs['prompt'], self.store_controller, 16, ["up", "down"])
@@ -276,33 +245,25 @@ class p2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
                 "attention_output"   : attention_output,
                 'mask_list':  mask_list
             }
-            # FIXME 
+
             # Detach the controller for safety
             attention_util.register_attention_control(self, self.empty_controller)
             return dict_output
         
-        elif edit_type == 'swap':
-            # raise NotImplementedError
-            # pass
+        if edit_type == 'swap':
+
             return self.p2preplace_edit(**kwargs)
-            # FIXME
-            # self.edit_controller = attention_util.AttentionStore()
-            # attention_util.register_attention_control(self, self.store_controller)
-            # self.__call__(controller = self.edit_controller, **kwargs)
-            # attention_util.show_cross_attention(self.tokenizer, prompts, self.store_controller, 16, ["up", "down"])
-            # return image, latent
+
     
     @torch.no_grad()
     def sd_ddim_pipeline(
         self,
         prompt: Union[str, List[str]],
-        source_prompt: Union[str, List[str]]=None,
         image: Union[torch.FloatTensor, PIL.Image.Image] = None,
         height: Optional[int] = None,
         width: Optional[int] = None,
         strength: float = None,
         num_inference_steps: int = 50,
-        clip_length: int = 8,
         guidance_scale: float = 7.5,
         negative_prompt: Optional[Union[str, List[str]]] = None,
         num_images_per_prompt: Optional[int] = 1,
@@ -379,8 +340,7 @@ class p2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
             list of `bool`s denoting whether the corresponding generated image likely represents "not-safe-for-work"
             (nsfw) content, according to the `safety_checker`.
         """
-        # if source_prompt is None:
-            # source_prompt = 
+
         # 0. Default height and width to unet
         height = height or self.unet.config.sample_size * self.vae_scale_factor
         width = width or self.unet.config.sample_size * self.vae_scale_factor
@@ -403,15 +363,11 @@ class p2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
         
         # 4. Prepare timesteps
         self.scheduler.set_timesteps(num_inference_steps, device=device)
-        # if strength <1.0:
-        # timesteps, num_inference_steps = self.get_timesteps(num_inference_steps, strength, device)
         timesteps = self.scheduler.timesteps
-        latent_timestep = timesteps[:1].repeat(batch_size * num_images_per_prompt)
+        
         if latents is None:
-            # if we need to save the 
             ddim_latents_all_step = self.prepare_latents_ddim_inverted(
                 image, batch_size, num_images_per_prompt, 
-                # text_embeddings.dtype, device, 
                 text_embeddings,
                 store_attention=False, # avoid recording attention in first inversion
                 generator = generator,

@@ -3,24 +3,23 @@ Code for prompt2prompt local editing and attention visualization
 
 """
 
-from typing import Optional, Union, Tuple, List, Callable, Dict
+from typing import Optional, Union, Tuple, List, Dict
 import abc
+import os
+import datetime
 import numpy as np
 from PIL import Image
 import copy
+import torchvision.utils as tvu
+from einops import rearrange
 
 import torch
-import torch.nn.functional as nnf
 import torch.nn.functional as F
-from torch import nn
 
 import video_diffusion.prompt_attention.ptp_utils as ptp_utils
 import video_diffusion.prompt_attention.seq_aligner as seq_aligner
-# from video_diffusion.prompt_attention.config_p2p import NUM_DDIM_STEPS, GUIDANCE_SCALE, MAX_NUM_WORDS
-# from video_diffusion.prompt_attention.config_p2p import config_dict
-# from video_diffusion.prompt_attention.config_p2p import device
+from video_diffusion.common.image_util import save_gif_mp4_folder_type
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
-
 
 
 class LocalBlend:
@@ -33,8 +32,8 @@ class LocalBlend:
         if maps.dim() == 5: alpha = alpha[:, None, ...]
         maps = (maps * alpha).sum(-1).mean(1)
         if use_pool:
-            maps = nnf.max_pool2d(maps, (k * 2 + 1, k * 2 +1), (1, 1), padding=(k, k))
-        mask = nnf.interpolate(maps, size=(x_t.shape[-2:]))
+            maps = F.max_pool2d(maps, (k * 2 + 1, k * 2 +1), (1, 1), padding=(k, k))
+        mask = F.interpolate(maps, size=(x_t.shape[-2:]))
         mask = mask / mask.max(-2, keepdims=True)[0].max(-1, keepdims=True)[0]
         mask = mask.gt(self.th[1-int(use_pool)])
         mask = mask[:1] + mask
@@ -69,10 +68,6 @@ class LocalBlend:
                 (ph, c, r, w)= maps[0].shape
                 assert r == 16*16
                 # a list of len(5), elements has shape [16, 256, 77]
-                # (prompt head) (res res) words -> prompt, head, 1, res, res, words     )         ; prompt=2
-                
-                # (prompt head) clip_length (res res) words -> clip_length, prompt, head, res, res, words     )         ; prompt=2
-                # maps = [item.reshape(self.alpha_layers.shape[0], -1, 1, 16, 16, config_dict['MAX_NUM_WORDS']) for item in maps]
                 maps = [rearrange(item, "(p h) c (res_h res_w) w -> p h c res_h res_w w ", 
                                   p=self.alpha_layers.shape[0], res_h=16, res_w=16) for item in maps]
                 maps = torch.cat(maps, dim=1)
@@ -89,14 +84,11 @@ class LocalBlend:
                 if x_t.dim()==5: 
                     mask = mask[:, None, ...]
                     # x_t [2,4,2,64,64]
-                    # print(mask.max(), mask.min())
                 x_t = x_t[:1] + mask * (x_t - x_t[:1])
             else:
                 (ph, r, w)= maps[0].shape
                 # a list of len(5), elements has shape [16, 256, 77]
-                # (prompt head) (res res) words -> prompt, head, 1, res, res, words     )         ; prompt=2
-                
-                # (prompt head) clip_length (res res) words -> clip_length, prompt, head, res, res, words     )         ; prompt=2
+
                 maps = [item.reshape(self.alpha_layers.shape[0], -1, 1, 16, 16, self.MAX_NUM_WORDS) for item in maps]
                 maps = [item.reshape(self.alpha_layers.shape[0], -1, 1, 16, 16, self.MAX_NUM_WORDS) for item in maps]
                 maps = torch.cat(maps, dim=1)
@@ -114,7 +106,6 @@ class LocalBlend:
                  th=(0.9, 0.9), tokenizer=None, NUM_DDIM_STEPS =None,
                  save_path =None):
         self.count = 0
-        # self.config_dict = copy.deepcopy(config_dict)
         self.MAX_NUM_WORDS = 77
         self.NUM_DDIM_STEPS = NUM_DDIM_STEPS
         self.save_path = save_path+'/latents_mask'
@@ -148,8 +139,7 @@ class LocalBlend:
         self.th=th
         self.mask_list = []
 
-import numpy as np
-import torchvision.utils as tvu
+
 
 class MaskBlend:
     """
@@ -167,18 +157,16 @@ class MaskBlend:
         if maps.dim() == 5: alpha = alpha[:, None, ...]
         maps = (maps * alpha).sum(-1).mean(1)
         if use_pool:
-            maps = nnf.max_pool2d(maps, (k * 2 + 1, k * 2 +1), (1, 1), padding=(k, k))
-        mask = nnf.interpolate(maps, size=(h, w))
+            maps = F.max_pool2d(maps, (k * 2 + 1, k * 2 +1), (1, 1), padding=(k, k))
+        mask = F.interpolate(maps, size=(h, w))
         mask = mask / mask.max(-2, keepdims=True)[0].max(-1, keepdims=True)[0]
         mask = mask.gt(self.th[1-int(use_pool)])
-        # mask = mask[:1] + mask
         if self.save_path is not None:
             now = datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
 
             save_path = f'{self.save_path}/{prompt_choose}/'
             if step_in_store is not None:
                 save_path += f'step_in_store_{step_in_store:04d}'
-                # f'{self.save_path}/step_in_store_{step_in_store:04d}/mask_{now}_{self.count:02d}.png'    
             save_path +=f'/mask_{now}_{self.count:02d}.png'
             os.makedirs(os.path.dirname(save_path), exist_ok=True)
             tvu.save_image(rearrange(mask.float(), "c p h w -> p c h w"), save_path,normalize=True)
@@ -199,8 +187,7 @@ class MaskBlend:
         Returns:
             _type_: _description_
         """
-        # self.counter += 1
-        # if (self.counter > self.start_blend) and (self.counter < self.end_blend):
+
         maps = attention_store["down_cross"][2:4] + attention_store["up_cross"][:3]
         
         # maps = attention_store # [2,8,1024, 77] = [frames, head, (res, res), word_embedding]
@@ -208,20 +195,13 @@ class MaskBlend:
         ( c, heads, r, w)= maps[0].shape
         res_h = int(np.sqrt(r))
         assert r == res_h* res_h
-        # assert r == 16*16
         # a list of len(5), elements has shape [16, 256, 77]
-        # (prompt head) (res res) words -> prompt, head, 1, res, res, words     )         ; prompt=2
-        
-        # (prompt head) clip_length (res res) words -> clip_length, prompt, head, res, res, words     )         ; prompt=2
-        # maps = [item.reshape(self.alpha_layers.shape[0], -1, 1, 16, 16, config_dict['MAX_NUM_WORDS']) for item in maps]
         target_device = self.alpha_layers.device
         target_dtype  = self.alpha_layers.dtype
         maps = [rearrange(item, " c h (res_h res_w) w -> h c res_h res_w w ", 
                             h=heads, res_h=res_h, res_w=res_h)[None, ...].to(target_device, dtype=target_dtype)
                 for item in maps]
         
-
-        # maps = maps.to(target_device, dtype=target_dtype)
         
         maps = torch.cat(maps, dim=1)
         # We only support self-attention blending using source prompt 
@@ -232,15 +212,11 @@ class MaskBlend:
             maps_sub = ~self.get_mask(maps, self.substruct_layers, False)
             mask = mask * maps_sub
         mask = mask.float()
-        # only for debug
-        # mask = torch.zeros_like(mask)
+
         # "mask is one: use geenerated information"
         # "mask is zero: use geenerated information"
         self.mask_list.append(mask[0][:, None, :, :].float().cpu().detach())
-        # if x_t.dim()==5: 
-        # mask = mask[:, ...]
-        # print(mask.max(), mask.min())
-        # x_t = x_t[:1] + mask * (x_t - x_t[:1])
+
         return mask
        
     def __init__(self, prompts: List[str], words: [List[List[str]]], substruct_words=None, 
@@ -332,12 +308,8 @@ class AttentionControl(abc.ABC):
             else:
                 # For classifier-free guidance scale!=1
                 h = attn.shape[0]
-                # print('debug me, is the slice correct?')
-                # FIXME
                 attn[h // 2:] = self.forward(attn[h // 2:], is_cross, place_in_unet)
         self.cur_att_layer += 1
-        # print(self.cur_att_layer)
-        # if self.cur_att_layer == self.num_att_layers + self.num_uncond_att_layers:
 
         return attn
     
@@ -364,7 +336,6 @@ class SpatialReplace(EmptyControl):
         super(SpatialReplace, self).__init__()
         self.stop_inject = int((1 - stop_inject) * NUM_DDIM_STEPS)
     
-import copy
 
 class AttentionStore(AttentionControl):
     def step_callback(self, x_t):
@@ -372,8 +343,6 @@ class AttentionStore(AttentionControl):
 
         x_t = super().step_callback(x_t)
         self.latents_store.append(x_t.cpu().detach())
-
-        # Save the latents in memory
         return x_t
     
     @staticmethod
@@ -401,18 +370,10 @@ class AttentionStore(AttentionControl):
     def between_steps(self):
         if len(self.attention_store) == 0:
             self.attention_store = self.step_store
-            # save the attention map of all timestep
-            # for key in self.step_store:
-                # for i in range(len(self.step_store[key])):
-                    # FIXME to save time
-            
-                    # Save all attention in for mat of [denoisng_time_step, clip_length, head, resolution, text_embedding]
-            # self.attention_store = self.step_store
         else:
             for key in self.attention_store:
                 for i in range(len(self.attention_store[key])):
                     self.attention_store[key][i] += self.step_store[key][i]
-                    # FIXME to save time
         self.attention_store_all_step.append(copy.deepcopy(self.step_store))
         self.step_store = self.get_empty_store()
 
@@ -436,8 +397,7 @@ class AttentionStore(AttentionControl):
         self.latents_store = []
         self.attention_store_all_step = []
 
-import copy
-        
+
 class AttentionControlEdit(AttentionStore, abc.ABC):
     """Decide self or cross-attention. Call the reweighting cross attention module
 
@@ -459,70 +419,36 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
             inverted_latents = self.additional_attention_store.latents_store[step_in_store]
             inverted_latents = inverted_latents.to(device =x_t_device, dtype=x_t_dtype)
             # [prompt, channel, clip, res, res] = [1, 4, 2, 64, 64]
-            # temp_dict = copy.deepcopy(self.attention_store)
-            #*********************************************start of debugging memory issue            
+            
             blend_dict = self.get_empty_cross_store()
             # each element in blend_dict have (prompt head) clip_length (res res) words, 
-
             # to better align with  (b c f h w)
             
-
             attention_store_step = self.additional_attention_store.attention_store_all_step[step_in_store]
             #   each element in attention_store_step have [clip_length, heads, res, text_embedding]
-
-
+            
             for key in blend_dict.keys():
                 place_in_unet_cross_atten_list = attention_store_step[key]
                 for i, attention in enumerate(place_in_unet_cross_atten_list):
-                    # temp_dict[k][i] = attention[step_in_store:step_in_store+1, ...]
-                    # ref_attention = attention[step_in_store:step_in_store+1, ...] # [clip_length, head, resolution, text_embedding]
-                
+
                     concate_attention = torch.cat([attention[None, ...], self.attention_store[key][i][None, ...]], dim=0)
                     blend_dict[key].append(copy.deepcopy(rearrange(concate_attention, ' p c h res words -> (p h) c res words')))
-
-            #*********************************************end of debugging memory issue
-            # attn_base = place_in_unet_cross_atten_list[self.curr_attention_position_counter][step_in_store, ...]
-            # self.attention_store Save all attention in format of 
-            # [denoisng_time_step, clip_length, head, resolution, text_embedding]
-            # place_in_unet_cross_atten_list = self.additional_attention_store.attention_store_all_step[step_in_store][key][]
-        
-        
-            # latents have shape:  (prompt, channel, clip_length, res, res)
-            # FIXME to debug whether the problem is at local_blend
             x_t = self.local_blend(copy.deepcopy(torch.cat([inverted_latents, x_t], dim=0)), copy.deepcopy(blend_dict))
-            # del blend_dict
-            # Result: not in local_blend
-            # x_t = torch.cat([inverted_latents, x_t], dim=0)
-            
-            # torch.Size([1, 4, 8, 64, 64])
-        
-            # return the latents of target prompt
             return x_t[1:, ...]
         else:
             return x_t
         
-    def replace_self_attention(self, attn_base, att_replace, place_in_unet, reshaped_mask=None):
-
-        
+    def replace_self_attention(self, attn_base, att_replace, reshaped_mask=None):
         if att_replace.shape[-2] <= 32 ** 2:
             target_device = att_replace.device
             target_dtype  = att_replace.dtype
             attn_base = attn_base.to(target_device, dtype=target_dtype)
             attn_base = attn_base.unsqueeze(0).expand(att_replace.shape[0], *attn_base.shape)
-            # start of masked attention
-            
             if reshaped_mask is not None:
-                # one meens using target self-attention, zero is using source
-                # Previous implementation us all zeros
-                # mask_at_this_step = self.get_mask_at_this_step(place_in_unet)    
                 return_attention = reshaped_mask*att_replace + (1-reshaped_mask)*attn_base
                 return return_attention
-                # end of masked attention
             else:
                 return attn_base
-            
-            # end of masked attention
-            # return attn_base
         else:
             return att_replace
     
@@ -532,36 +458,13 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
     
     def update_attention_position_dict(self, current_attention_key):
         self.attention_position_counter_dict[current_attention_key] +=1
-        # print(self.attention_position_counter_dict[current_attention_key])
-        # if current_attention_key != self.prev_attention_key_name:
-        #     self.prev_attention_key_name = current_attention_key
-        #     self.curr_attention_position_counter = 0
 
-    # def update_attention_position_counter(self, current_attention_key):
-    #     self.curr_attention_position_counter +=1 # 1,2,3,4
-    #     if current_attention_key != self.prev_attention_key_name:
-    #         self.prev_attention_key_name = current_attention_key
-    #         self.curr_attention_position_counter = 0
 
     def forward(self, attn, is_cross: bool, place_in_unet: str):
         super(AttentionControlEdit, self).forward(attn, is_cross, place_in_unet)
         if attn.shape[-2] <= 32 ** 2:
             key = f"{place_in_unet}_{'cross' if is_cross else 'self'}"
             current_pos = self.attention_position_counter_dict[key]
-            # print(f'Current position {current_pos}')
-            
-            # # FIXME to save time: FIRST KEY,  then position, final step
-            # place_in_unet_cross_atten_list = self.additional_attention_store.attention_store_all_step[key]
-            # # Note that attn is append to step_store, 
-            # # if attn is get through clean -> noisy, we should inverse it
-            # if self.use_inversion_attention:
-            #     step_in_store = place_in_unet_cross_atten_list[current_pos].shape[0] - self.cur_step -1
-            # else:
-            #     step_in_store = self.cur_step
-            # attn_base = place_in_unet_cross_atten_list[current_pos][step_in_store, ...]
-            
-            # # FIXME to save time: FIRST step,  then key, final position
-            
 
             if self.use_inversion_attention:
                 step_in_store = len(self.additional_attention_store.attention_store_all_step) - self.cur_step -1
@@ -573,16 +476,12 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
             # if attn is get through clean -> noisy, we should inverse it
             attn_base = place_in_unet_cross_atten_list[key][current_pos]          
             
-            
-            
-            
             self.update_attention_position_dict(key)
             # save in format of [temporal, head, resolution, text_embedding]
             if is_cross or (self.num_self_replace[0] <= self.cur_step < self.num_self_replace[1]):
                 clip_length = attn.shape[0] // (self.batch_size)
                 attn = attn.reshape(self.batch_size, clip_length, *attn.shape[1:])
                 # Replace att_replace with attn_base
-                # attn_base, attn_repalce = attn[0], attn[1:]
                 attn_base, attn_repalce = attn_base, attn[0:]
                 if is_cross:
                     alpha_words = self.cross_replace_alpha[self.cur_step]
@@ -606,9 +505,8 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
                         # mask should be repeat.
                     else: 
                         reshaped_mask = None
-                    attn[0:] = self.replace_self_attention(attn_base, attn_repalce, place_in_unet, reshaped_mask)
-                    # else:
-                        # attn = attn_repalce
+                    attn[0:] = self.replace_self_attention(attn_base, attn_repalce, reshaped_mask)
+
                 
                 
                 attn = attn.reshape(self.batch_size * clip_length, *attn.shape[2:])
@@ -653,7 +551,6 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
         self.num_self_replace = int(num_steps * self_replace_steps[0]), int(num_steps * self_replace_steps[1])
         self.local_blend = local_blend
         # We need to know the current position in attention
-        # self.curr_attention_position_counter = 0
         self.prev_attention_key_name = 0
         self.use_inversion_attention = use_inversion_attention
         self.attention_position_counter_dict = {
@@ -692,7 +589,6 @@ class AttentionReplace(AttentionControlEdit):
             save_self_attention = save_self_attention
             )
         self.mapper = seq_aligner.get_replacement_mapper(prompts, tokenizer).to(device)
-        
 
 class AttentionRefine(AttentionControlEdit):
 
@@ -701,15 +597,11 @@ class AttentionRefine(AttentionControlEdit):
         target_device = att_replace.device
         target_dtype  = att_replace.dtype
         attn_base = attn_base.to(target_device, dtype=target_dtype)
-        # return torch.einsum('thpw,bwn->bthpn', attn_base, self.mapper)
-        
         if attn_base.dim()==3:
             attn_base_replace = attn_base[:, :, self.mapper].permute(2, 0, 1, 3)
-        # attn_base_replace = attn_base[:, :, self.mapper].permute(3, 0, 1, 2, 4)
         elif attn_base.dim()==4:
             attn_base_replace = attn_base[:, :, :, self.mapper].permute(3, 0, 1, 2, 4)
         attn_replace = attn_base_replace * self.alphas + att_replace * (1 - self.alphas)
-        # attn_replace = attn_replace / attn_replace.sum(-1, keepdims=True)
         return attn_replace
 
     def __init__(self, prompts, num_steps: int, cross_replace_steps: float, self_replace_steps: float,
@@ -741,7 +633,6 @@ class AttentionReweight(AttentionControlEdit):
         if self.prev_controller is not None:
             attn_base = self.prev_controller.replace_cross_attention(attn_base, att_replace)
         attn_replace = attn_base[None, :, :, :] * self.equalizer[:, None, None, :]
-        # attn_replace = attn_replace / attn_replace.sum(-1, keepdims=True)
         return attn_replace
 
     def __init__(self, prompts, num_steps: int, cross_replace_steps: float, self_replace_steps: float, equalizer,
@@ -750,7 +641,6 @@ class AttentionReweight(AttentionControlEdit):
                 use_inversion_attention = False,
                 MB: MaskBlend=None,
                 save_self_attention:bool = True
-
                 ):
         super(AttentionReweight, self).__init__(
             prompts, num_steps, cross_replace_steps, self_replace_steps, local_blend, tokenizer=tokenizer,
@@ -761,8 +651,6 @@ class AttentionReweight(AttentionControlEdit):
             )
         self.equalizer = equalizer.to(device)
         self.prev_controller = controller
-        # self.local_blend  = self.prev_controller.local_blend
-
 
 def get_equalizer(text: str, word_select: Union[int, Tuple[int, ...]], values: Union[List[float],
                   Tuple[float, ...]], tokenizer=None):
@@ -841,7 +729,6 @@ def make_controller(tokenizer, prompts: List[str], is_replace_controller: bool,
                                      MB=MB,
                                      save_self_attention = save_self_attention
                                      )
-    # FIXME debug the reweight 
     if equilizer_params is not None:
         eq = get_equalizer(prompts[1], equilizer_params["words"], equilizer_params["values"], tokenizer=tokenizer)
         controller = AttentionReweight(prompts, NUM_DDIM_STEPS, 
@@ -854,10 +741,6 @@ def make_controller(tokenizer, prompts: List[str], is_replace_controller: bool,
                                         save_self_attention = save_self_attention
                                        )
     return controller
-
-import os
-from video_diffusion.common.image_util import save_gif_mp4_folder_type
-import datetime
 
 
 def show_cross_attention(tokenizer, prompts, attention_store: AttentionStore, 
@@ -919,7 +802,7 @@ def show_self_attention_comp(attention_store: AttentionStore, res: int, from_whe
         images.append(image)
     ptp_utils.view_images(np.concatenate(images, axis=1))
 
-from einops import rearrange
+
 def register_attention_control(model, controller):
     "Connect a model with a controller"
     def ca_forward(self, place_in_unet, attention_type='cross'):
@@ -929,7 +812,6 @@ def register_attention_control(model, controller):
         else:
             to_out = self.to_out
         
-        # def forward(x, encoder_hidden_states=None, attention_mask=None):
         def _attention( query, key, value, is_cross, attention_mask=None):
             if self.upcast_attention:
                 query = query.float()
@@ -953,7 +835,7 @@ def register_attention_control(model, controller):
 
             # cast back to the original dtype
             attention_probs = attention_probs.to(value.dtype)
-            # attention_probs = 
+
             # KEY FUNCTION:
             # Record and edit the attention probs
             attention_probs_th = reshape_batch_dim_to_temporal_heads(attention_probs)
@@ -967,38 +849,27 @@ def register_attention_control(model, controller):
             hidden_states = self.reshape_batch_dim_to_heads(hidden_states)
             return hidden_states
 
-            # reshape_temporal_heads_to_batch_dim
         def reshape_temporal_heads_to_batch_dim( tensor):
-            
-            batch, head, spatial_dim, token_dim = tensor.shape
             head_size = self.heads
             tensor = rearrange(tensor, " b h s t -> (b h) s t ", h = head_size)
-            # tensor = tensor.reshape(batch_size // head_size, head_size, seq_len, dim)
-            # tensor = tensor.permute(0, 2, 1, 3).reshape(batch_size // head_size, seq_len, dim * head_size)
             return tensor
 
         def reshape_batch_dim_to_temporal_heads(tensor):
-            batch_head, spatial_dim, token_dim = tensor.shape
             head_size = self.heads
             tensor = rearrange(tensor, "(b h) s t -> b h s t", h = head_size)
-            # tensor = tensor.reshape(batch_size // head_size, head_size, seq_len, dim)
-            # tensor = tensor.permute(0, 2, 1, 3).reshape(batch_size // head_size, seq_len, dim * head_size)
             return tensor
         
         def forward(hidden_states, encoder_hidden_states=None, attention_mask=None):
-            batch_size, sequence_length, _ = hidden_states.shape
             # hidden_states: torch.Size([16, 4096, 320])
             # encoder_hidden_states: torch.Size([16, 77, 768])
             is_cross = encoder_hidden_states is not None
             
-            # FIXME
             encoder_hidden_states = encoder_hidden_states
 
             if self.group_norm is not None:
                 hidden_states = self.group_norm(hidden_states.transpose(1, 2)).transpose(1, 2)
 
             query = self.to_q(hidden_states)
-            dim = query.shape[-1]
             query = self.reshape_heads_to_batch_dim(query)
 
             if self.added_kv_proj_dim is not None:
@@ -1028,10 +899,7 @@ def register_attention_control(model, controller):
                     attention_mask = F.pad(attention_mask, (0, target_length), value=0.0)
                     attention_mask = attention_mask.repeat_interleave(self.heads, dim=0)
 
-            # attention, what we cannot get enough of
-            
-                # if self._slice_size is None or query.shape[0] // self._slice_size == 1:
-                    # Only change this line
+
             if self._use_memory_efficient_attention_xformers and query.shape[-2] > 32 ** 2:
                 # for large attention map of 64X64, use xformers to save memory
                 hidden_states = self._memory_efficient_attention_xformers(query, key, value, attention_mask)
@@ -1069,7 +937,6 @@ def register_attention_control(model, controller):
                 hidden_states = self.group_norm(hidden_states.transpose(1, 2)).transpose(1, 2)
 
             query = self.to_q(hidden_states)
-            dim = query.shape[-1]
             query = self.reshape_heads_to_batch_dim(query)
 
             key = self.to_k(hidden_states)
@@ -1145,25 +1012,18 @@ def register_attention_control(model, controller):
 
     if controller is None:
         controller = DummyController()
-    import copy
+    
     def register_recr(net_, count, place_in_unet):
         if net_[1].__class__.__name__ == 'CrossAttention' \
             or net_[1].__class__.__name__ == 'SparseCausalAttention':
             net_[1].forward = ca_forward(net_[1], place_in_unet, attention_type = net_[1].__class__.__name__)
-        # elif net_[1].__class__.__name__ == 'SparseCausalAttention' :
-            # net_[1].forward = ca_forward(net_[1], place_in_unet, type=)
-            # print(f'Count object {net_[0]}')
             return count + 1
         elif hasattr(net_[1], 'children'):
             for net in net_[1].named_children():
                 if net[0] !='attn_temporal':
-                    # orig_count =  copy.deepcopy(count)
-                    count = register_recr(net, count, place_in_unet)
-                    # if count > orig_count:
-                        # print(f'Count object {net_[0]}')
 
-                        
-                # FIXME add the temporal attention here
+                    count = register_recr(net, count, place_in_unet)
+
         return count
 
     cross_att_count = 0

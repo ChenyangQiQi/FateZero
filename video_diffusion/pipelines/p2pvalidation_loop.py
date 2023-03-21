@@ -3,6 +3,7 @@ import numpy as  np
 from typing import List, Union
 import PIL
 import copy
+from einops import rearrange
 
 import torch
 import torch.utils.data
@@ -28,7 +29,7 @@ class p2pSampleLogger:
         strength: float = None,
         annotate: bool = True,
         annotate_size: int = 15,
-        make_grid: bool = True,
+        use_make_grid: bool = True,
         grid_column_size: int = 2,
         prompt2prompt_edit: bool=False,
         p2p_config: dict = None,
@@ -56,7 +57,7 @@ class p2pSampleLogger:
 
         self.annotate = annotate
         self.annotate_size = annotate_size
-        self.make_grid = make_grid
+        self.make_grid = use_make_grid
         self.grid_column_size = grid_column_size
         self.prompt2prompt_edit = prompt2prompt_edit
         self.p2p_config = p2p_config
@@ -162,7 +163,7 @@ class p2pSampleLogger:
         return samples_all
 
 
-from einops import rearrange
+
 
 def tensor_to_numpy(image, b=1):
     image = (image / 2 + 0.5).clamp(0, 1)

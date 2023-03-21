@@ -185,7 +185,7 @@ def test(
 
     train_data_yielder = make_data_yielder(train_dataloader)
 
-    # while step < train_steps:
+    
     batch = next(train_data_yielder)
     if validation_sample_logger_config.get('use_train_latents', False):
         # Precompute the latents for this video to align the initial latents in training and test
@@ -222,7 +222,7 @@ def test(
 
     vae.eval()
     text_encoder.eval()
-    unet.train()
+    unet.eval()
 
     # with accelerator.accumulate(unet):
     # Convert images to latent space
