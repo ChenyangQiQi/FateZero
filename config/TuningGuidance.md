@@ -3,7 +3,7 @@
 ## Prompt Engineering
 For the results in the paper and webpage, we get the source prompt using the BLIP model embedded in the [Stable Diffusion WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui/).
 
-Click the "interrogate CLIP", and we will get a source prompt automatically. Then, we remove the last few useless words to get.
+Click the "interrogate CLIP", and we will get a source prompt automatically. Then, we remove the last few useless words.
 
 <img src="../docs/blip.png" height="220px"/> 
 
