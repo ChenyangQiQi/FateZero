@@ -131,12 +131,19 @@ video_diffusion
 
 </details>
 
-You could generate style editing result in our teaser by running:
+You could reproduce style and shape editing result in our teaser by running:
+
 ```bash
 accelerate launch test_fatezero.py --config config/teaser/jeep_watercolor.yaml
 accelerate launch test_fatezero.py --config config/teaser/jeep_posche.yaml
 ```
 
+For style and other easy editings, you could using 10 DDIM steps
+
+```bash
+accelerate launch test_fatezero.py --config config/fast_teaser/jeep_watercolor.yaml
+```
+On an Nvidia 3090 GPU, the above setting takes 10G GPU memory, 15G CPU memory, 10 seconds inversion per input video + 10 seconds editing per target prompt.
 <details><summary>Click for result structure </summary>
 
 The result is saved as follows:
