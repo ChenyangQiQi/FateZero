@@ -58,7 +58,8 @@ previous works.
 ## Todo
 
 - [x] Release the edit config for teaser
-- [ ] Memory and runtime profiling and tune-a-video optimization
+- [x] Memory and runtime profiling
+- [ ] Tune-a-video optimization
 - [ ] More detailed description of our environment and Hands-on guidance of hyperparameters tuning
 - [ ] Release configs for other result and in-the-wild dataset
 - [ ] Release more application
@@ -137,6 +138,7 @@ You could reproduce style and shape editing result in our teaser by running:
 accelerate launch test_fatezero.py --config config/teaser/jeep_watercolor.yaml
 accelerate launch test_fatezero.py --config config/teaser/jeep_posche.yaml
 ```
+Editing 8 frames on an Nvidia 3090, use 100G CPU memory, 12G GPU memory, 60 seconds inversion/input video + 40 seconds editing/prompt.
 <!-- <details><summary>Click for fast and low-resource edting </summary> -->
 
 For fast style and other easy editings, you could using 10 DDIM steps
