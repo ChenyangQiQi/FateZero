@@ -76,18 +76,18 @@ class UNetPseudo3DConditionModel(ModelMixin, ConfigMixin):
         upcast_attention: bool = False,
         resnet_time_scale_shift: str = "default",
         **kwargs
-        
     ):
         super().__init__()
 
         self.sample_size = sample_size
         time_embed_dim = block_out_channels[0] * 4
         if 'temporal_downsample' in kwargs and  kwargs['temporal_downsample'] is True:
-            kwargs['temporal_downsample_time'] == 3
+            kwargs['temporal_downsample_time'] = 3
         self.temporal_downsample_time = kwargs.get('temporal_downsample_time', 0)
         
         # input
-        self.conv_in = PseudoConv3d(in_channels, block_out_channels[0], kernel_size=3, padding=(1, 1), model_config=kwargs)
+        self.conv_in = PseudoConv3d(in_channels, block_out_channels[0], 
+                                    kernel_size=3, padding=(1, 1), model_config=kwargs)
 
         # time
         self.time_proj = Timesteps(block_out_channels[0], flip_sin_to_cos, freq_shift)
@@ -122,7 +122,8 @@ class UNetPseudo3DConditionModel(ModelMixin, ConfigMixin):
             output_channel = block_out_channels[i]
             is_final_block = i == len(block_out_channels) - 1
             kwargs_copy=copy.deepcopy(kwargs)
-            temporal_downsample_i = (i >= (len(down_block_types)-self.temporal_downsample_time)) and (not is_final_block)
+            temporal_downsample_i = ((i >= (len(down_block_types)-self.temporal_downsample_time))
+                                    and (not is_final_block))
             kwargs_copy.update({'temporal_downsample': temporal_downsample_i} )
             
             # kwargs_copy.update({'SparseCausalAttention_index': temporal_downsample_i} )
@@ -226,7 +227,8 @@ class UNetPseudo3DConditionModel(ModelMixin, ConfigMixin):
             num_channels=block_out_channels[0], num_groups=norm_num_groups, eps=norm_eps
         )
         self.conv_act = nn.SiLU()
-        self.conv_out = PseudoConv3d(block_out_channels[0], out_channels, kernel_size=3, padding=1, model_config=kwargs)
+        self.conv_out = PseudoConv3d(block_out_channels[0], out_channels, 
+                                     kernel_size=3, padding=1, model_config=kwargs)
 
     def set_attention_slice(self, slice_size):
         r"""
@@ -426,7 +428,6 @@ class UNetPseudo3DConditionModel(ModelMixin, ConfigMixin):
                     upsample_size=upsample_size,
                     attention_mask=attention_mask,
                 )
-                # print(sample.shape)
             else:
                 sample = upsample_block(
                     hidden_states=sample,
@@ -434,7 +435,6 @@ class UNetPseudo3DConditionModel(ModelMixin, ConfigMixin):
                     res_hidden_states_tuple=res_samples,
                     upsample_size=upsample_size,
                 )
-                # print(sample.shape)
         # 6. post-process
         sample = self.conv_norm_out(sample)
         sample = self.conv_act(sample)
@@ -472,8 +472,7 @@ class UNetPseudo3DConditionModel(ModelMixin, ConfigMixin):
         config["up_block_types"] = [convert_2d_to_3d_block(block) for block in config["up_block_types"]]
         if model_config is not None:
             config.update(model_config)
-        # else:
-        # config['model_config'] = model_config
+
         model = cls(**config)
 
         state_dict_path_condidates = glob.glob(os.path.join(model_path, "*.bin"))

@@ -1,6 +1,6 @@
 import os
 import numpy as  np
-from typing import Callable, List, Optional, Union
+from typing import List, Union
 import PIL
 import copy
 
@@ -36,14 +36,13 @@ class p2pSampleLogger:
         source_prompt: str = None,
         traverse_p2p_config: bool = False,
         **args
-        
     ) -> None:
         self.prompts = prompts
         self.clip_length = clip_length
         self.guidance_scale = guidance_scale
         self.num_inference_steps = num_inference_steps
         self.strength = strength
-        
+
         if sample_seeds is None:
             max_num_samples_per_prompt = int(1e5)
             if num_samples_per_prompt > max_num_samples_per_prompt:
@@ -64,7 +63,7 @@ class p2pSampleLogger:
         self.use_inversion_attention = use_inversion_attention
         self.source_prompt = source_prompt
         self.traverse_p2p_config =traverse_p2p_config
-        
+
     def log_sample_images(
         self, pipeline: DiffusionPipeline,
         device: torch.device, step: int,
@@ -88,16 +87,16 @@ class p2pSampleLogger:
                     p2p_config_now = copy.deepcopy(self.p2p_config[idx])
                 else:
                     p2p_config_now = copy.deepcopy(self.p2p_config[idx])
-                # if idx == 0 and not self.p2p_config[0]['use_inversion_attention']:
+
                 if idx == 0 and not self.use_inversion_attention:
                     edit_type = 'save'
                     p2p_config_now.update({'save_self_attention': True})
                     print('Reflash the attention map in pipeline')
-                # input_prompt = prompt
+
                 else:
                     edit_type = 'swap'
                     p2p_config_now.update({'save_self_attention': False})
-                # input_prompt = [prompt, self.prompts[0]]
+
                 p2p_config_now.update({'use_inversion_attention': self.use_inversion_attention})
             else:
                 edit_type = None
@@ -122,16 +121,11 @@ class p2pSampleLogger:
                     uncond_embeddings_list = uncond_embeddings_list,
                     save_path = save_dir,
                     **p2p_config_now,
-                    
-                    # Put the source prompt at the first one, when using p2p
-                    # edit_type = edit_type
                 )
                 if self.prompt2prompt_edit:
                     sequence = sequence_return['sdimage_output'].images[0]
                     attention_output = sequence_return['attention_output']
                     mask_list = sequence_return.get('mask_list', None)
-                    if 'ddim_latents_all_step' in sequence_return:
-                        ddim_latents_all_step = sequence_return['ddim_latents_all_step']
                 else:
                     sequence = sequence_return.images[0]
                 torch.cuda.empty_cache()
@@ -146,31 +140,23 @@ class p2pSampleLogger:
                     if self.prompt2prompt_edit:
                         if attention_output is not None:
                             attention_all.append(attention_output)
-                # else:
+
                 save_path = os.path.join(self.logdir, f"step_{step}_{idx}_{seed}.gif")
-                # save_path_mp4 = save_path.replace('gif', 'mp4')
-                # save_path_folder = save_path.replace('.gif', '')
-                # save_images_as_gif(images, save_path)
-                # save_images_as_mp4(images, save_path_mp4)
-                # save_images_as_folder(images, save_path_folder)
                 save_gif_mp4_folder_type(images, save_path)
-                
+
                 if self.prompt2prompt_edit:
                     if mask_list is not None and len(mask_list) > 0:
                         save_gif_mp4_folder_type(mask_list, save_path.replace('.gif', 'mask.gif'))
                     if attention_output is not None:
                         save_gif_mp4_folder_type(attention_output, save_path.replace('.gif', 'atten.gif'))
-        
+
         if self.make_grid:
             samples_all = [make_grid(images, cols=int(np.ceil(np.sqrt(len(samples_all))))) for images in zip(*samples_all)]
             save_path = os.path.join(self.logdir, f"step_{step}.gif")
-            # save_images_as_gif(samples_all, save_path)
             save_gif_mp4_folder_type(samples_all, save_path)
             if self.prompt2prompt_edit:
                 if len(attention_all) > 0 :
                     attention_all = [make_grid(images, cols=1) for images in zip(*attention_all)]
-                # save_path = os.path.join(self.logdir, f"step_{step}.gif")
-                # save_images_as_gif(samples_all, save_path)
                 if len(attention_all) > 0:
                     save_gif_mp4_folder_type(attention_all, save_path.replace('.gif', 'atten.gif'))
         return samples_all

@@ -1,14 +1,13 @@
 import os
-import inspect
-from typing import Optional, List, Dict
-from typing import Callable, List, Optional, Union
-import PIL
-import click
+from glob import glob
+import copy
+from typing import Optional,Dict
+from tqdm.auto import tqdm
 from omegaconf import OmegaConf
+import click
 
 import torch
 import torch.utils.data
-import torch.nn.functional as F
 import torch.utils.checkpoint
 
 from accelerate import Accelerator
@@ -16,15 +15,9 @@ from accelerate.logging import get_logger
 from accelerate.utils import set_seed
 from diffusers import (
     AutoencoderKL,
-    DDPMScheduler,
     DDIMScheduler,
-    UNet2DConditionModel,
 )
-from diffusers.optimization import get_scheduler
 from diffusers.utils.import_utils import is_xformers_available
-from diffusers.pipeline_utils import DiffusionPipeline
-
-from tqdm.auto import tqdm
 from transformers import AutoTokenizer, CLIPTextModel
 from einops import rearrange
 
@@ -39,6 +32,8 @@ logger = get_logger(__name__)
 
 
 def collate_fn(examples):
+    """Concat a batch of sampled image in dataloader
+    """
     batch = {
         "prompt_ids": torch.cat([example["prompt_ids"] for example in examples], dim=0),
         "images": torch.stack([example["images"] for example in examples]),
@@ -104,7 +99,7 @@ def test(
 
     if 'target' not in test_pipeline_config:
         test_pipeline_config['target'] = 'video_diffusion.pipelines.stable_diffusion.SpatioTemporalStableDiffusionPipeline'
-    
+   
     pipeline = instantiate_from_config(
         test_pipeline_config,
         vae=vae,
@@ -164,7 +159,7 @@ def test(
 
     # Move text_encode and vae to gpu.
     # For mixed precision training we cast the text_encoder and vae weights to half-precision
-    # as these models are only used for inference, keeping weights in full precision is not required.
+    # These models are only used for inference, keeping weights in full precision is not required.
     vae.to(accelerator.device, dtype=weight_dtype)
     text_encoder.to(accelerator.device, dtype=weight_dtype)
 
@@ -201,17 +196,17 @@ def test(
         unet.eval()
 
         text_embeddings = pipeline._encode_prompt(
-                train_dataset.prompt, 
-                device = accelerator.device, 
-                num_images_per_prompt = 1, 
-                do_classifier_free_guidance = True, 
+                train_dataset.prompt,
+                device = accelerator.device,
+                num_images_per_prompt = 1,
+                do_classifier_free_guidance = True,
                 negative_prompt=None
         )
-        
+       
         use_inversion_attention =  validation_sample_logger_config.get('use_inversion_attention', False)
         batch['latents_all_step'] = pipeline.prepare_latents_ddim_inverted(
-            rearrange(batch["images"].to(dtype=weight_dtype), "b c f h w -> (b f) c h w"), 
-            batch_size = 1 , 
+            rearrange(batch["images"].to(dtype=weight_dtype), "b c f h w -> (b f) c h w"),
+            batch_size = 1,
             num_images_per_prompt = 1,  # not sure how to use it
             text_embeddings = text_embeddings,
             prompt = train_dataset.prompt,
@@ -219,12 +214,12 @@ def test(
             LOW_RESOURCE = True, # not classifier-free guidance
             save_path = logdir
             )
-        
+
         batch['ddim_init_latents'] = batch['latents_all_step'][-1]
-        
+
     else:
         batch['ddim_init_latents'] = None
-        
+
     vae.eval()
     text_encoder.eval()
     unet.train()
@@ -232,9 +227,8 @@ def test(
     # with accelerator.accumulate(unet):
     # Convert images to latent space
     images = batch["images"].to(dtype=weight_dtype)
-    b = images.shape[0]
     images = rearrange(images, "b c f h w -> (b f) c h w")
-    
+
 
     if accelerator.is_main_process:
 
@@ -252,43 +246,35 @@ def test(
 
     accelerator.end_training()
 
-from glob import glob
-import copy
+
 @click.command()
 @click.option("--config", type=str, default="config/sample.yml")
 def run(config):
     Omegadict = OmegaConf.load(config)
     if 'unet' in os.listdir(Omegadict['pretrained_model_path']):
         test(config=config, **Omegadict)
-    else: 
-        # Go trough all ckpt
+    else:
+        # Go through all ckpt if possible
         checkpoint_list = sorted(glob(os.path.join(Omegadict['pretrained_model_path'], 'checkpoint_*')))
         print('checkpoint to evaluate:')
-        for checkpoint in checkpoint_list: 
+        for checkpoint in checkpoint_list:
             epoch = checkpoint.split('_')[-1]
-            # print(epoch)
-            # print(int(epoch) in Omegadict['pretrained_epoch_list'])
-            
-            
+
         for checkpoint in tqdm(checkpoint_list):
             epoch = checkpoint.split('_')[-1]
             if 'pretrained_epoch_list' not in Omegadict or int(epoch) in Omegadict['pretrained_epoch_list']:
-                # print(epoch)
                 print(f'Evaluate {checkpoint}')
-                
                 # Update saving dir and ckpt
                 Omegadict_checkpoint = copy.deepcopy(Omegadict)
                 Omegadict_checkpoint['pretrained_model_path'] = checkpoint
-                
 
-                time_string = get_time_string()
                 if 'logdir' not in Omegadict_checkpoint:
                     logdir = config.replace('config', 'result').replace('.yml', '').replace('.yaml', '')
                     logdir +=  f"/{os.path.basename(checkpoint)}"
-                
+
                 Omegadict_checkpoint['logdir'] = logdir
                 print(f'Saving at {logdir}')
-                
+
                 test(config=config, **Omegadict_checkpoint)
 
 

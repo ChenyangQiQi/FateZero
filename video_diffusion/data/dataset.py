@@ -27,7 +27,6 @@ class ImageSequenceDataset(Dataset):
         crop: str = "center",
                 
         class_data_root: str = None,
-        class_data_prompt: str = None,
         class_prompt_ids: torch.Tensor = None,
         
         offset: dict = {
@@ -57,7 +56,6 @@ class ImageSequenceDataset(Dataset):
         self.image_mode = image_mode
         self.image_size = image_size
         crop_methods = {
-            # "offset": offset_crop,
             "center": center_crop,
             "random": random_crop,
         }
@@ -71,12 +69,10 @@ class ImageSequenceDataset(Dataset):
         # Negative prompt for regularization
         if class_data_root is not None:
             self.class_data_root = Path(class_data_root)
-            # self.class_data_root.mkdir(parents=True, exist_ok=True)
             self.class_images_path = sorted(list(self.class_data_root.iterdir()))
             self.num_class_images = len(self.class_images_path)
             self.class_prompt_ids = class_prompt_ids
         
-        # self.class_count = 0
         self.video_len = (self.n_images - self.sequence_length) // self.stride + 1
 
     def __len__(self):
@@ -99,37 +95,13 @@ class ImageSequenceDataset(Dataset):
             "prompt_ids": self.prompt_ids,
             }
         )
-        # print(f"hasattr {hasattr(self, 'class_data_root')}")
-        if hasattr(self, 'class_data_root'):
 
-            # class_count = (self.class_count + 1) % (self.num_class_images - self.n_sample_frame)
+        if hasattr(self, 'class_data_root'):
             class_index = index % (self.num_class_images - self.n_sample_frame)
-            # print(class_index)
-            # print(id(class_index))
-            class_indices = self.get_class_indices(class_index)
-            
+            class_indices = self.get_class_indices(class_index)           
             frames = [self.load_class_frame(i) for i in class_indices]
-            
-            # class_image = Image.open(self.class_images_path[index % self.num_class_images])
-            # if not class_image.mode == "RGB":
-            #     class_image = class_image.convert("RGB")
-            # frames = self.transform(frames)
-            
             return_batch["class_images"] = self.tensorize_frames(frames)
             return_batch["class_prompt_ids"] = self.class_prompt_ids
-            # return_batch["class_prompt_ids"] = self.class_prompt_ids
-            # return_batch["class_prompt_ids"] = self.tokenizer(
-            #     self.class_prompt,
-            #     truncation=True,
-            #     padding="max_length",
-            #     max_length=self.tokenizer.model_max_length,
-            #     return_tensors="pt",
-            # ).input_ids
-            # import numpy as np
-            # import torchvision.utils as tvu
-            # vis = rearrange(return_batch["class_images"],"c f h w -> f c h w")
-            # tvu.save_image(vis, f'trash/class_images.png',normalize=True)
-
         return return_batch
     
     def get_all(self, val_length=None):
