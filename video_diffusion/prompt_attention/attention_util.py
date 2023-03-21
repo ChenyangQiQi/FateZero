@@ -153,7 +153,7 @@ class MaskBlend:
     def get_mask(self, maps, alpha, use_pool, h=None, w=None, step_in_store: int=None, prompt_choose='source'):
         """
         # ([1, 40, 2, 16, 16, 77]) * ([1, 1, 1, 1, 1, 77]) -> [2, 1, 16, 16]
-        mask have dimention of [clip_length, dim, res, res]
+        mask have dimension of [clip_length, dim, res, res]
         """
         k = 1
         
