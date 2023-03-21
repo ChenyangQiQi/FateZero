@@ -52,7 +52,7 @@ previous works.
 </details>
 
 ## Changelog
-
+- 2023.03.21 We provide a [tuning guidance](config/TuningGuidance.md) to help users to edit in-the-wild video. Welcome to play and give feedback!
 - 2023.03.21 `Update the codebase and configuration`. Now, it can be run on the lower resources computers(16G GPU and 16G CPU RAM) with new configuration in `config/low_resource_teaser`. We also add an option to store all the attentions in hard disk, which require less ram than the original configuration.
 - 2023.03.17 Release Code and Paper!
 
@@ -181,7 +181,7 @@ train_sample is the input video;
 
 </details>
 
-## Tuning guidance to edit your video
+## Tuning guidance to edit YOUR video
 We provided a tuning guidance to edit in-the-wild video at [here](config/TuningGuidance.md). The work is still in progress. Welcome to give your feedback in issues.
 
 ## Style Editing Results with Stable Diffusion
