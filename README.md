@@ -59,13 +59,14 @@ previous works.
 
 - [x] Release the edit config for teaser
 - [x] Memory and runtime profiling
+- [x] Hands-on guidance of hyperparameters tuning
+- [ ] Colab and hugging-face
 - [ ] Tune-a-video optimization
-- [ ] More detailed description of our environment and Hands-on guidance of hyperparameters tuning
 - [ ] Release configs for other result and in-the-wild dataset
 - [ ] Release more application
 
 ## Setup Environment
-Our method is tested using cuda11, fp16 and xformers on a single A100 or 3090.
+Our method is tested using cuda11, fp16 of accelerator and xformers on a single A100 or 3090.
 
 ```bash
 conda create -n fatezero38 python=3.8
@@ -155,6 +156,8 @@ accelerate launch test_fatezero.py --config config/low_resource_teaser/jeep_wate
 ```
 The running time depends on the machine. Our 3090 server use 33 seconds invertion + 100 seconds editing.
 
+
+
 <!-- </details> -->
 
 <details><summary>Click for result structure </summary>
@@ -176,6 +179,9 @@ sample is the result videos obtained from target prompt;
 train_sample is the input video;
 
 </details>
+
+## Tuning guidance to edit your video
+We provided a tuning guidance to edit in-the-wild video at [here](config/TuningGuidance.md). The work is still in progress. Welcome to give your feedback in issues.
 
 ## Style Editing Results with Stable Diffusion
 We show the difference of source prompt and target prompt in the box below each video.

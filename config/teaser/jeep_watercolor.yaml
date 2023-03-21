@@ -49,7 +49,7 @@ validation_sample_logger_config:
             # Without following three lines, all self-attention will be replaced
             # blend_words: [['jeep',], ["car",]] 
             masked_self_attention:  True
-            # masked_latents: False   # performance not so good in our case, need debug            
+            # masked_latents: False   #  Directly copy the latents, performance not so good in our case      
             bend_th: [2, 2]
             # preserve source structure of blend_words , [0, 1]
             # default is bend_th: [2, 2]  # replace full-resolution edit source with self-attention 
