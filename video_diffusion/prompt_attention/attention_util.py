@@ -16,6 +16,7 @@ from einops import rearrange
 import torch
 import torch.nn.functional as F
 
+from video_diffusion.common.util import get_time_string
 import video_diffusion.prompt_attention.ptp_utils as ptp_utils
 import video_diffusion.prompt_attention.seq_aligner as seq_aligner
 from video_diffusion.common.image_util import save_gif_mp4_folder_type
@@ -382,7 +383,13 @@ class AttentionStore(AttentionControl):
             for key in self.attention_store:
                 for i in range(len(self.attention_store[key])):
                     self.attention_store[key][i] += self.step_store[key][i]
-        self.attention_store_all_step.append(copy.deepcopy(self.step_store))
+        
+        if self.disk_store:
+            path = self.store_dir + f'/{self.cur_step:03d}.pt'
+            torch.save(copy.deepcopy(self.step_store), path)
+            self.attention_store_all_step.append(path)
+        else:
+            self.attention_store_all_step.append(copy.deepcopy(self.step_store))
         self.step_store = self.get_empty_store()
 
     def get_average_attention(self):
@@ -397,8 +404,16 @@ class AttentionStore(AttentionControl):
         self.attention_store_all_step = []
         self.attention_store = {}
 
-    def __init__(self, save_self_attention:bool=True):
+    def __init__(self, save_self_attention:bool=True, disk_store=False):
         super(AttentionStore, self).__init__()
+        self.disk_store = disk_store
+        if self.disk_store:
+            time_string = get_time_string()
+            path = f'./trash/attention_cache_{time_string}'
+            os.makedirs(path, exist_ok=True)
+            self.store_dir = path
+        else:
+            self.store_dir =None
         self.step_store = self.get_empty_store()
         self.attention_store = {}
         self.save_self_attention = save_self_attention
@@ -433,7 +448,7 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
             # to better align with  (b c f h w)
             
             attention_store_step = self.additional_attention_store.attention_store_all_step[step_in_store]
-            #   each element in attention_store_step have [clip_length, heads, res, text_embedding]
+            if isinstance(place_in_unet_cross_atten_list, str): attention_store_step = torch.load(attention_store_step)
             
             for key in blend_dict.keys():
                 place_in_unet_cross_atten_list = attention_store_step[key]
@@ -480,6 +495,8 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
                 step_in_store = self.cur_step
                 
             place_in_unet_cross_atten_list = self.additional_attention_store.attention_store_all_step[step_in_store]
+            if isinstance(place_in_unet_cross_atten_list, str): place_in_unet_cross_atten_list = torch.load(place_in_unet_cross_atten_list)
+            # breakpoint()
             # Note that attn is append to step_store, 
             # if attn is get through clean -> noisy, we should inverse it
             attn_base = place_in_unet_cross_atten_list[key][current_pos]          
@@ -542,9 +559,12 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
                  additional_attention_store: AttentionStore =None,
                  use_inversion_attention: bool=False,
                  MB: MaskBlend= None,
-                 save_self_attention: bool=True
+                 save_self_attention: bool=True,
+                 disk_store=False
                  ):
-        super(AttentionControlEdit, self).__init__(save_self_attention=save_self_attention)
+        super(AttentionControlEdit, self).__init__(
+            save_self_attention=save_self_attention,
+            disk_store=disk_store)
         self.additional_attention_store = additional_attention_store
         self.batch_size = len(prompts)
         self.MB = MB
@@ -589,12 +609,14 @@ class AttentionReplace(AttentionControlEdit):
                  additional_attention_store=None,
                  use_inversion_attention = False,
                  MB: MaskBlend=None,
-                 save_self_attention: bool = True):
+                 save_self_attention: bool = True,
+                 disk_store=False):
         super(AttentionReplace, self).__init__(
             prompts, num_steps, cross_replace_steps, self_replace_steps, local_blend, tokenizer=tokenizer,
             additional_attention_store=additional_attention_store, use_inversion_attention = use_inversion_attention,
             MB=MB,
-            save_self_attention = save_self_attention
+            save_self_attention = save_self_attention,
+            disk_store=disk_store
             )
         self.mapper = seq_aligner.get_replacement_mapper(prompts, tokenizer).to(device)
 
@@ -617,13 +639,15 @@ class AttentionRefine(AttentionControlEdit):
                  additional_attention_store=None,
                  use_inversion_attention = False,
                  MB: MaskBlend=None,
-                 save_self_attention : bool=True
+                 save_self_attention : bool=True,
+                 disk_store = False
                  ):
         super(AttentionRefine, self).__init__(
             prompts, num_steps, cross_replace_steps, self_replace_steps, local_blend, tokenizer=tokenizer,
             additional_attention_store=additional_attention_store, use_inversion_attention = use_inversion_attention,
             MB=MB,
-            save_self_attention = save_self_attention
+            save_self_attention = save_self_attention,
+            disk_store = disk_store
             )
         self.mapper, alphas = seq_aligner.get_refinement_mapper(prompts, tokenizer)
         self.mapper, alphas = self.mapper.to(device), alphas.to(device)
@@ -648,14 +672,16 @@ class AttentionReweight(AttentionControlEdit):
                 additional_attention_store=None,
                 use_inversion_attention = False,
                 MB: MaskBlend=None,
-                save_self_attention:bool = True
+                save_self_attention:bool = True,
+                disk_store = False
                 ):
         super(AttentionReweight, self).__init__(
             prompts, num_steps, cross_replace_steps, self_replace_steps, local_blend, tokenizer=tokenizer,
             additional_attention_store=additional_attention_store,
             use_inversion_attention = use_inversion_attention,
             MB=MB,
-            save_self_attention=save_self_attention
+            save_self_attention=save_self_attention,
+            disk_store = disk_store
             )
         self.equalizer = equalizer.to(device)
         self.prev_controller = controller
@@ -700,7 +726,8 @@ def make_controller(tokenizer, prompts: List[str], is_replace_controller: bool,
                     masked_latents = False,
                     masked_self_attention=False,
                     save_path = None,
-                    save_self_attention = True
+                    save_self_attention = True,
+                    disk_store = False
                     ) -> AttentionControlEdit:
     if (blend_words is None) or (blend_words == 'None'):
         lb = None
@@ -725,7 +752,8 @@ def make_controller(tokenizer, prompts: List[str], is_replace_controller: bool,
                                       additional_attention_store=additional_attention_store,
                                       use_inversion_attention = use_inversion_attention,
                                       MB=MB,
-                                      save_self_attention = save_self_attention
+                                      save_self_attention = save_self_attention,
+                                      disk_store=disk_store
                                       )
     else:
         print('use refine controller')
@@ -735,7 +763,8 @@ def make_controller(tokenizer, prompts: List[str], is_replace_controller: bool,
                                      additional_attention_store=additional_attention_store,
                                      use_inversion_attention = use_inversion_attention,
                                      MB=MB,
-                                     save_self_attention = save_self_attention
+                                     save_self_attention = save_self_attention,
+                                     disk_store=disk_store
                                      )
     if equilizer_params is not None:
         eq = get_equalizer(prompts[1], equilizer_params["words"], equilizer_params["values"], tokenizer=tokenizer)
@@ -746,7 +775,8 @@ def make_controller(tokenizer, prompts: List[str], is_replace_controller: bool,
                                         additional_attention_store=additional_attention_store,
                                         use_inversion_attention = use_inversion_attention,
                                         MB=MB,
-                                        save_self_attention = save_self_attention
+                                        save_self_attention = save_self_attention,
+                                        disk_store=disk_store
                                        )
     return controller
 

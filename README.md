@@ -141,9 +141,16 @@ accelerate launch test_fatezero.py --config config/teaser/jeep_posche.yaml
 For style and other easy editings, you could using 10 DDIM steps
 
 ```bash
-accelerate launch test_fatezero.py --config config/fast_teaser/jeep_watercolor.yaml
+accelerate launch test_fatezero.py --config config/low_resource_teaser/jeep_watercolor_ddim_10_steps.yaml
 ```
 On an Nvidia 3090 GPU, the above setting takes 10G GPU memory, 15G CPU memory, 10 seconds inversion per input video + 10 seconds editing per target prompt.
+
+If your CPU memory is less than 16G, you may try to save the attention on the disk by the following commands
+
+```bash
+accelerate launch test_fatezero.py --config config/low_resource_teaser/jeep_watercolor_ddim_10_steps_disk_store.yaml
+```
+
 <details><summary>Click for result structure </summary>
 
 The result is saved as follows:

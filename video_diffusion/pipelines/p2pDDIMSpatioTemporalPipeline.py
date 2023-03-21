@@ -36,9 +36,11 @@ class p2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
         text_encoder: CLIPTextModel,
         tokenizer: CLIPTokenizer,
         unet: UNetPseudo3DConditionModel,
-        scheduler: Union[DDIMScheduler, PNDMScheduler, LMSDiscreteScheduler, EulerDiscreteScheduler, EulerAncestralDiscreteScheduler, DPMSolverMultistepScheduler,]):
+        scheduler: Union[DDIMScheduler, PNDMScheduler, LMSDiscreteScheduler, EulerDiscreteScheduler, EulerAncestralDiscreteScheduler, DPMSolverMultistepScheduler,],
+        disk_store: bool=False
+        ):
         super().__init__(vae, text_encoder, tokenizer, unet, scheduler)
-        self.store_controller = attention_util.AttentionStore()
+        self.store_controller = attention_util.AttentionStore(disk_store=disk_store)
         self.empty_controller = attention_util.EmptyControl()
     r"""
     Pipeline for text-to-video generation using Spatio-Temporal Stable Diffusion.
@@ -191,7 +193,8 @@ class p2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
                             masked_self_attention = kwargs.get('masked_self_attention', None),
                             masked_latents=kwargs.get('masked_latents', None),
                             save_path=kwargs.get('save_path', None),
-                            save_self_attention = kwargs.get('save_self_attention', True)
+                            save_self_attention = kwargs.get('save_self_attention', True),
+                            disk_store = kwargs.get('disk_store', False)
                             )
         
         attention_util.register_attention_control(self, edit_controller)

@@ -111,6 +111,7 @@ def test(
             pretrained_model_path,
             subfolder="scheduler",
         ),
+        disk_store=kwargs.get('disk_store', False)
     )
     pipeline.scheduler.set_timesteps(validation_sample_logger_config['num_inference_steps'])
     pipeline.set_progress_bar_config(disable=True)

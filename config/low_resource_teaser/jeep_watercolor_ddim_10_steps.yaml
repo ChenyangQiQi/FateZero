@@ -29,6 +29,7 @@ validation_sample_logger_config:
             # Whether to directly copy the cross attention from source 
             # True: directly copy, better for object replacement
             # False: keep source attention, better for style
+            
             is_replace_controller: False
 
             # Semantic layout preserving. High steps, replace more cross attention to preserve semantic layout
@@ -63,7 +64,6 @@ validation_sample_logger_config:
     num_inference_steps: 10
     prompt2prompt_edit: True
 
-    
 model_config:
     lora: 160
     # temporal_downsample_time: 4
