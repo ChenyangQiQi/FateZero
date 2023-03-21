@@ -108,8 +108,11 @@ class LocalBlend:
         self.count = 0
         self.MAX_NUM_WORDS = 77
         self.NUM_DDIM_STEPS = NUM_DDIM_STEPS
-        self.save_path = save_path+'/latents_mask'
-        os.makedirs(self.save_path, exist_ok='True')
+        if save_path is not None:
+            self.save_path = save_path+'/latents_mask'
+            os.makedirs(self.save_path, exist_ok='True')
+        else:
+            self.save_path = None
         alpha_layers = torch.zeros(len(prompts),  1, 1, 1, 1, self.MAX_NUM_WORDS)
         for i, (prompt, words_) in enumerate(zip(prompts, words)):
             if type(words_) is str:
@@ -132,7 +135,6 @@ class LocalBlend:
             self.substruct_layers = None
         
         self.alpha_layers = alpha_layers.to(device)
-        print(self.alpha_layers)
         self.start_blend = int(start_blend * self.NUM_DDIM_STEPS)
         self.end_blend = int(end_blend * self.NUM_DDIM_STEPS)
         self.counter = 0 
@@ -227,8 +229,11 @@ class MaskBlend:
         # self.config_dict = copy.deepcopy(config_dict)
         self.MAX_NUM_WORDS = 77
         self.NUM_DDIM_STEPS = NUM_DDIM_STEPS
-        self.save_path = save_path+'/blend_mask'
-        os.makedirs(self.save_path, exist_ok='True')
+        if save_path is not None:
+            self.save_path = save_path+'/blend_mask'
+            os.makedirs(self.save_path, exist_ok='True')
+        else:
+            self.save_path = None
         alpha_layers = torch.zeros(len(prompts),  1, 1, 1, 1, self.MAX_NUM_WORDS)
         for i, (prompt, words_) in enumerate(zip(prompts, words)):
             if type(words_) is str:
@@ -251,7 +256,10 @@ class MaskBlend:
             self.substruct_layers = None
         
         self.alpha_layers = alpha_layers.to(device)
-        print(self.alpha_layers)
+        print('the index mask of edited word in the prompt')
+        print(self.alpha_layers[0][..., 0:(len(prompts[0].split(" "))+2)])
+        print(self.alpha_layers[1][..., 0:(len(prompts[1].split(" "))+2)])
+        
         self.start_blend = int(start_blend * self.NUM_DDIM_STEPS)
         self.end_blend = int(end_blend * self.NUM_DDIM_STEPS)
         self.counter = 0 
@@ -1030,7 +1038,6 @@ def register_attention_control(model, controller):
     sub_nets = model.unet.named_children()
     for net in sub_nets:
         if "down" in net[0]:
-            print(net[0])
             cross_att_count += register_recr(net, 0, "down")
         elif "up" in net[0]:
             cross_att_count += register_recr(net, 0, "up")

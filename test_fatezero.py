@@ -54,6 +54,7 @@ def test(
     mixed_precision: Optional[str] = "fp16",
     train_batch_size: int = 1,
     model_config: dict={},
+    verbose: bool=True,
     **kwargs
 
 ):
@@ -212,7 +213,7 @@ def test(
             prompt = train_dataset.prompt,
             store_attention=use_inversion_attention,
             LOW_RESOURCE = True, # not classifier-free guidance
-            save_path = logdir
+            save_path = logdir if verbose else None
             )
 
         batch['ddim_init_latents'] = batch['latents_all_step'][-1]
@@ -240,7 +241,7 @@ def test(
                 device=accelerator.device,
                 step=0,
                 latents = batch['ddim_init_latents'],
-                save_dir = logdir
+                save_dir = logdir if verbose else None
             )
         # accelerator.log(logs, step=step)
 
