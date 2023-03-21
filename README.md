@@ -133,8 +133,8 @@ video_diffusion
 
 You could generate style editing result in our teaser by running:
 ```bash
-CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_watercolor.yaml
-CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_posche.yaml
+accelerate launch python test_fatezero.py --config config/teaser/jeep_watercolor.yaml
+accelerate launch python test_fatezero.py --config config/teaser/jeep_posche.yaml
 ```
 
 <details><summary>Click for result structure </summary>
