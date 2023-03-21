@@ -701,7 +701,6 @@ class AttentionRefine(AttentionControlEdit):
         target_device = att_replace.device
         target_dtype  = att_replace.dtype
         attn_base = attn_base.to(target_device, dtype=target_dtype)
-        # breakpoint()
         # return torch.einsum('thpw,bwn->bthpn', attn_base, self.mapper)
         
         if attn_base.dim()==3:
@@ -1099,7 +1098,6 @@ def register_attention_control(model, controller):
                             frame_index = frame_index.clip(0, clip_length-1)
                             
                         frame_index_list.append(frame_index)
-                    # breakpoint()
                     key = torch.cat([   key[:, frame_index] for frame_index in frame_index_list
                                         ], dim=2)
                     value = torch.cat([ value[:, frame_index] for frame_index in frame_index_list
@@ -1110,11 +1108,9 @@ def register_attention_control(model, controller):
                 key = rearrange(key, "b f d c -> (b f) d c", f=clip_length)
                 value = rearrange(value, "b f d c -> (b f) d c", f=clip_length)
             
-            # breakpoint()
             key = self.reshape_heads_to_batch_dim(key)
             value = self.reshape_heads_to_batch_dim(value)
-            # breakpoint()
-            # attention, what we cannot get enough of
+
             if self._use_memory_efficient_attention_xformers and query.shape[-2] > 32 ** 2:
                 # for large attention map of 64X64, use xformers to save memory
                 hidden_states = self._memory_efficient_attention_xformers(query, key, value, attention_mask)

@@ -232,7 +232,7 @@ class DDIMSpatioTemporalStableDiffusionPipeline(SpatioTemporalStableDiffusionPip
         text_embeddings = self._encode_prompt(
             prompt, device, num_images_per_prompt, do_classifier_free_guidance, negative_prompt
         )
-        # breakpoint()
+        
         # 4. Prepare timesteps
         self.scheduler.set_timesteps(num_inference_steps, device=device)
         # if strength <1.0:

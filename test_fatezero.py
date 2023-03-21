@@ -151,7 +151,6 @@ def test(
     train_sample_save_path = os.path.join(logdir, "train_samples.gif")
     log_train_samples(save_path=train_sample_save_path, train_dataloader=train_dataloader)
 
-    # breakpoint()
     unet, train_dataloader  = accelerator.prepare(
         unet, train_dataloader
     )
@@ -190,7 +189,6 @@ def test(
             accelerator.wait_for_everyone()
 
     train_data_yielder = make_data_yielder(train_dataloader)
-    # breakpoint()
 
     # while step < train_steps:
     batch = next(train_data_yielder)
@@ -242,7 +240,6 @@ def test(
 
         if validation_sample_logger is not None:
             unet.eval()
-            # breakpoint()
             validation_sample_logger.log_sample_images(
                 image=images, # torch.Size([8, 3, 512, 512])
                 pipeline=pipeline,

@@ -82,9 +82,7 @@ def train(
     # **kwargs
 ):
     args = get_function_args()
-    # .update(**kwargs)
     # args.update(kwargs)
-    # breakpoint()
     train_dataset_config = copy.deepcopy(train_dataset)
     time_string = get_time_string()
     if logdir is None:
@@ -246,7 +244,6 @@ def train(
         collate_fn=collate_fn,
     )
 
-    # breakpoint()
     train_sample_save_path = os.path.join(logdir, "train_samples.gif")
     log_train_samples(save_path=train_sample_save_path, train_dataloader=train_dataloader)
     if 'class_data_root' in train_dataset_config:

@@ -64,7 +64,6 @@ class p2pSampleLogger:
         self.use_inversion_attention = use_inversion_attention
         self.source_prompt = source_prompt
         self.traverse_p2p_config =traverse_p2p_config
-        # breakpoint()
         
     def log_sample_images(
         self, pipeline: DiffusionPipeline,

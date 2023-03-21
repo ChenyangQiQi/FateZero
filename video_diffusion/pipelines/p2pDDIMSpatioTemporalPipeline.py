@@ -182,7 +182,7 @@ class p2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
     def p2preplace_edit(self, **kwargs):
         # Edit controller during inference
         # The controller must know the source prompt for replace mapping
-        # breakpoint()
+        
         len_source = {len(kwargs['source_prompt'].split(' '))}
         len_target = {len(kwargs['prompt'].split(' '))}
         equal_length = (len_source == len_target)
@@ -400,7 +400,7 @@ class p2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
         text_embeddings = self._encode_prompt(
             prompt, device, num_images_per_prompt, do_classifier_free_guidance, negative_prompt
         )
-        # breakpoint()
+        
         # 4. Prepare timesteps
         self.scheduler.set_timesteps(num_inference_steps, device=device)
         # if strength <1.0:

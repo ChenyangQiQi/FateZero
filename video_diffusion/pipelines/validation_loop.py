@@ -84,7 +84,6 @@ class SampleLogger:
             for seed in self.sample_seeds:
                 generator = torch.Generator(device=device)
                 generator.manual_seed(seed)
-                # breakpoint()
                 # if isinstance(pipeline, SDeditSpatioTemporalStableDiffusionPipeline):
                 sequence_return = pipeline(
                     prompt=prompt,

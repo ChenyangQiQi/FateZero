@@ -45,7 +45,7 @@ class ImageSequenceDataset(Dataset):
         if n_sample_frame < 0:
             n_sample_frame = len(self.images)
         self.start_sample_frame = start_sample_frame
-        # breakpoint()
+        
         self.n_sample_frame = n_sample_frame
         self.sampling_rate = sampling_rate
 
@@ -75,7 +75,7 @@ class ImageSequenceDataset(Dataset):
             self.class_images_path = sorted(list(self.class_data_root.iterdir()))
             self.num_class_images = len(self.class_images_path)
             self.class_prompt_ids = class_prompt_ids
-        # breakpoint()
+        
         # self.class_count = 0
         self.video_len = (self.n_images - self.sequence_length) // self.stride + 1
 
@@ -148,7 +148,6 @@ class ImageSequenceDataset(Dataset):
         frames = self.tensorize_frames(frames)
         frames = offset_crop(frames, **self.offset)
         frames = short_size_scale(frames, size=self.image_size)
-        # breakpoint()
         frames = self.crop(frames, height=self.image_size, width=self.image_size)
         return frames
 

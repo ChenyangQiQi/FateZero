@@ -291,7 +291,7 @@ class SpatioTemporalTransformerBlock(nn.Module):
             kwargs.update(clip_length=clip_length)
         if 'SparseCausalAttention_index' in self.model_config.keys():
             kwargs.update(SparseCausalAttention_index = self.model_config['SparseCausalAttention_index'])
-        # breakpoint()
+        
         hidden_states = hidden_states + self.attn1(**kwargs)
 
         if clip_length is not None and self.temporal_attention_position == "after_spatial":
@@ -386,7 +386,7 @@ class SparseCausalAttention(CrossAttention):
                         frame_index = frame_index.clip(0, clip_length-1)
                         
                     frame_index_list.append(frame_index)
-                # breakpoint()
+                
                 key = torch.cat([   key[:, frame_index] for frame_index in frame_index_list
                                     ], dim=2)
                 value = torch.cat([ value[:, frame_index] for frame_index in frame_index_list
@@ -397,10 +397,10 @@ class SparseCausalAttention(CrossAttention):
             key = rearrange(key, "b f d c -> (b f) d c", f=clip_length)
             value = rearrange(value, "b f d c -> (b f) d c", f=clip_length)
         
-        # breakpoint()
+        
         key = self.reshape_heads_to_batch_dim(key)
         value = self.reshape_heads_to_batch_dim(value)
-        # breakpoint()
+        
         # attention, what we cannot get enough of
         if self._use_memory_efficient_attention_xformers:
             hidden_states = self._memory_efficient_attention_xformers(query, key, value, attention_mask)
@@ -460,8 +460,8 @@ class SparseCausalAttention_fixme(CrossAttention):
 
         key = self.reshape_heads_to_batch_dim(key)
         value = self.reshape_heads_to_batch_dim(value)
-        # breakpoint()
-        # attention, what we cannot get enough of
+        
+        
         if self._use_memory_efficient_attention_xformers:
             hidden_states = self._memory_efficient_attention_xformers(query, key, value, attention_mask)
             # Some versions of xformers return output in fp32, cast it back to the dtype of the input
