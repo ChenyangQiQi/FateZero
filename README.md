@@ -137,19 +137,23 @@ You could reproduce style and shape editing result in our teaser by running:
 accelerate launch test_fatezero.py --config config/teaser/jeep_watercolor.yaml
 accelerate launch test_fatezero.py --config config/teaser/jeep_posche.yaml
 ```
+<!-- <details><summary>Click for fast and low-resource edting </summary> -->
 
-For style and other easy editings, you could using 10 DDIM steps
+For fast style and other easy editings, you could using 10 DDIM steps
 
 ```bash
 accelerate launch test_fatezero.py --config config/low_resource_teaser/jeep_watercolor_ddim_10_steps.yaml
 ```
-On an Nvidia 3090 GPU, the above setting takes 10G GPU memory, 15G CPU memory, 10 seconds inversion per input video + 10 seconds editing per target prompt.
+On an Nvidia 3090 GPU, the above setting only takes 10G GPU memory, 15G CPU memory, 10 seconds inversion per input video + 10 seconds editing per target prompt.
 
 If your CPU memory is less than 16G, you may try to save the attention on the disk by the following commands
 
 ```bash
 accelerate launch test_fatezero.py --config config/low_resource_teaser/jeep_watercolor_ddim_10_steps_disk_store.yaml
 ```
+The running time depends on the machine. Our 3090 server use 33 seconds invertion + 100 seconds editing.
+
+<!-- </details> -->
 
 <details><summary>Click for result structure </summary>
 
