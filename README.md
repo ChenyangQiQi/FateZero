@@ -10,7 +10,7 @@
   <td><img src="docs/gif_results/17_car_posche_01_concat_result.gif"></td>
   <td><img src="docs/gif_results/3_sunflower_vangogh_conat_result.gif"></td>
   <tr>
-  <td width=25% style="text-align:center;">"Cat ➜ Posche Car*"</td>
+  <td width=25% style="text-align:center;">"silver jeep ➜ posche car"</td>
   <td width=25% style="text-align:center;">"+ Van Gogh Style"</td>
   <!-- <td width=25% style="text-align:center;">"Wonder Woman, wearing a cowboy hat, is skiing"</td>
   <td width=25% style="text-align:center;">"A man, wearing pink clothes, is skiing at sunset"</td> -->
@@ -239,7 +239,7 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 <tr>
   <td width=25% style="text-align:center;">"Bear ➜ A Red Tiger"</td>
   <td width=25% style="text-align:center;">"Bear ➜ A yellow leopard"</td>
-  <td width=25% style="text-align:center;">"Bear ➜ A yellow lion"</td>
+  <td width=25% style="text-align:center;">"Bear ➜ A brown lion"</td>
 
 </tr>
 <tr>
@@ -270,7 +270,7 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
   <td><img src="https://tuneavideo.github.io/assets/results/tuneavideo/man-skiing/pink-sunset.gif"></td> -->
 </tr>
 <tr>
-  <td width=25% style="text-align:center;">"Cat ➜ Posche Car"</td>
+  <td width=25% style="text-align:center;">"silver jeep ➜ posche car"</td>
   <td width=25% style="text-align:center;">"Swan ➜ White Duck"</td>
   <td width=25% style="text-align:center;">"Swan ➜ Pink flamingo"</td>
 </tr>
