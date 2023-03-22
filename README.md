@@ -2,7 +2,7 @@
 
 [Chenyang Qi](https://chenyangqiqi.github.io/), [Xiaodong Cun](http://vinthony.github.io/), [Yong Zhang](https://yzhang2016.github.io), [Chenyang Lei](https://chenyanglei.github.io/), [Xintao Wang](https://xinntao.github.io/), [Ying Shan](https://scholar.google.com/citations?hl=zh-CN&user=4oXBp9UAAAAJ), and [Qifeng Chen](https://cqf.io)
 
-[Paper](https://arxiv.org/abs/2303.09535) | [Project Page](https://fate-zero-edit.github.io/) | [Code](https://github.com/ChenyangQiQi/FateZero)
+[Paper](https://arxiv.org/abs/2303.09535) | [Project Page](https://fate-zero-edit.github.io/) | [Code](https://github.com/ChenyangQiQi/FateZero) | [Colab Toy Demo](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb)
 
 <!-- ![fatezero_demo](./docs/teaser.png) -->
 
@@ -52,6 +52,7 @@ previous works.
 </details>
 
 ## Changelog
+- 2023.03.22 Upload a `colab notebook` [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb). Enjoy the fun of zero-shot video-editing freely!
 - 2023.03.22 Update `style editing config` and `data` used in the paper.
 - 2023.03.21 [Editing guidance](docs/EditingGuidance.md) is provided to help users to edit in-the-wild video. Welcome to play and give feedback!
 - 2023.03.21 Update the `codebase and configuration`. Now, it can be run on the lower resources computers(16G GPU and 16G CPU RAM) with new configuration in `config/low_resource_teaser`. A new option store all the attentions in hard disk, which require less ram.
@@ -62,10 +63,11 @@ previous works.
 - [x] Release the edit config for teaser
 - [x] Memory and runtime profiling
 - [x] Hands-on guidance of hyperparameters tuning
+- [x] Colab
 - [-] Release configs for other result and in-the-wild dataset
   - [x] Style editing: done
   - [-] Attribute editing: in progress
-- [ ] Colab and hugging-face: inprogress
+- [-] hugging-face: inprogress
 - [ ] Tune-a-video optimization and shape editing configs
 - [ ] Release more application
 
