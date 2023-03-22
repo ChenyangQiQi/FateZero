@@ -174,7 +174,7 @@ accelerate launch test_fatezero.py --config config/teaser/jeep_posche.yaml
 Download the [data](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/Ea1TrKCBXdhHhqc7ZKTnvjwBvBU6gzxyo9E6u55fqh3jew?e=LO5LWO) of syle editing. Unzip and Place it in './data/release'. Then use the command in 'config/release' to get the results.
 
 ## Tuning guidance to edit YOUR video
-We provided a tuning guidance to edit in-the-wild video at [here](config/TuningGuidance.md). The work is still in progress. Welcome to give your feedback in issues.
+We provided a tuning guidance to edit in-the-wild video at [here](./docs/EditingGuidance.md). The work is still in progress. Welcome to give your feedback in issues.
 
 ## Style Editing Results with Stable Diffusion
 We show the difference of source prompt and target prompt in the box below each video.
