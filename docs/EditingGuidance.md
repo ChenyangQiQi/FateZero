@@ -1,4 +1,4 @@
-# TuningGuidance
+# EditingGuidance
 
 ## Prompt Engineering
 For the results in the paper and webpage, we get the source prompt using the BLIP model embedded in the [Stable Diffusion WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui/).
