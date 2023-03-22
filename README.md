@@ -52,7 +52,7 @@ previous works.
 </details>
 
 ## Changelog
-- 2023.03.21 We provide a [tuning guidance](config/TuningGuidance.md) to help users to edit in-the-wild video. Welcome to play and give feedback!
+- 2023.03.21 We provide a [editing guidance](docs/EditingGuidance.md) to help users to edit in-the-wild video. Welcome to play and give feedback!
 - 2023.03.21 `Update the codebase and configuration`. Now, it can be run on the lower resources computers(16G GPU and 16G CPU RAM) with new configuration in `config/low_resource_teaser`. We also add an option to store all the attentions in hard disk, which require less ram than the original configuration.
 - 2023.03.17 Release Code and Paper!
 
@@ -98,6 +98,8 @@ Our environment is similar to Tune-A-video ([official](https://github.com/showla
 
 ## FateZero Editing
 
+#### Style and Attribute Editing
+
 Download the [stable diffusion v1-4](https://huggingface.co/CompVis/stable-diffusion-v1-4) (or other interesting image diffusion model) and put it to `./ckpt/stable-diffusion-v1-4`. 
 
 <details><summary>Click for bash command: </summary>
@@ -112,12 +114,35 @@ ln -s ../stable-diffusion-v1-4 .
 ```
 </details>
 
-We also provide a `Tune-A-Video` [checkpoint](https://hkustconnect-my.sharepoint.com/:f:/g/personal/cqiaa_connect_ust_hk/EviSTWoAOs1EmHtqZruq50kBZu1E8gxDknCPigSvsS96uQ?e=492khj). You may download the it and move it to `./ckpt/jeep_tuned_200/`.
+Then, you could reproduce style and shape editing result in our teaser by running:
+
+```bash
+accelerate launch test_fatezero.py --config config/teaser/jeep_watercolor.yaml
+```
+
+<details><summary>The result is saved as follows: (Click for directory structure) </summary>
+
+```
+result
+├── teaser
+│   ├── jeep_posche
+│   ├── jeep_watercolor
+│           ├── cross-attention  # visualization of cross-attention during inversion
+│           ├── sample           # result
+│           ├── train_samples    # the input video
+
+```
+
+</details>
+
+Editing 8 frames on an Nvidia 3090, use `100G CPU memory, 12G GPU memory` for editing. We also provide some `low cost setting` of style editing by different hyper-parameters on a 16GB GPU, more the speed and hardware benchmark [here](docs/EditingGuidance.md#ddim-hyperparameters).
+
+#### Shape and large motion editing with Tune-A-Video
+
+Besides style and attribution editing above, we also provide a `Tune-A-Video` [checkpoint](https://hkustconnect-my.sharepoint.com/:f:/g/personal/cqiaa_connect_ust_hk/EviSTWoAOs1EmHtqZruq50kBZu1E8gxDknCPigSvsS96uQ?e=492khj). You may download the it and move it to `./ckpt/jeep_tuned_200/`.
 <!-- We provide the [Tune-a-Video](https://drive.google.com/file/d/166eNbabM6TeJVy7hxol2gL1kUGKHi3Do/view?usp=share_link), you could download the data, unzip and put it to `data`. : -->
 
-<details><summary>Click for directory structure </summary>
-
-The directory structure should like this:
+<details><summary>The directory structure should like this: (Click for directory structure) </summary>
 
 ```
 ckpt
@@ -131,55 +156,14 @@ data
 │   ├── ...
 video_diffusion
 ```
-
 </details>
+<br>
 
-You could reproduce style and shape editing result in our teaser by running:
+You could reproduce the shape editing result in our teaser by running:
 
 ```bash
-accelerate launch test_fatezero.py --config config/teaser/jeep_watercolor.yaml
 accelerate launch test_fatezero.py --config config/teaser/jeep_posche.yaml
 ```
-Editing 8 frames on an Nvidia 3090, use 100G CPU memory, 12G GPU memory, 60 seconds inversion/input video + 40 seconds editing/prompt.
-<!-- <details><summary>Click for fast and low-resource edting </summary> -->
-
-For fast style and other easy editings, you could using 10 DDIM steps
-
-```bash
-accelerate launch test_fatezero.py --config config/low_resource_teaser/jeep_watercolor_ddim_10_steps.yaml
-```
-On an Nvidia 3090 GPU, the above setting only takes 10G GPU memory, 15G CPU memory, 10 seconds inversion per input video + 10 seconds editing per target prompt.
-
-If your CPU memory is less than 16G, you may try to save the attention on the disk by the following commands
-
-```bash
-accelerate launch test_fatezero.py --config config/low_resource_teaser/jeep_watercolor_ddim_10_steps_disk_store.yaml
-```
-The running time depends on the machine. Our 3090 server use 33 seconds invertion + 100 seconds editing.
-
-
-
-<!-- </details> -->
-
-<details><summary>Click for result structure </summary>
-
-The result is saved as follows:
-```
-
-result
-├── teaser
-│   ├── jeep_posche
-│   ├── jeep_watercolor
-│           ├── cross-attention
-│           ├── sample
-│           ├── train_samples
-
-```
-where `cross-attention` is the visualization of cross-attention during inversion;
-sample is the result videos obtained from target prompt;
-train_sample is the input video;
-
-</details>
 
 ## Tuning guidance to edit YOUR video
 We provided a tuning guidance to edit in-the-wild video at [here](config/TuningGuidance.md). The work is still in progress. Welcome to give your feedback in issues.
