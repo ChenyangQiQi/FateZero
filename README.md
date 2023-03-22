@@ -52,7 +52,7 @@ previous works.
 </details>
 
 ## Changelog
-- 2023.03.21 We provide a [editing guidance](docs/EditingGuidance.md) to help users to edit in-the-wild video. Welcome to play and give feedback!
+- 2023.03.21 We provide an [editing guidance](docs/EditingGuidance.md) to help users to edit in-the-wild video. Welcome to play and give feedback!
 - 2023.03.21 `Update the codebase and configuration`. Now, it can be run on the lower resources computers(16G GPU and 16G CPU RAM) with new configuration in `config/low_resource_teaser`. We also add an option to store all the attentions in hard disk, which require less ram than the original configuration.
 - 2023.03.17 Release Code and Paper!
 
