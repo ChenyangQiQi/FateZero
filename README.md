@@ -138,6 +138,7 @@ You could reproduce style and shape editing result in our teaser by running:
 
 ```bash
 accelerate launch test_fatezero.py --config config/teaser/jeep_watercolor.yaml
+# CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_watercolor.yaml
 accelerate launch test_fatezero.py --config config/teaser/jeep_posche.yaml
 ```
 Editing 8 frames on an Nvidia 3090, use 100G CPU memory, 12G GPU memory, 60 seconds inversion/input video + 40 seconds editing/prompt.

@@ -1,0 +1,97 @@
+pretrained_model_path: "./ckpt/stable-diffusion-v1-4"
+
+train_dataset:
+    path: "data/wild_video/train"
+    prompt: "a train traveling down tracks next to a forest filled with trees and flowers and a man on the side of the track"
+    n_sample_frame: 32
+    # n_sample_frame: 22
+    sampling_rate: 7
+    stride: 80
+    # offset: 
+    #     left: 300
+    #     right: 0
+    #     top: 0
+    #     bottom: 0
+
+use_train_latents: True
+
+validation_sample_logger_config:
+    use_train_latents: True
+    use_inversion_attention: True
+    guidance_scale: 7.5
+    prompts: [
+        a train traveling down tracks next to a forest filled with trees and flowers and a man on the side of the track,
+        a train traveling down tracks next to a forest filled with trees and flowers and a man on the side of the track Makoto Shinkai style
+
+    ]
+    p2p_config:
+        0: 
+            # Whether to directly copy the cross attention from source 
+            # True: directly copy, better for object replacement
+            # False: keep source attention, better for style
+            is_replace_controller: False
+
+            # Semantic preserving and replacement Debug me
+            cross_replace_steps: 
+                default_: 1.0
+
+            # Source background structure preserving, in [0, 1]. 
+            # e.g., =0.6 Replace the first 60% steps self-attention
+            self_replace_steps: 1.0
+
+            
+            # Amplify the target-words cross attention, larger value, more close to target
+            # eq_params: 
+            #     words: ["silver", "sculpture"]
+            #     values: [2,2] 
+            
+            # Target structure-divergence hyperparames
+            # If you change the shape of object better to use all three line, otherwise, no need.
+            # Without following three lines, all self-attention will be replaced
+            # blend_words: [['cat',], ["cat",]] 
+            # masked_self_attention:  True
+            # # masked_latents: False   # performance not so good in our case, need debug            
+            # bend_th: [2, 2]
+            # preserve source structure of blend_words , [0, 1]
+            # default is bend_th: [2, 2]  # preserve all source self-attention 
+            # bend_th : [0.0, 0.0], mask -> 1, use more att_replace, more generated attention, less source acttention
+            
+        
+        1:
+            is_replace_controller: False
+            cross_replace_steps: 
+                default_: 1.0
+            self_replace_steps: 0.9
+            
+            eq_params: 
+                words: ["Makoto", "Shinkai"]
+                values: [10, 10] # amplify attention to the word "tiger" by *2 
+
+
+
+            
+    clip_length: "${..train_dataset.n_sample_frame}"
+    sample_seeds: [0]
+    val_all_frames: False
+
+    num_inference_steps: 50
+    prompt2prompt_edit: True
+
+    
+model_config:
+    lora: 160
+    # temporal_downsample_time: 4
+    SparseCausalAttention_index: ['mid'] 
+    least_sc_channel: 1280
+    # least_sc_channel: 100000
+
+test_pipeline_config:
+    target: video_diffusion.pipelines.p2pDDIMSpatioTemporalPipeline.p2pDDIMSpatioTemporalPipeline
+    num_inference_steps: "${..validation_sample_logger.num_inference_steps}"
+
+epsilon: 1e-5
+train_steps: 10
+seed: 0
+learning_rate: 1e-5
+train_temporal_conv: False
+guidance_scale: "${validation_sample_logger_config.guidance_scale}"
