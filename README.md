@@ -62,9 +62,11 @@ previous works.
 - [x] Release the edit config for teaser
 - [x] Memory and runtime profiling
 - [x] Hands-on guidance of hyperparameters tuning
-- [ ] Colab and hugging-face
-- [ ] Tune-a-video optimization
-- [ ] Release configs for other result and in-the-wild dataset
+- [-] Release configs for other result and in-the-wild dataset
+  - [x] Style editing: done
+  - [-] Attribute editing: in progress
+- [ ] Colab and hugging-face: inprogress
+- [ ] Tune-a-video optimization and shape editing configs
 - [ ] Release more application
 
 ## Setup Environment
