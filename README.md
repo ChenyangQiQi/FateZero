@@ -52,8 +52,9 @@ previous works.
 </details>
 
 ## Changelog
-- 2023.03.21 We provide an [editing guidance](docs/EditingGuidance.md) to help users to edit in-the-wild video. Welcome to play and give feedback!
-- 2023.03.21 `Update the codebase and configuration`. Now, it can be run on the lower resources computers(16G GPU and 16G CPU RAM) with new configuration in `config/low_resource_teaser`. We also add an option to store all the attentions in hard disk, which require less ram than the original configuration.
+- 2023.03.22 Update `style editing config` and `data` used in the paper.
+- 2023.03.21 [Editing guidance](docs/EditingGuidance.md) is provided to help users to edit in-the-wild video. Welcome to play and give feedback!
+- 2023.03.21 Update the `codebase and configuration`. Now, it can be run on the lower resources computers(16G GPU and 16G CPU RAM) with new configuration in `config/low_resource_teaser`. A new option store all the attentions in hard disk, which require less ram.
 - 2023.03.17 Release Code and Paper!
 
 ## Todo
@@ -98,7 +99,7 @@ Our environment is similar to Tune-A-video ([official](https://github.com/showla
 
 ## FateZero Editing
 
-#### Style and Attribute Editing
+#### Style and Attribute Editing in Teaser
 
 Download the [stable diffusion v1-4](https://huggingface.co/CompVis/stable-diffusion-v1-4) (or other interesting image diffusion model) and put it to `./ckpt/stable-diffusion-v1-4`. 
 
@@ -165,6 +166,8 @@ accelerate launch test_fatezero.py --config config/teaser/jeep_watercolor.yaml
 # CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_watercolor.yaml
 accelerate launch test_fatezero.py --config config/teaser/jeep_posche.yaml
 ```
+### Reproduce other results in the paper (in progress)
+Download the [data](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/Ea1TrKCBXdhHhqc7ZKTnvjwBvBU6gzxyo9E6u55fqh3jew?e=LO5LWO) of syle editing. Unzip and Place it in './data/release'. Then use the command in 'config/release' to get the results.
 
 ## Tuning guidance to edit YOUR video
 We provided a tuning guidance to edit in-the-wild video at [here](config/TuningGuidance.md). The work is still in progress. Welcome to give your feedback in issues.
