@@ -1,4 +1,4 @@
-# CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/fast_teaser/jeep_watercolor.yaml
+# CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/low_resource_teaser/jeep_watercolor.yaml
 
 pretrained_model_path: "./ckpt/stable-diffusion-v1-4"
 
