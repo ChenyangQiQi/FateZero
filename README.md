@@ -157,7 +157,6 @@ data
 video_diffusion
 ```
 </details>
-<br>
 
 You could reproduce the shape editing result in our teaser by running:
 
