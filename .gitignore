@@ -4,6 +4,8 @@ trash/**
 runs*/**
 result/**
 ckpt/**
+data
+ckpt
 **.whl
 stable-diffusion-v1-4
 trash
