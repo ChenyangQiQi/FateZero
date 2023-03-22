@@ -1,4 +1,4 @@
-# TuningGuidance
+# EditingGuidance
 
 ## Prompt Engineering
 For the results in the paper and webpage, we get the source prompt using the BLIP model embedded in the [Stable Diffusion WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui/).
@@ -54,13 +54,12 @@ bend_th: [2, 2]
 # bend_th-> [0.0, 0.0], mask -> 1, use more edit self-attention, more generated shape, less source acttention
 ```
 
-
-
 ## DDIM hyperparameters
+
 We profile the cost of editing 8 frames on an Nvidia 3090, fp16 of accelerator, xformers.
 
-| Setting | CPU memory         | GPU memory        | Inversion time | Editing time time | Quality
-|------------------|------------------  |------------------|------------------|------------------|------------------|
-| 50 steps DDIM  | 100G    | 12G  | 60 seconds | 40 seconds | Full support
-| 10 steps DDIM  | 15G    | 12G  | 10 seconds | 10 seconds | OK for Style, not work for shape
-| 10 steps DDIM, store on disk  | 6G    | 12G  | 33 seconds | 100 seconds | OK for Style, not work for shape
+| Configs | Attention location | DDIM Inver. Step | CPU memory         | GPU memory        | Inversion time | Editing time time | Quality
+|------------------|------------------  |------------------|------------------|------------------|------------------|----| ---- |
+| [basic](../config/teaser/jeep_watercolor.yaml)  | RAM | 50  | 100G    | 12G  | 60s | 40s | Full support
+| [low cost](../config/low_resource_teaser/jeep_watercolor_ddim_10_steps.yaml) | RAM | 10  | 15G    | 12G  | 10s | 10s | OK for Style, not work for shape
+| [lower cost](../config/low_resource_teaser/jeep_watercolor_ddim_10_steps_disk_store.yaml) | DISK | 10  | 6G    | 12G  | 33 s | 100s | OK for Style, not work for shape
