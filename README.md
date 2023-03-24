@@ -140,7 +140,11 @@ result
 
 </details>
 
-Editing 8 frames on an Nvidia 3090, use `100G CPU memory, 12G GPU memory` for editing. We also provide some `low cost setting` of style editing by different hyper-parameters on a 16GB GPU, more the speed and hardware benchmark [here](docs/EditingGuidance.md#ddim-hyperparameters).
+Editing 8 frames on an Nvidia 3090, use `100G CPU memory, 12G GPU memory` for editing. We also provide some `low cost setting` of style editing by different hyper-parameters on a 16GB GPU. 
+You may try these low cost setting on colab.
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb)
+
+More the speed and hardware benchmark [here](docs/EditingGuidance.md#ddim-hyperparameters).
 
 #### Shape and large motion editing with Tune-A-Video
 
