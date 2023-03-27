@@ -21,6 +21,8 @@ from diffusers.utils.import_utils import is_xformers_available
 from transformers import AutoTokenizer, CLIPTextModel
 from einops import rearrange
 
+import sys
+sys.path.append('FateZero')
 from video_diffusion.models.unet_3d_condition import UNetPseudo3DConditionModel
 from video_diffusion.data.dataset import ImageSequenceDataset
 from video_diffusion.common.util import get_time_string, get_function_args
@@ -236,7 +238,7 @@ def test(
 
         if validation_sample_logger is not None:
             unet.eval()
-            validation_sample_logger.log_sample_images(
+            samples_all, save_path = validation_sample_logger.log_sample_images(
                 image=images, # torch.Size([8, 3, 512, 512])
                 pipeline=pipeline,
                 device=accelerator.device,
@@ -245,16 +247,20 @@ def test(
                 save_dir = logdir if verbose else None
             )
         # accelerator.log(logs, step=step)
-
+    print('accelerator.end_training()')
     accelerator.end_training()
+    return save_path
 
 
-@click.command()
-@click.option("--config", type=str, default="config/sample.yml")
-def run(config):
+# @click.command()
+# @click.option("--config", type=str, default="FateZero/config/low_resource_teaser/jeep_watercolor_ddim_10_steps.yaml")
+def run(config='FateZero/config/low_resource_teaser/jeep_watercolor_ddim_10_steps.yaml'):
+    print(f'in run function {config}')
     Omegadict = OmegaConf.load(config)
     if 'unet' in os.listdir(Omegadict['pretrained_model_path']):
         test(config=config, **Omegadict)
+        print('test finished')
+        return '/home/cqiaa/diffusion/hugging_face/Tune-A-Video-inference/FateZero/result/low_resource_teaser/jeep_watercolor_ddim_10_steps_230327-200651/sample/step_0_0_0.mp4'
     else:
         # Go through all ckpt if possible
         checkpoint_list = sorted(glob(os.path.join(Omegadict['pretrained_model_path'], 'checkpoint_*')))
@@ -281,4 +287,4 @@ def run(config):
 
 
 if __name__ == "__main__":
-    run()
+    run('FateZero/config/teaser/jeep_watercolor.yaml')
