@@ -1,11 +1,10 @@
-# CUDA_VISIBLE_DEVICES=0 python test_p2p.py --config config/att_release/cat_tiger_leopard_grass.yaml
+# CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/attribute/duck_rubber.yaml
 
 pretrained_model_path: "./ckpt/stable-diffusion-v1-4"
 
-
 train_dataset:
-    path: "data/att_release/cat_tiger_leopard_grass"
-    prompt: "A black cat walking on the floor next to a wall"
+    path: "data/attribute/duck_rubber"
+    prompt: "a sleepy white duck"
     n_sample_frame: 8
     # n_sample_frame: 22
     sampling_rate: 1
@@ -22,11 +21,10 @@ validation_sample_logger_config:
     guidance_scale: 7.5
     prompts: [
         # source prompt
-        A black cat walking on the floor next to a wall,
-        A black cat walking on the grass next to a wall,
-        A red tiger walking on the floor next to a wall,
-        a yellow cute Shiba-Inu walking on the floor next to a wall,
-        a yellow cute leopard walking on the floor next to a wall,
+        a sleepy white duck,
+
+        # foreground texture style
+        a sleepy yellow rubber duck
     ]
     p2p_config:
         0: 
@@ -62,27 +60,16 @@ validation_sample_logger_config:
             
         
         1:
-            is_replace_controller: false
-            cross_replace_steps: 
-                default_: 0.5
-            self_replace_steps: 0.5
-        2:
-            is_replace_controller: false
-            cross_replace_steps: 
-                default_: 0.5
-            self_replace_steps: 0.5
-        3:
-            is_replace_controller: false
-            cross_replace_steps: 
-                default_: 0.5
-            self_replace_steps: 0.5
-        4:
-            is_replace_controller: false
+            is_replace_controller: False
             cross_replace_steps: 
                 default_: 0.7
             self_replace_steps: 0.7
-
             
+            # eq_params: 
+            #     words: ["yellow", "rubber"]
+            #     values: [10, 10] # amplify attention to the word "tiger" by *2 
+
+
 
             
     clip_length: "${..train_dataset.n_sample_frame}"

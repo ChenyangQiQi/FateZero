@@ -1,11 +1,11 @@
-# CUDA_VISIBLE_DEVICES=0 python test_p2p.py --config config/att_release/bus_gpu.yaml
+# CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/attribute/squ_carrot_robot_eggplant.yaml
 
 pretrained_model_path: "./ckpt/stable-diffusion-v1-4"
 
 
 train_dataset:
-    path: "data/att_release/bus_gpu"
-    prompt: "a white and blue bus on the road"
+    path: "data/attribute/squirrel_carrot"
+    prompt: "A squirrel is eating a carrot"
     n_sample_frame: 8
     # n_sample_frame: 22
     sampling_rate: 1
@@ -22,10 +22,11 @@ validation_sample_logger_config:
     guidance_scale: 7.5
     prompts: [
         # source prompt
-        a white and blue bus on the road,
-
-        # foreground texture style
-        a black and green GPU on the road
+        A squirrel is eating a carrot,
+        A robot squirrel is eating a carrot,
+        A rabbit is eating a eggplant,
+        A robot mouse is eating a screwdriver,
+        A white mouse is eating a peanut,
     ]
     p2p_config:
         0: 
@@ -61,16 +62,38 @@ validation_sample_logger_config:
             
         
         1:
-            is_replace_controller: true
+            is_replace_controller: false
             cross_replace_steps: 
-                default_: 0.1
-            self_replace_steps: 0.1
-            
+                default_: 0.5
+            self_replace_steps: 0.4
             eq_params: 
-                words: ["Nvidia", "GPU"]
-                values: [10, 10] # amplify attention to the word "tiger" by *2 
-
-
+                words:  ["rabbit", "mouse", "robot", "eggplant", "peanut", "screwdriver"]
+                values: [10,        10,     20,         10,         10,     10]
+        2:
+            is_replace_controller: false
+            cross_replace_steps: 
+                default_: 0.5
+            self_replace_steps: 0.5
+            eq_params: 
+                words: ["rabbit", "mouse", "robot", "eggplant", "peanut", "screwdriver"]
+                values: [10,        10,     20,         10,         10,     10]
+        3:
+            is_replace_controller: false
+            cross_replace_steps: 
+                default_: 0.5
+            self_replace_steps: 0.5
+            eq_params: 
+                words: ["rabbit", "mouse", "robot", "eggplant", "peanut", "screwdriver"]
+                values: [10,        10,     20,         10,         10,     10]
+        4:
+            is_replace_controller: false
+            cross_replace_steps: 
+                default_: 0.5
+            self_replace_steps: 0.5
+            eq_params: 
+                words: ["rabbit", "mouse", "robot", "eggplant", "peanut", "screwdriver"]
+                values: [10,        10,     20,         10,         10,     10]
+            
 
             
     clip_length: "${..train_dataset.n_sample_frame}"

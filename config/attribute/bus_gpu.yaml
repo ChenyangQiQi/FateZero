@@ -1,20 +1,31 @@
+# CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/attribute/bus_gpu.yaml
+
 pretrained_model_path: "./ckpt/stable-diffusion-v1-4"
 
-train_dataset:
-    path: "data/release/sunflower"
-    prompt: "a yellow sunflower"
-    start_sample_frame: 0
-    n_sample_frame: 8
-    sampling_rate: 1
 
+train_dataset:
+    path: "data/attribute/bus_gpu"
+    prompt: "a white and blue bus on the road"
+    n_sample_frame: 8
+    # n_sample_frame: 22
+    sampling_rate: 1
+    stride: 80
+    offset: 
+        left: 0
+        right: 0
+        top: 0
+        bottom: 0
 
 validation_sample_logger_config:
     use_train_latents: True
     use_inversion_attention: True
     guidance_scale: 7.5
     prompts: [
-        a yellow sunflower,
-        van gogh style painting of a yellow sunflower,
+        # source prompt
+        a white and blue bus on the road,
+
+        # foreground texture style
+        a black and green GPU on the road
     ]
     p2p_config:
         0: 
@@ -25,11 +36,11 @@ validation_sample_logger_config:
 
             # Semantic preserving and replacement Debug me
             cross_replace_steps: 
-                default_: 0.7
+                default_: 0.8
 
             # Source background structure preserving, in [0, 1]. 
             # e.g., =0.6 Replace the first 60% steps self-attention
-            self_replace_steps: 0.7
+            self_replace_steps: 0.6
 
             
             # Amplify the target-words cross attention, larger value, more close to target
@@ -48,16 +59,19 @@ validation_sample_logger_config:
             # default is bend_th: [2, 2]  # preserve all source self-attention 
             # bend_th : [0.0, 0.0], mask -> 1, use more att_replace, more generated attention, less source acttention
             
-
+        
         1:
-            is_replace_controller: False
+            is_replace_controller: true
             cross_replace_steps: 
-                default_: 0.5
-            self_replace_steps: 0.5
+                default_: 0.1
+            self_replace_steps: 0.1
             
             eq_params: 
-                words: ["van", "gogh"]
+                words: ["Nvidia", "GPU"]
                 values: [10, 10] # amplify attention to the word "tiger" by *2 
+
+
+
             
     clip_length: "${..train_dataset.n_sample_frame}"
     sample_seeds: [0]

@@ -1,14 +1,20 @@
+# CUDA_VISIBLE_DEVICES=1 python test_fatezero.py --config config/attribute/rabbit_straberry_leaves_flowers.yaml
+
 pretrained_model_path: "./ckpt/stable-diffusion-v1-4"
 
 
 train_dataset:
-    path: "./data/rabit"
-    prompt: "A rabbit is eating a watermelon"
+    path: "data/attribute/rabbit_strawberry"
+    prompt: "A rabbit is eating strawberries"
     n_sample_frame: 8
     # n_sample_frame: 22
-    sampling_rate: 3
+    sampling_rate: 1
     stride: 80
-
+    offset: 
+        left: 0
+        right: 0
+        top: 0
+        bottom: 0
 
 validation_sample_logger_config:
     use_train_latents: True
@@ -16,9 +22,14 @@ validation_sample_logger_config:
     guidance_scale: 7.5
     prompts: [
         # source prompt
-        A rabbit is eating a watermelon,
-        # overall style
-        pokemon cartoon of A rabbit is eating a watermelon,        
+        A rabbit is eating strawberries,
+
+        # foreground texture style
+        A white rabbit is eating leaves,
+        A white rabbit is eating flower,
+        A white rabbit is eating orange,
+
+        # a brown lion walking on the rock against a wall,
     ]
     p2p_config:
         0: 
@@ -51,19 +62,30 @@ validation_sample_logger_config:
             # preserve source structure of blend_words , [0, 1]
             # default is bend_th: [2, 2]  # preserve all source self-attention 
             # bend_th : [0.0, 0.0], mask -> 1, use more att_replace, more generated attention, less source acttention
-            
-
         1:
-            is_replace_controller: False
+            is_replace_controller: false
             cross_replace_steps: 
-                default_: 0.7
-            self_replace_steps: 0.7
-            
+                default_: 0.5
+            self_replace_steps: 0.5
             eq_params: 
-                words: ["pokemon", "cartoon"]
-                values: [3, 3] # amplify attention to the word "tiger" by *2 
-
-
+                words: ["leaves"]
+                values: [10] 
+        2:
+            is_replace_controller: false
+            cross_replace_steps: 
+                default_: 0.5
+            self_replace_steps: 0.5
+            eq_params: 
+                words: ["flower"]
+                values: [10] 
+        3:
+            is_replace_controller: false
+            cross_replace_steps: 
+                default_: 0.5
+            self_replace_steps: 0.5
+            eq_params: 
+                words: ["orange"]
+                values: [10] 
             
     clip_length: "${..train_dataset.n_sample_frame}"
     sample_seeds: [0]
@@ -74,10 +96,10 @@ validation_sample_logger_config:
 
     
 model_config:
-    # lora: 160
+    lora: 160
     # temporal_downsample_time: 4
-    # SparseCausalAttention_index: ['mid'] 
-    # least_sc_channel: 640
+    SparseCausalAttention_index: ['mid'] 
+    least_sc_channel: 640
     # least_sc_channel: 100000
 
 test_pipeline_config:
@@ -85,7 +107,7 @@ test_pipeline_config:
     num_inference_steps: "${..validation_sample_logger.num_inference_steps}"
 
 epsilon: 1e-5
-train_steps: 50
+train_steps: 10
 seed: 0
 learning_rate: 1e-5
 train_temporal_conv: False

@@ -3,7 +3,7 @@
 pretrained_model_path: "./ckpt/stable-diffusion-v1-4"
 
 train_dataset:
-    path: "data/car-turn"
+    path: "data/teaser_car-turn"
     prompt: "a silver jeep driving down a curvy road in the countryside"
     n_sample_frame: 8
     sampling_rate: 1

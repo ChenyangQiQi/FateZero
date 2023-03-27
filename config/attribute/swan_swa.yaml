@@ -1,17 +1,20 @@
+# CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/attribute/swan_swa.yaml
+
 pretrained_model_path: "./ckpt/stable-diffusion-v1-4"
 
+
 train_dataset:
-    path: "data/wild_video/train"
-    prompt: "a train traveling down tracks next to a forest filled with trees and flowers and a man on the side of the track"
-    n_sample_frame: 32
+    path: "data/attribute/swan_swarov"
+    prompt: "a black swan with a red beak swimming in a river near a wall and bushes,"
+    n_sample_frame: 8
     # n_sample_frame: 22
-    sampling_rate: 7
+    sampling_rate: 1
     stride: 80
-    # offset: 
-    #     left: 300
-    #     right: 0
-    #     top: 0
-    #     bottom: 0
+    offset: 
+        left: 0
+        right: 0
+        top: 0
+        bottom: 0
 
 use_train_latents: True
 
@@ -20,9 +23,11 @@ validation_sample_logger_config:
     use_inversion_attention: True
     guidance_scale: 7.5
     prompts: [
-        a train traveling down tracks next to a forest filled with trees and flowers and a man on the side of the track,
-        a train traveling down tracks next to a forest filled with trees and flowers and a man on the side of the track Makoto Shinkai style
+        # source prompt
+        a black swan with a red beak swimming in a river near a wall and bushes,
 
+        # foreground texture style
+        a Swarovski crystal swan with a red beak swimming in a river near a wall and bushes,
     ]
     p2p_config:
         0: 
@@ -33,25 +38,25 @@ validation_sample_logger_config:
 
             # Semantic preserving and replacement Debug me
             cross_replace_steps: 
-                default_: 1.0
+                default_: 0.8
 
             # Source background structure preserving, in [0, 1]. 
             # e.g., =0.6 Replace the first 60% steps self-attention
-            self_replace_steps: 1.0
+            self_replace_steps: 0.6
 
             
             # Amplify the target-words cross attention, larger value, more close to target
-            # eq_params: 
-            #     words: ["silver", "sculpture"]
-            #     values: [2,2] 
+            eq_params: 
+                words: ["silver", "sculpture"]
+                values: [2,2] 
             
             # Target structure-divergence hyperparames
             # If you change the shape of object better to use all three line, otherwise, no need.
             # Without following three lines, all self-attention will be replaced
-            # blend_words: [['cat',], ["cat",]] 
-            # masked_self_attention:  True
-            # # masked_latents: False   # performance not so good in our case, need debug            
-            # bend_th: [2, 2]
+            blend_words: [['cat',], ["cat",]] 
+            masked_self_attention:  True
+            # masked_latents: False   # performance not so good in our case, need debug            
+            bend_th: [2, 2]
             # preserve source structure of blend_words , [0, 1]
             # default is bend_th: [2, 2]  # preserve all source self-attention 
             # bend_th : [0.0, 0.0], mask -> 1, use more att_replace, more generated attention, less source acttention
@@ -60,13 +65,13 @@ validation_sample_logger_config:
         1:
             is_replace_controller: False
             cross_replace_steps: 
-                default_: 1.0
-            self_replace_steps: 0.9
+                default_: 0.8
+            self_replace_steps: 0.6
             
             eq_params: 
-                words: ["Makoto", "Shinkai"]
-                values: [10, 10] # amplify attention to the word "tiger" by *2 
-
+                words: ["Swarovski", "crystal"]
+                values: [5, 5] # amplify attention to the word "tiger" by *2 
+            use_inversion_attention: True
 
 
             

@@ -1,10 +1,10 @@
-# CUDA_VISIBLE_DEVICES=0 python test_p2p.py --config config/att_release/duck_rubber.yaml
+# CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/attribute/dog_robotic_corgi.yaml
 
 pretrained_model_path: "./ckpt/stable-diffusion-v1-4"
 
 train_dataset:
-    path: "data/att_release/duck_rubber"
-    prompt: "a sleepy white duck"
+    path: "data/attribute/gray_dog"
+    prompt: "A gray dog sitting on the mat"
     n_sample_frame: 8
     # n_sample_frame: 22
     sampling_rate: 1
@@ -21,10 +21,11 @@ validation_sample_logger_config:
     guidance_scale: 7.5
     prompts: [
         # source prompt
-        a sleepy white duck,
+        A gray dog sitting on the mat,
 
         # foreground texture style
-        a sleepy yellow rubber duck
+        A robotic dog sitting on the mat,
+        A yellow corgi sitting on the mat
     ]
     p2p_config:
         0: 
@@ -60,18 +61,21 @@ validation_sample_logger_config:
             
         
         1:
-            is_replace_controller: False
+            is_replace_controller: false
             cross_replace_steps: 
-                default_: 0.7
-            self_replace_steps: 0.7
+                default_: 0.5
+            self_replace_steps: 0.5
             
-            # eq_params: 
-            #     words: ["yellow", "rubber"]
-            #     values: [10, 10] # amplify attention to the word "tiger" by *2 
+            eq_params: 
+                words: ["robotic"]
+                values: [10] # amplify attention to the word "tiger" by *2 
 
-
-
-            
+        2:
+            is_replace_controller: false
+            cross_replace_steps: 
+                default_: 0.5
+            self_replace_steps: 0.5
+        
     clip_length: "${..train_dataset.n_sample_frame}"
     sample_seeds: [0]
     val_all_frames: False
