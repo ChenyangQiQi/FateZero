@@ -160,7 +160,7 @@ class p2pSampleLogger:
                     attention_all = [make_grid(images, cols=1) for images in zip(*attention_all)]
                 if len(attention_all) > 0:
                     save_gif_mp4_folder_type(attention_all, save_path.replace('.gif', 'atten.gif'))
-        return samples_all, save_path
+        return samples_all
 
 
 

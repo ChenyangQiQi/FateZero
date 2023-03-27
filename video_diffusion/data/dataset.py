@@ -11,8 +11,6 @@ from torch.utils.data import Dataset
 from .transform import short_size_scale, random_crop, center_crop, offset_crop
 from ..common.image_util import IMAGE_EXTENSION
 
-import sys
-sys.path.append('FateZero')
 
 class ImageSequenceDataset(Dataset):
     def __init__(

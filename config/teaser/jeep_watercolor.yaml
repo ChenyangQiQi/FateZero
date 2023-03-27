@@ -1,9 +1,9 @@
 # CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_watercolor.yaml
 
-pretrained_model_path: "FateZero/ckpt/stable-diffusion-v1-4"
+pretrained_model_path: "./ckpt/stable-diffusion-v1-4"
 
 train_dataset:
-    path: "FateZero/data/teaser_car-turn"
+    path: "data/teaser_car-turn"
     prompt: "a silver jeep driving down a curvy road in the countryside"
     n_sample_frame: 8
     sampling_rate: 1
