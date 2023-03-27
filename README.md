@@ -14,7 +14,7 @@
   <td><img src="docs/gif_results/3_sunflower_vangogh_conat_result.gif"></td>
   <tr>
   <td width=25% style="text-align:center;">"silver jeep ➜ posche car"</td>
-  <td width=25% style="text-align:center;">"+ Van Gogh Style"</td>
+  <td width=25% style="text-align:center;">"+ Van Gogh style"</td>
   <!-- <td width=25% style="text-align:center;">"Wonder Woman, wearing a cowboy hat, is skiing"</td>
   <td width=25% style="text-align:center;">"A man, wearing pink clothes, is skiing at sunset"</td> -->
 </tr>
@@ -203,9 +203,9 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
   <td><img src="https://tuneavideo.github.io/assets/results/tuneavideo/man-skiing/pink-sunset.gif"></td> -->
 </tr>
 <tr>
-  <td width=25% style="text-align:center;">"+ Ukiyo-e Style"</td>
-  <td width=25% style="text-align:center;">"+ Watercolor Painting"</td>
-  <td width=25% style="text-align:center;">"+ Monet Style"</td>
+  <td width=25% style="text-align:center;">"+ Ukiyo-e style"</td>
+  <td width=25% style="text-align:center;">"+ watercolor painting"</td>
+  <td width=25% style="text-align:center;">"+ Monet style"</td>
 </tr>
 
 <tr>
@@ -218,9 +218,9 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 
 </tr>
 <tr>
-  <td width=25% style="text-align:center;">"+ Pokémon Cartoon Style"</td>
-  <td width=25% style="text-align:center;">"+ Makoto Shinkai Style"</td>
-  <td width=25% style="text-align:center;">"+ Cartoon Style"</td>
+  <td width=25% style="text-align:center;">"+ Pokémon cartoon style"</td>
+  <td width=25% style="text-align:center;">"+ Makoto Shinkai style"</td>
+  <td width=25% style="text-align:center;">"+ cartoon style"</td>
 </tr>
 </table>
 
@@ -229,15 +229,28 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 
 <tr>
 
+  <td><img src="docs/gif_results/attri/15_rabbit_eat_01_concat_result.gif"></td>
+  <td><img src="docs/gif_results/attri/15_rabbit_eat_02_concat_result.gif"></td>
+  <td><img src="docs/gif_results/attri/15_rabbit_eat_04_concat_result.gif"></td>
+
+</tr>
+<tr>
+  <td width=25% style="text-align:center;">"rabbit, strawberry ➜ white rabbit, flower"</td>
+  <td width=25% style="text-align:center;">"rabbit, strawberry ➜ squirrel, carrot"</td>
+  <td width=25% style="text-align:center;">"rabbit, strawberry ➜ white rabbit, leaves"</td>
+
+</tr>
+<tr>
+
   <td><img src="docs/gif_results/attri/16_sq_eat_04_concat_result.gif"></td>
   <td><img src="docs/gif_results/attri/16_sq_eat_02_concat_result.gif"></td>
   <td><img src="docs/gif_results/attri/16_sq_eat_03_concat_result.gif"></td>
 
 </tr>
 <tr>
-  <td width=25% style="text-align:center;">"Squirrel ➜ robot squirrel"</td>
-  <td width=25% style="text-align:center;">"Squirrel, Carrot ➜ Rabbit, Eggplant"</td>
-  <td width=25% style="text-align:center;">"Squirrel, Carrot ➜ Robot mouse, Screwdriver"</td>
+  <td width=25% style="text-align:center;">"squirrel ➜ robot squirrel"</td>
+  <td width=25% style="text-align:center;">"squirrel, Carrot ➜ rabbit, eggplant"</td>
+  <td width=25% style="text-align:center;">"squirrel, Carrot ➜ robot mouse, screwdriver"</td>
 
 </tr>
 
@@ -249,9 +262,9 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 
 </tr>
 <tr>
-  <td width=25% style="text-align:center;">"Bear ➜ A Red Tiger"</td>
-  <td width=25% style="text-align:center;">"Bear ➜ A yellow leopard"</td>
-  <td width=25% style="text-align:center;">"Bear ➜ A brown lion"</td>
+  <td width=25% style="text-align:center;">"bear ➜ a red tiger"</td>
+  <td width=25% style="text-align:center;">"bear ➜ a yellow leopard"</td>
+  <td width=25% style="text-align:center;">"bear ➜ a brown lion"</td>
 
 </tr>
 <tr>
@@ -262,9 +275,36 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 
 </tr>
 <tr>
-  <td width=25% style="text-align:center;">"Cat ➜ Black Cat, Grass..."</td>
-  <td width=25% style="text-align:center;">"Cat ➜ Red Tiger"</td>
-  <td width=25% style="text-align:center;">"Cat ➜ Shiba-Inu"</td>
+  <td width=25% style="text-align:center;">"cat ➜ black cat, grass..."</td>
+  <td width=25% style="text-align:center;">"cat ➜ red tiger"</td>
+  <td width=25% style="text-align:center;">"cat ➜ Shiba-Inu"</td>
+
+</tr>
+
+<tr>
+
+  <td><img src="docs/gif_results/attri/10_bus_gpu_01_concat_result.gif"></td>
+  <td><img src="docs/gif_results/attri/11_dog_robotic_corgin_01_concat_result.gif"></td>
+  <td><img src="docs/gif_results/attri/11_dog_robotic_corgin_02_concat_result.gif"></td>
+
+</tr>
+<tr>
+  <td width=25% style="text-align:center;">"bus ➜ GPU"</td>
+  <td width=25% style="text-align:center;">"gray dog ➜ yellow corgi"</td>
+  <td width=25% style="text-align:center;">"gray dog ➜ robotic dog"</td>
+
+</tr>
+<tr>
+
+  <td><img src="docs/gif_results/attri/9_duck_rubber_01_concat_result.gif"></td>
+  <td><img src="docs/gif_results/attri/12_fox_snow_wolf_01_concat_result.gif"></td>
+  <td><img src="docs/gif_results/attri/12_fox_snow_wolf_02_concat_result.gif"></td>
+
+</tr>
+<tr>
+  <td width=25% style="text-align:center;">"white duck ➜ yellow rubber duck"</td>
+  <td width=25% style="text-align:center;">"grass ➜ snow"</td>
+  <td width=25% style="text-align:center;">"white fox ➜ grey wolf"</td>
 
 </tr>
 
