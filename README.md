@@ -55,10 +55,12 @@ previous works.
 </details>
 
 ## Changelog
+- 2023.03.27 - 2023.03.22 Release [`attribute editing config`](config/attribute) and [`data`](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/Ee7J2IzZuaVGkefh-ZRp1GwB7RCUYU7MVJCKqeNWmOIpfg?e=dcOwb7) used in the paper.
 - 2023.03.22 Upload a `colab notebook` [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb). Enjoy the fun of zero-shot video-editing freely!
-- 2023.03.22 Update `style editing config` and `data` used in the paper.
+- 2023.03.22 Release [`style editing config`](config/style) and [`data`](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/EaTqRAuW0eJLj0z_JJrURkcBZCC3Zvgsdo6zsXHhpyHhHQ?e=FzuiNG) used in the paper.
 - 2023.03.21 [Editing guidance](docs/EditingGuidance.md) is provided to help users to edit in-the-wild video. Welcome to play and give feedback!
-- 2023.03.21 Update the `codebase and configuration`. Now, it can be run on the lower resources computers(16G GPU and 16G CPU RAM) with new configuration in `config/low_resource_teaser`. A new option store all the attentions in hard disk, which require less ram.
+- 2023.03.21 Update the `codebase and configuration`. Now, it can run with lower resources (16G GPU and less than 16G CPU RAM) with [new configuration](config/low_resource_teaser) in `config/low_resource_teaser`. 
+<!-- A new option store all the attentions in hard disk, which require less ram. -->
 - 2023.03.17 Release Code and Paper!
 
 ## Todo
@@ -67,9 +69,9 @@ previous works.
 - [x] Memory and runtime profiling
 - [x] Hands-on guidance of hyperparameters tuning
 - [x] Colab
-- [-] Release configs for other result and in-the-wild dataset
-  - [x] Style editing: done
-  - [-] Attribute editing: in progress
+- [x] Release configs for other result and in-the-wild dataset
+  <!-- - [x] Style editing: done
+  - [-] Attribute editing: in progress -->
 - [-] hugging-face: inprogress
 - [ ] Tune-a-video optimization and shape editing configs
 - [ ] Release more application
@@ -178,7 +180,7 @@ accelerate launch test_fatezero.py --config config/teaser/jeep_watercolor.yaml
 accelerate launch test_fatezero.py --config config/teaser/jeep_posche.yaml
 ```
 ### Reproduce other results in the paper (in progress)
-Download the [data](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/Ea1TrKCBXdhHhqc7ZKTnvjwBvBU6gzxyo9E6u55fqh3jew?e=LO5LWO) of syle editing. Unzip and Place it in './data/release'. Then use the command in 'config/release' to get the results.
+Download the data of [style editing](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/EaTqRAuW0eJLj0z_JJrURkcBZCC3Zvgsdo6zsXHhpyHhHQ?e=FzuiNG) and [attribute editing](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/Ee7J2IzZuaVGkefh-ZRp1GwB7RCUYU7MVJCKqeNWmOIpfg?e=dcOwb7) . Unzip and Place it in './data'. Then use the command in ['config/style'](config/style) and ['config/attribute'](config/attribute) to get the results.
 
 ## Tuning guidance to edit YOUR video
 We provided a tuning guidance to edit in-the-wild video at [here](./docs/EditingGuidance.md). The work is still in progress. Welcome to give your feedback in issues.
