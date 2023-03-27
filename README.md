@@ -60,9 +60,9 @@ previous works.
   [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/attribute.zip) used in the paper.
 - 2023.03.22 Upload a `colab notebook` [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb). Enjoy the fun of zero-shot video-editing freely!
 - 2023.03.22 Release [`style editing config`](config/style) and 
-<!--[`data`](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/EaTqRAuW0eJLj0z_JJrURkcBZCC3Zvgsdo6zsXHhpyHhHQ?e=FzuiNG) -->
-[`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/style.zip)
-used in the paper.
+  <!--[`data`](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/EaTqRAuW0eJLj0z_JJrURkcBZCC3Zvgsdo6zsXHhpyHhHQ?e=FzuiNG) -->
+  [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/style.zip)
+  used in the paper.
 - 2023.03.21 [Editing guidance](docs/EditingGuidance.md) is provided to help users to edit in-the-wild video. Welcome to play and give feedback!
 - 2023.03.21 Update the `codebase and configuration`. Now, it can run with lower resources (16G GPU and less than 16G CPU RAM) with [new configuration](config/low_resource_teaser) in `config/low_resource_teaser`. 
 <!-- A new option store all the attentions in hard disk, which require less ram. -->
