@@ -55,7 +55,7 @@ previous works.
 </details>
 
 ## Changelog
-- 2023.03.27 - 2023.03.22 Release [`attribute editing config`](config/attribute) and [`data`](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/Ee7J2IzZuaVGkefh-ZRp1GwB7RCUYU7MVJCKqeNWmOIpfg?e=dcOwb7) used in the paper.
+- 2023.03.27 Release [`attribute editing config`](config/attribute) and [`data`](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/Ee7J2IzZuaVGkefh-ZRp1GwB7RCUYU7MVJCKqeNWmOIpfg?e=dcOwb7) used in the paper.
 - 2023.03.22 Upload a `colab notebook` [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb). Enjoy the fun of zero-shot video-editing freely!
 - 2023.03.22 Release [`style editing config`](config/style) and [`data`](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/EaTqRAuW0eJLj0z_JJrURkcBZCC3Zvgsdo6zsXHhpyHhHQ?e=FzuiNG) used in the paper.
 - 2023.03.21 [Editing guidance](docs/EditingGuidance.md) is provided to help users to edit in-the-wild video. Welcome to play and give feedback!
@@ -128,9 +128,10 @@ Then, you could reproduce style and shape editing result in our teaser by runnin
 
 ```bash
 accelerate launch test_fatezero.py --config config/teaser/jeep_watercolor.yaml
+# or CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_watercolor.yaml
 ```
 
-<details><summary>The result is saved as follows: (Click for directory structure) </summary>
+<details><summary>The result is saved at `./result` . (Click for directory structure) </summary>
 
 ```
 result
@@ -145,7 +146,7 @@ result
 
 </details>
 
-Editing 8 frames on an Nvidia 3090, use `100G CPU memory, 12G GPU memory` for editing. We also provide some `low cost setting` of style editing by different hyper-parameters on a 16GB GPU. 
+Editing 8 frames on an Nvidia 3090, use `100G CPU memory, 12G GPU memory` for editing. We also provide some [`low cost setting`](config/low_resource_teaser) of style editing by different hyper-parameters on a 16GB GPU. 
 You may try these low cost setting on colab.
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb)
 
@@ -175,12 +176,14 @@ video_diffusion
 You could reproduce the shape editing result in our teaser by running:
 
 ```bash
-accelerate launch test_fatezero.py --config config/teaser/jeep_watercolor.yaml
-# CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_watercolor.yaml
 accelerate launch test_fatezero.py --config config/teaser/jeep_posche.yaml
 ```
+
+
 ### Reproduce other results in the paper (in progress)
-Download the data of [style editing](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/EaTqRAuW0eJLj0z_JJrURkcBZCC3Zvgsdo6zsXHhpyHhHQ?e=FzuiNG) and [attribute editing](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/Ee7J2IzZuaVGkefh-ZRp1GwB7RCUYU7MVJCKqeNWmOIpfg?e=dcOwb7) . Unzip and Place it in './data'. Then use the command in ['config/style'](config/style) and ['config/attribute'](config/attribute) to get the results.
+Download the data of [style editing](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/EaTqRAuW0eJLj0z_JJrURkcBZCC3Zvgsdo6zsXHhpyHhHQ?e=FzuiNG) and [attribute editing](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/Ee7J2IzZuaVGkefh-ZRp1GwB7RCUYU7MVJCKqeNWmOIpfg?e=dcOwb7) . Unzip and Place it in ['./data'](data). Then use the command in ['config/style'](config/style) and ['config/attribute'](config/attribute) to get the results.
+
+The config of our tune-a-video ckpts will be updated latter.
 
 ## Tuning guidance to edit YOUR video
 We provided a tuning guidance to edit in-the-wild video at [here](./docs/EditingGuidance.md). The work is still in progress. Welcome to give your feedback in issues.
@@ -307,6 +310,7 @@ https://user-images.githubusercontent.com/45789244/225698509-79c14793-3153-4bba-
 
 The video here is compressed due to the size limit of github.
 The original full resolution video is [here](https://hkustconnect-my.sharepoint.com/:v:/g/personal/cqiaa_connect_ust_hk/EXKDI_nahEhKtiYPvvyU9SkBDTG2W4G1AZ_vkC7ekh3ENw?e=Xhgtmk).
+
 
 ## Citation 
 
