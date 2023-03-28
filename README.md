@@ -21,7 +21,7 @@
 </table >
 
 ## Abstract
-<b>TL;DR: Using <font color="red">FateZero</font>, Edits your video via pretrained Diffusion models without training.</b>
+<b>TL;DR: <font color="red">FateZero</font> is a first zero-shot framework for text-driven video editing via pretrained diffusion models without training.</b>
 
 <details><summary>CLICK for full abstract</summary>
 
