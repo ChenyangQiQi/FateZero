@@ -4,8 +4,9 @@
 
 <a href='https://arxiv.org/abs/2303.09535'><img src='https://img.shields.io/badge/ArXiv-2303.09535-red'></a> 
 <a href='https://fate-zero-edit.github.io/'><img src='https://img.shields.io/badge/Project-Page-Green'></a>  [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb)
+[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/chenyangqi/FateZero)
 [![GitHub](https://img.shields.io/github/stars/ChenyangQiQi/FateZero?style=social)](https://github.com/ChenyangQiQi/FateZero)
- 
+
 
 <!-- ![fatezero_demo](./docs/teaser.png) -->
 
@@ -55,10 +56,12 @@ previous works.
 </details>
 
 ## Changelog
+
+- 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero)! (refinement is in progress) Enjoy the fun of zero-shot video-editing freely!
 - 2023.03.27 Release [`attribute editing config`](config/attribute) and 
   <!-- [`data`](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/Ee7J2IzZuaVGkefh-ZRp1GwB7RCUYU7MVJCKqeNWmOIpfg?e=dcOwb7) -->
   [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/attribute.zip) used in the paper.
-- 2023.03.22 Upload a `colab notebook` [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb). Enjoy the fun of zero-shot video-editing freely!
+- 2023.03.22 Upload a `colab notebook` [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb).
 - 2023.03.22 Release [`style editing config`](config/style) and 
   <!--[`data`](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/EaTqRAuW0eJLj0z_JJrURkcBZCC3Zvgsdo6zsXHhpyHhHQ?e=FzuiNG) -->
   [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/style.zip)
@@ -77,7 +80,7 @@ previous works.
 - [x] Release configs for other result and in-the-wild dataset
   <!-- - [x] Style editing: done
   - [-] Attribute editing: in progress -->
-- [-] hugging-face: inprogress
+- [x] hugging-face: inprogress
 - [ ] Tune-a-video optimization and shape editing configs
 - [ ] Release more application
 
@@ -360,6 +363,15 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 </tr>
 </table>
 
+## Online Demo
+Thanks for AK and team from Hugging Face to provide computing resource to support our Hugging-face Demo, which supports up to 50 steps DDIM steps.
+[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/chenyangqi/FateZero).
+
+We also provide a Colab demo, which support 10 DDIM steps.
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb)
+
+You may also run them on your local machine.
+We will refine and optimize the above demos in following days.
 
 ## Demo Video
 
