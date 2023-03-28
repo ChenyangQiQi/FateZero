@@ -1,4 +1,4 @@
-## FateZero: Fusing Attentions for Zero-shot Text-based Video Editing
+## <font color="red"> FateZero </font>: Fusing Attentions for Zero-shot Text-based Video Editing
 
 [Chenyang Qi](https://chenyangqiqi.github.io/), [Xiaodong Cun](http://vinthony.github.io/), [Yong Zhang](https://yzhang2016.github.io), [Chenyang Lei](https://chenyanglei.github.io/), [Xintao Wang](https://xinntao.github.io/), [Ying Shan](https://scholar.google.com/citations?hl=zh-CN&user=4oXBp9UAAAAJ), and [Qifeng Chen](https://cqf.io)
 
@@ -21,7 +21,7 @@
 </table >
 
 ## Abstract
-<b>TL;DR: Using FateZero, Edits your video via pretrained Diffusion models without training.</b>
+<b>TL;DR: Using <font color="red">FateZero</font>, Edits your video via pretrained Diffusion models without training.</b>
 
 <details><summary>CLICK for full abstract</summary>
 
@@ -31,7 +31,7 @@ remarkable success in text-based image generation. However,
 since it contains enormous randomness in generation
 progress, it is still challenging to apply such models for
 real-world visual content editing, especially in videos. In
-this paper, we propose FateZero, a zero-shot text-based editing method on real-world videos without per-prompt
+this paper, we propose <font color="red">FateZero</font>, a zero-shot text-based editing method on real-world videos without per-prompt
 training or use-specific mask. To edit videos consistently,
 we propose several techniques based on the pre-trained
 models. Firstly, in contrast to the straightforward DDIM
@@ -111,7 +111,7 @@ python test_install.py
 Our environment is similar to Tune-A-video ([official](https://github.com/showlab/Tune-A-Video), [unofficial](https://github.com/bryandlee/Tune-A-Video))  and [prompt-to-prompt](https://github.com/google/prompt-to-prompt/). You may check them for more details.
 
 
-## FateZero Editing
+## ⚔️FateZero Editing
 
 #### Style and Attribute Editing in Teaser
 
