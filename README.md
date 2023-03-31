@@ -22,9 +22,9 @@
 </table >
 
 ## Abstract
-<b>TL;DR: <font color="red">FateZero</font> is a first zero-shot framework for text-driven video editing via pretrained diffusion models without training.</b>
+<b>TL; DR: <font color="red">FateZero</font> is the first zero-shot framework for text-driven video editing via pretrained diffusion models without training.</b>
 
-<details><summary>CLICK for full abstract</summary>
+<details><summary>CLICK for the full abstract</summary>
 
 
 > The diffusion-based generative models have achieved
@@ -49,15 +49,15 @@ spatial-temporal attention to ensure frame consistency. Yet
 succinct, our method is the first one to show the ability of
 zero-shot text-driven video style and local attribute editing
 from the trained text-to-image model. We also have a better
-zero-shot shape-aware editing ability based on the text-tovideo
+zero-shot shape-aware editing ability based on the text-to-video
 model. Extensive experiments demonstrate our
 superior temporal consistency and editing capability than
 previous works.
 </details>
 
 ## Changelog
-
-- 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero)! (refinement is in progress) Enjoy the fun of zero-shot video-editing freely!
+- 2023.03.31 Refine hugging face demo
+- 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero)! (refinement is in progress) Enjoy the fun of zero-shot video editing freely!
 - 2023.03.27 Release [`attribute editing config`](config/attribute) and 
   <!-- [`data`](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/Ee7J2IzZuaVGkefh-ZRp1GwB7RCUYU7MVJCKqeNWmOIpfg?e=dcOwb7) -->
   [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/attribute.zip) used in the paper.
@@ -73,14 +73,14 @@ previous works.
 
 ## Todo
 
-- [x] Release the edit config for teaser
+- [x] Release the edit config for the teaser
 - [x] Memory and runtime profiling
 - [x] Hands-on guidance of hyperparameters tuning
 - [x] Colab
-- [x] Release configs for other result and in-the-wild dataset
+- [x] Release configs for other results and in-the-wild dataset
   <!-- - [x] Style editing: done
   - [-] Attribute editing: in progress -->
-- [x] hugging-face: inprogress
+- [x] hugging-face: in progress
 - [ ] Tune-a-video optimization and shape editing configs
 - [ ] Release more application
 
@@ -120,7 +120,7 @@ Our environment is similar to Tune-A-video ([official](https://github.com/showla
 
 Download the [stable diffusion v1-4](https://huggingface.co/CompVis/stable-diffusion-v1-4) (or other interesting image diffusion model) and put it to `./ckpt/stable-diffusion-v1-4`. 
 
-<details><summary>Click for bash command: </summary>
+<details><summary>Click for the bash command: </summary>
  
 ```
 mkdir ./ckpt
@@ -132,7 +132,7 @@ ln -s ../stable-diffusion-v1-4 .
 ```
 </details>
 
-Then, you could reproduce style and shape editing result in our teaser by running:
+Then, you could reproduce style and shape editing results in our teaser by running:
 
 ```bash
 accelerate launch test_fatezero.py --config config/teaser/jeep_watercolor.yaml
@@ -154,18 +154,18 @@ result
 
 </details>
 
-Editing 8 frames on an Nvidia 3090, use `100G CPU memory, 12G GPU memory` for editing. We also provide some [`low cost setting`](config/low_resource_teaser) of style editing by different hyper-parameters on a 16GB GPU. 
-You may try these low cost setting on colab.
+Editing 8 frames on an Nvidia 3090, use `100G CPU memory, 12G GPU memory` for editing. We also provide some [`low-cost setting`](config/low_resource_teaser) of style editing by different hyper-parameters on a 16GB GPU. 
+You may try these low-cost settings on colab.
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb)
 
-More the speed and hardware benchmark [here](docs/EditingGuidance.md#ddim-hyperparameters).
+More speed and hardware benchmarks are [here](docs/EditingGuidance.md#ddim-hyperparameters).
 
 #### Shape and large motion editing with Tune-A-Video
 
-Besides style and attribution editing above, we also provide a `Tune-A-Video` [checkpoint](https://hkustconnect-my.sharepoint.com/:f:/g/personal/cqiaa_connect_ust_hk/EviSTWoAOs1EmHtqZruq50kBZu1E8gxDknCPigSvsS96uQ?e=492khj). You may download the it and move it to `./ckpt/jeep_tuned_200/`.
+Besides style and attribution editing above, we also provide a `Tune-A-Video` [checkpoint](https://hkustconnect-my.sharepoint.com/:f:/g/personal/cqiaa_connect_ust_hk/EviSTWoAOs1EmHtqZruq50kBZu1E8gxDknCPigSvsS96uQ?e=492khj). You may download and move it to `./ckpt/jeep_tuned_200/`.
 <!-- We provide the [Tune-a-Video](https://drive.google.com/file/d/166eNbabM6TeJVy7hxol2gL1kUGKHi3Do/view?usp=share_link), you could download the data, unzip and put it to `data`. : -->
 
-<details><summary>The directory structure should like this: (Click for directory structure) </summary>
+<details><summary>The directory structure should be like this: (Click for directory structure) </summary>
 
 ```
 ckpt
@@ -203,15 +203,15 @@ wget https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/style.zip
 
 Unzip and Place it in ['./data'](data). Then use the command in ['config/style'](config/style) and ['config/attribute'](config/attribute) to get the results.
 
-The config of our tune-a-video ckpts will be updated latter.
+The config of our tune-a-video ckpts will be updated later.
 
 ## Tuning guidance to edit YOUR video
 We provided a tuning guidance to edit in-the-wild video at [here](./docs/EditingGuidance.md). The work is still in progress. Welcome to give your feedback in issues.
 
 ## Style Editing Results with Stable Diffusion
-We show the difference of source prompt and target prompt in the box below each video.
+We show the difference between the source prompt and the target prompt in the box below each video.
 
-Note mp4 and gif files in this github page are compressed. 
+Note mp4 and gif files in this GitHub page are compressed. 
 Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files of original video editing results.
 <table class="center">
 
@@ -364,21 +364,21 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 </table>
 
 ## Online Demo
-Thanks for AK and team from Hugging Face to provide computing resource to support our Hugging-face Demo, which supports up to 50 steps DDIM steps.
+Thanks to AK and the team from Hugging Face for providing computing resources to support our Hugging-face Demo, which supports up to 30 steps DDIM steps.
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/chenyangqi/FateZero).
 
-We also provide a Colab demo, which support 10 DDIM steps.
+We also provide a Colab demo, which supports 10 DDIM steps.
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb)
 
 You may also run them on your local machine.
-We will refine and optimize the above demos in following days.
+We will refine and optimize the above demos in the following days.
 
 ## Demo Video
 
 https://user-images.githubusercontent.com/45789244/225698509-79c14793-3153-4bba-9d6e-ede7d811d7f8.mp4
 
-The video here is compressed due to the size limit of github.
-The original full resolution video is [here](https://hkustconnect-my.sharepoint.com/:v:/g/personal/cqiaa_connect_ust_hk/EXKDI_nahEhKtiYPvvyU9SkBDTG2W4G1AZ_vkC7ekh3ENw?e=Xhgtmk).
+The video here is compressed due to the size limit of GitHub.
+The original full-resolution video is [here](https://hkustconnect-my.sharepoint.com/:v:/g/personal/cqiaa_connect_ust_hk/EXKDI_nahEhKtiYPvvyU9SkBDTG2W4G1AZ_vkC7ekh3ENw?e=Xhgtmk).
 
 
 ## Citation 
@@ -397,9 +397,9 @@ The original full resolution video is [here](https://hkustconnect-my.sharepoint.
 
 ## Acknowledgements
 
-This repository borrows heavily from [Tune-A-Video](https://github.com/showlab/Tune-A-Video) and [prompt-to-prompt](https://github.com/google/prompt-to-prompt/). thanks the authors for sharing their code and models.
+This repository borrows heavily from [Tune-A-Video](https://github.com/showlab/Tune-A-Video) and [prompt-to-prompt](https://github.com/google/prompt-to-prompt/). Thanks to the authors for sharing their code and models.
 
 ## Maintenance
 
-This is the codebase for our research work. We are still working hard to update this repo and more details are coming in days. If you have any questions or ideas to discuss, feel free to contact [Chenyang Qi](cqiaa@connect.ust.hk) or [Xiaodong Cun](vinthony@gmail.com).
+This is the codebase for our research work. We are still working hard to update this repo, and more details are coming in days. If you have any questions or ideas to discuss, feel free to contact [Chenyang Qi](cqiaa@connect.ust.hk) or [Xiaodong Cun](vinthony@gmail.com).
 
