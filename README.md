@@ -57,30 +57,33 @@ previous works.
 
 ## Changelog
 - 2023.03.31 Refine hugging face demo
-- 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero)! (refinement is in progress) Enjoy the fun of zero-shot video editing freely!
+<!-- - 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero)! (refinement is in progress) Enjoy the fun of zero-shot video editing freely!
 - 2023.03.27 Release [`attribute editing config`](config/attribute) and 
-  <!-- [`data`](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/Ee7J2IzZuaVGkefh-ZRp1GwB7RCUYU7MVJCKqeNWmOIpfg?e=dcOwb7) -->
-  [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/attribute.zip) used in the paper.
-- 2023.03.22 Upload a `colab notebook` [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb).
+  [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/attribute.zip) used in the paper. -->
+- 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero), [`attribute editing config`](config/attribute) and [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/attribute.zip) used in the paper. Enjoy the fun of zero-shot video editing freely!
+<!-- - 2023.03.27 Release [`attribute editing config`](config/attribute) and  -->
+  <!-- [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/attribute.zip) used in the paper. -->
+
+
+<!-- - 2023.03.22 Upload a `colab notebook` [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb).
 - 2023.03.22 Release [`style editing config`](config/style) and 
   <!--[`data`](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/EaTqRAuW0eJLj0z_JJrURkcBZCC3Zvgsdo6zsXHhpyHhHQ?e=FzuiNG) -->
+  <!-- [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/style.zip)
+  used in the paper. -->
+
+- 2023.03.22 Upload [`style editing config`](config/style) and <!--[`data`](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/EaTqRAuW0eJLj0z_JJrURkcBZCC3Zvgsdo6zsXHhpyHhHQ?e=FzuiNG) -->
   [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/style.zip)
-  used in the paper.
-- 2023.03.21 [Editing guidance](docs/EditingGuidance.md) is provided to help users to edit in-the-wild video. Welcome to play and give feedback!
-- 2023.03.21 Update the `codebase and configuration`. Now, it can run with lower resources (16G GPU and less than 16G CPU RAM) with [new configuration](config/low_resource_teaser) in `config/low_resource_teaser`. 
+  used in the paper and a `colab notebook` [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb).
+
+- 2023.03.21 [Editing guidance](docs/EditingGuidance.md) is provided to help users to edit in-the-wild video. Update the `codebase and configuration`. Now, it can run with lower resources (16G GPU and less than 16G CPU RAM) with [new configuration](config/low_resource_teaser) in `config/low_resource_teaser`. Welcome to play and give feedback! 
 <!-- A new option store all the attentions in hard disk, which require less ram. -->
 - 2023.03.17 Release Code and Paper!
 
 ## Todo
 
-- [x] Release the edit config for the teaser
-- [x] Memory and runtime profiling
-- [x] Hands-on guidance of hyperparameters tuning
-- [x] Colab
-- [x] Release configs for other results and in-the-wild dataset
-  <!-- - [x] Style editing: done
-  - [-] Attribute editing: in progress -->
-- [x] hugging-face: in progress
+- [x] Release the edit config and data for all style and attribute results
+- [x] Memory and runtime profiling and Editing guidance documents
+- [x] Colab and hugging-face
 - [ ] Tune-a-video optimization and shape editing configs
 - [ ] Release more application
 
