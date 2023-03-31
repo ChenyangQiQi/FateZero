@@ -21,7 +21,7 @@
 </tr>
 </table >
 
-## Abstract
+## 🎏 Abstract
 <b>TL; DR: <font color="red">FateZero</font> is the first zero-shot framework for text-driven video editing via pretrained diffusion models without training.</b>
 
 <details><summary>CLICK for the full abstract</summary>
@@ -55,7 +55,7 @@ superior temporal consistency and editing capability than
 previous works.
 </details>
 
-## Changelog
+## 🪧 Changelog
 - 2023.03.31 Refine hugging face demo
 <!-- - 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero)! (refinement is in progress) Enjoy the fun of zero-shot video editing freely!
 - 2023.03.27 Release [`attribute editing config`](config/attribute) and 
@@ -79,7 +79,7 @@ previous works.
 <!-- A new option store all the attentions in hard disk, which require less ram. -->
 - 2023.03.17 Release Code and Paper!
 
-## Todo
+## 🚧 Todo
 
 - [x] Release the edit config and data for all style and attribute results
 - [x] Memory and runtime profiling and Editing guidance documents
@@ -87,7 +87,7 @@ previous works.
 - [ ] Tune-a-video optimization and shape editing configs
 - [ ] Release more application
 
-## Setup Environment
+## 🛡 Setup Environment
 Our method is tested using cuda11, fp16 of accelerator and xformers on a single A100 or 3090.
 
 ```bash
@@ -117,7 +117,7 @@ python test_install.py
 Our environment is similar to Tune-A-video ([official](https://github.com/showlab/Tune-A-Video), [unofficial](https://github.com/bryandlee/Tune-A-Video))  and [prompt-to-prompt](https://github.com/google/prompt-to-prompt/). You may check them for more details.
 
 
-## ⚔️FateZero Editing
+## ⚔️ FateZero Editing
 
 #### Style and Attribute Editing in Teaser
 
@@ -366,7 +366,7 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 </tr>
 </table>
 
-## Online Demo
+## 🕹 Online Demo
 Thanks to AK and the team from Hugging Face for providing computing resources to support our Hugging-face Demo, which supports up to 30 steps DDIM steps.
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/chenyangqi/FateZero).
 
@@ -376,7 +376,7 @@ We also provide a Colab demo, which supports 10 DDIM steps.
 You may also run them on your local machine.
 We will refine and optimize the above demos in the following days.
 
-## Demo Video
+## 📀 Demo Video
 
 https://user-images.githubusercontent.com/45789244/225698509-79c14793-3153-4bba-9d6e-ede7d811d7f8.mp4
 
@@ -384,7 +384,7 @@ The video here is compressed due to the size limit of GitHub.
 The original full-resolution video is [here](https://hkustconnect-my.sharepoint.com/:v:/g/personal/cqiaa_connect_ust_hk/EXKDI_nahEhKtiYPvvyU9SkBDTG2W4G1AZ_vkC7ekh3ENw?e=Xhgtmk).
 
 
-## Citation 
+## 📍 Citation 
 
 ```
 @misc{qi2023fatezero,
@@ -398,11 +398,11 @@ The original full-resolution video is [here](https://hkustconnect-my.sharepoint.
 ``` 
 
 
-## Acknowledgements
+## 💗 Acknowledgements
 
 This repository borrows heavily from [Tune-A-Video](https://github.com/showlab/Tune-A-Video) and [prompt-to-prompt](https://github.com/google/prompt-to-prompt/). Thanks to the authors for sharing their code and models.
 
-## Maintenance
+## 🧿 Maintenance
 
 This is the codebase for our research work. We are still working hard to update this repo, and more details are coming in days. If you have any questions or ideas to discuss, feel free to contact [Chenyang Qi](cqiaa@connect.ust.hk) or [Xiaodong Cun](vinthony@gmail.com).
 
