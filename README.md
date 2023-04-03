@@ -370,10 +370,16 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 Thanks to AK and the team from Hugging Face for providing computing resources to support our Hugging-face Demo, which supports up to 30 steps DDIM steps.
 [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/chenyangqi/FateZero).
 
+You may use the UI for testing FateZero built with gradio locally.
+```
+git clone https://huggingface.co/spaces/chenyangqi/FateZero
+python app_fatezero.py
+# we will merge the FateZero on hugging face with that in github repo latter
+```
+
 We also provide a Colab demo, which supports 10 DDIM steps.
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb)
-
-You may also run them on your local machine.
+You may launch the colab as a jupyter notebook on your local machine.
 We will refine and optimize the above demos in the following days.
 
 ## 📀 Demo Video
