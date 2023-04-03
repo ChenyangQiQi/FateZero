@@ -55,7 +55,7 @@ superior temporal consistency and editing capability than
 previous works.
 </details>
 
-## 🪧 Changelog
+## 📋 Changelog
 - 2023.03.31 Refine hugging face demo
 <!-- - 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero)! (refinement is in progress) Enjoy the fun of zero-shot video editing freely!
 - 2023.03.27 Release [`attribute editing config`](config/attribute) and 
