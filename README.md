@@ -127,11 +127,10 @@ Download the [stable diffusion v1-4](https://huggingface.co/CompVis/stable-diffu
  
 ```
 mkdir ./ckpt
+cd ./ckpt
 # download from huggingface face, takes 20G space
 git lfs install
 git clone https://huggingface.co/CompVis/stable-diffusion-v1-4
-cd ./ckpt
-ln -s ../stable-diffusion-v1-4 .
 ```
 </details>
 
@@ -165,8 +164,20 @@ More speed and hardware benchmarks are [here](docs/EditingGuidance.md#ddim-hyper
 
 #### Shape and large motion editing with Tune-A-Video
 
-Besides style and attribution editing above, we also provide a `Tune-A-Video` [checkpoint](https://hkustconnect-my.sharepoint.com/:f:/g/personal/cqiaa_connect_ust_hk/EviSTWoAOs1EmHtqZruq50kBZu1E8gxDknCPigSvsS96uQ?e=492khj). You may download and move it to `./ckpt/jeep_tuned_200/`.
-<!-- We provide the [Tune-a-Video](https://drive.google.com/file/d/166eNbabM6TeJVy7hxol2gL1kUGKHi3Do/view?usp=share_link), you could download the data, unzip and put it to `data`. : -->
+Besides style and attribution editing above, we also provide a `Tune-A-Video` checkpoint. You may download from [onedrive](https://hkustconnect-my.sharepoint.com/:f:/g/personal/cqiaa_connect_ust_hk/EviSTWoAOs1EmHtqZruq50kBZu1E8gxDknCPigSvsS96uQ?e=492khj) or from [hugging face model repository](https://huggingface.co/chenyangqi/jeep_tuned_200). Then move it to `./ckpt/jeep_tuned_200/`.
+
+
+<details><summary>Click for the bash command: </summary>
+
+```
+mkdir ./ckpt
+cd ./ckpt
+# download from huggingface face, takes 10G space
+git lfs install
+git clone https://huggingface.co/chenyangqi/jeep_tuned_200
+```
+
+</details>
 
 <details><summary>The directory structure should be like this: (Click for directory structure) </summary>
 
