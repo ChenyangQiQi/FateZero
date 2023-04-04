@@ -56,7 +56,7 @@ previous works.
 </details>
 
 ## 📋 Changelog
-- 2023.04.04 Release shape editing ckpts and config
+- 2023.04.04 Release shape editing ckpts, data and config
 - 2023.03.31 Refine hugging face demo
 <!-- - 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero)! (refinement is in progress) Enjoy the fun of zero-shot video editing freely!
 - 2023.03.27 Release [`attribute editing config`](config/attribute) and 
@@ -206,13 +206,14 @@ accelerate launch test_fatezero.py --config config/teaser/jeep_posche.yaml
 ### Reproduce other results in the paper (in progress)
 <!-- Download the data of [style editing](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/EaTqRAuW0eJLj0z_JJrURkcBZCC3Zvgsdo6zsXHhpyHhHQ?e=FzuiNG) and [attribute editing](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/Ee7J2IzZuaVGkefh-ZRp1GwB7RCUYU7MVJCKqeNWmOIpfg?e=dcOwb7)
 -->
-Download the data of style editing and attribute editing
-from [onedrive](https://hkustconnect-my.sharepoint.com/:f:/g/personal/cqiaa_connect_ust_hk/EkIeHj3CQiBNhm6iEEhJQZwBEBJNCGt3FsANmyqeAYbuXQ?e=FxYtJk) or from Github [Release](https://github.com/ChenyangQiQi/FateZero/releases/tag/v0.0.1).
+Download the data
+from [onedrive](https://hkustconnect-my.sharepoint.com/:f:/g/personal/cqiaa_connect_ust_hk/EkIeHj3CQiBNhm6iEEhJQZwBEBJNCGt3FsANmyqeAYbuXQ?e=SCPJlu) or from Github [Release](https://github.com/ChenyangQiQi/FateZero/releases/tag/v0.0.1).
 <details><summary>Click for wget bash command: </summary>
  
 ```
 wget https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/attribute.zip
 wget https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/style.zip
+wget https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/shape.zip
 ```
 </details>
 
