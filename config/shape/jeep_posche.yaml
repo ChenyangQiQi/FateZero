@@ -1,0 +1,93 @@
+# CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_posche.yaml
+
+pretrained_model_path: "./ckpt/jeep_tuned_200"
+
+train_dataset:
+    path: "data/teaser_car-turn"
+    prompt: "a silver jeep driving down a curvy road in the countryside,"
+    n_sample_frame: 8
+    sampling_rate: 1
+    stride: 80
+    offset: 
+        left: 0
+        right: 0
+        top: 0
+        bottom: 0
+
+
+validation_sample_logger_config:
+    use_train_latents: true
+    use_inversion_attention: true
+    guidance_scale: 7.5
+    prompts: [
+        a silver jeep driving down a curvy road in the countryside,
+        a Porsche car driving down a curvy road in the countryside,
+    ]
+    p2p_config:
+        0: 
+            # Whether to directly copy the cross attention from source 
+            # True: directly copy, better for object replacement
+            # False: keep source attention, better for style
+            is_replace_controller: False
+
+            # Semantic layout preserving. High steps, replace more cross attention to preserve semantic layout
+            cross_replace_steps: 
+                default_: 0.8
+
+            # Source background structure preserving, in [0, 1]. 
+            # e.g., =0.6 Replace the first 60% steps self-attention
+            self_replace_steps: 0.9
+
+            
+            # Amplify the target-words cross attention, larger value, more close to target
+            # Usefull in style editing
+            eq_params: 
+                words: ["watercolor", "painting"]
+                values: [10,10] 
+            
+            # Target structure-divergence hyperparames
+            # If you change the shape of object better to use all three line, otherwise, no need.
+            # Without following three lines, all self-attention will be replaced
+            # Usefull in shape editing
+            blend_words: [['jeep',], ["car",]] 
+            masked_self_attention:  True
+            # masked_latents: False   #  Directly copy the latents, performance not so good in our case           
+            
+            # preserve source structure of blend_words , [0, 1]
+            # bend_th-> [1.0, 1.0], mask -> 0, use inversion-time attention, the structure is similar to the input
+            # bend_th-> [0.0, 0.0], mask -> 1, use more edit self-attention, more generated shape, less source acttention
+            bend_th: [0.3, 0.3]
+
+        1:
+            cross_replace_steps: 
+                default_: 0.5
+            self_replace_steps: 0.5
+            
+            use_inversion_attention: True
+            is_replace_controller: True
+
+            blend_words: [['silver', 'jeep'], ["Porsche", 'car']] # for local edit. If it is not local yet - use only the source object: blend_word = ((('cat',), ("cat",))).
+            masked_self_attention: True
+            bend_th: [0.3, 0.3]
+            
+    clip_length: "${..train_dataset.n_sample_frame}"
+    sample_seeds: [0]
+
+    num_inference_steps: 50
+    prompt2prompt_edit: True
+
+    
+model_config:
+    lora: 160
+
+
+test_pipeline_config:
+    target: video_diffusion.pipelines.p2pDDIMSpatioTemporalPipeline.p2pDDIMSpatioTemporalPipeline
+    num_inference_steps: "${..validation_sample_logger.num_inference_steps}"
+
+epsilon: 1e-5
+train_steps: 10
+seed: 0
+learning_rate: 1e-5
+train_temporal_conv: False
+guidance_scale: "${validation_sample_logger_config.guidance_scale}"
