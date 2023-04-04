@@ -15,9 +15,7 @@
   <tr>
   <td width=25% style="text-align:center;">"silver jeep ➜ posche car"</td>
   <td width=25% style="text-align:center;">"+ Van Gogh style"</td>
-  <td width=25% style="text-align:center;">"squirrel, Carrot ➜ rabbit, eggplant"</td>
-  <!-- <td width=25% style="text-align:center;">"Wonder Woman, wearing a cowboy hat, is skiing"</td>
-  <td width=25% style="text-align:center;">"A man, wearing pink clothes, is skiing at sunset"</td> -->
+  <td width=25% style="text-align:center;">"squirrel,Carrot ➜ rabbit,eggplant"</td>
 </tr>
 </table >
 
