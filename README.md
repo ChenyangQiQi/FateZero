@@ -56,6 +56,7 @@ previous works.
 </details>
 
 ## 📋 Changelog
+- 2023.04.04 Release shape editing ckpts and config
 - 2023.03.31 Refine hugging face demo
 <!-- - 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero)! (refinement is in progress) Enjoy the fun of zero-shot video editing freely!
 - 2023.03.27 Release [`attribute editing config`](config/attribute) and 
@@ -215,9 +216,19 @@ wget https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/style.zip
 ```
 </details>
 
-Unzip and Place it in ['./data'](data). Then use the command in ['config/style'](config/style) and ['config/attribute'](config/attribute) to get the results.
+Unzip and Place it in ['./data'](data). Then use the commands in ['config/style'](config/style) and ['config/attribute'](config/attribute) to get the results.
 
-The config of our tune-a-video ckpts will be updated later.
+To reproduce other shape editing results, download Tune-A-Video checkpoints:
+
+```
+mkdir ./ckpt
+cd ./ckpt
+# download from huggingface face, takes 10G space
+git lfs install
+git clone https://huggingface.co/chenyangqi/man_skate_250
+git clone https://huggingface.co/chenyangqi/swan_150
+```
+Then use the commands in ['config/shape'](config/shape).
 
 ## Tuning guidance to edit YOUR video
 We provided a tuning guidance to edit in-the-wild video at [here](./docs/EditingGuidance.md). The work is still in progress. Welcome to give your feedback in issues.
