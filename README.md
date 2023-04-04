@@ -219,8 +219,10 @@ wget https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/shape.zip
 
 Unzip and Place it in ['./data'](data). Then use the commands in ['config/style'](config/style) and ['config/attribute'](config/attribute) to get the results.
 
-To reproduce other shape editing results, download Tune-A-Video checkpoints fomr [huggingface](https://huggingface.co/chenyangqi/) :
+To reproduce other shape editing results, download Tune-A-Video checkpoints from [huggingface](https://huggingface.co/chenyangqi/) :
+
 <details><summary>Click for the bash command: </summary>
+
 ```
 mkdir ./ckpt
 cd ./ckpt
@@ -229,8 +231,10 @@ git lfs install
 git clone https://huggingface.co/chenyangqi/man_skate_250
 git clone https://huggingface.co/chenyangqi/swan_150
 ```
-Then use the commands in ['config/shape'](config/shape).
 </details>
+
+Then use the commands in ['config/shape'](config/shape).
+
 ## Tuning guidance to edit YOUR video
 We provided a tuning guidance to edit in-the-wild video at [here](./docs/EditingGuidance.md). The work is still in progress. Welcome to give your feedback in issues.
 
