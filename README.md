@@ -54,7 +54,7 @@ previous works.
 </details>
 
 ## 📋 Changelog
-- 2023.04.04 Release shape editing [ckpts](https://huggingface.co/chenyangqi/), [data](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/shape.zip) and [config](config/shape)
+- 2023.04.04 Release Enhanced Tuning-a-Video [configs](config/tune) and shape editing [ckpts](https://huggingface.co/chenyangqi/), [data](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/shape.zip) and [config](config/shape)
 - 2023.03.31 Refine hugging face demo
 <!-- - 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero)! (refinement is in progress) Enjoy the fun of zero-shot video editing freely!
 - 2023.03.27 Release [`attribute editing config`](config/attribute) and 
@@ -80,10 +80,9 @@ previous works.
 
 ## 🚧 Todo
 
-- [x] Release the edit config and data for all results
+- [x] Release the edit config and data for all results, Tune-a-video optimization
 - [x] Memory and runtime profiling and Editing guidance documents
 - [x] Colab and hugging-face
-- [ ] Tune-a-video optimization
 - [ ] Release more application
 
 ## 🛡 Setup Environment
@@ -233,8 +232,22 @@ git clone https://huggingface.co/chenyangqi/swan_150
 
 Then use the commands in ['config/shape'](config/shape).
 
-## Tuning guidance to edit YOUR video
-We provided a tuning guidance to edit in-the-wild video at [here](./docs/EditingGuidance.md). The work is still in progress. Welcome to give your feedback in issues.
+For above Tune-A-Video checkpoints, we fintune stable diffusion with a synthetic negative-prompt [dataset](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/negative_reg.zip) for regularization and low-rank conovlution for temporal-consistent generation using [tuning config](./config/tune/)
+
+<details><summary>Click for the bash command example: </summary>
+
+```
+cd ./data
+wget https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/negative_reg.zip
+unzip negative_reg
+cd ..
+accelerate launch train_tune_a_video.py --config config/tune/jeep.yaml
+```
+
+</details>
+
+## Editing guidance for YOUR video
+We provided a editing guidance for in-the-wild video [here](./docs/EditingGuidance.md). The work is still in progress. Welcome to give your feedback in issues.
 
 ## Style Editing Results with Stable Diffusion
 We show the difference between the source prompt and the target prompt in the box below each video.

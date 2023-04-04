@@ -1,7 +1,6 @@
 import os,copy
 import inspect
-from typing import Optional, List, Dict, Union
-import PIL
+from typing import Optional, Dict
 import click
 from omegaconf import OmegaConf
 
@@ -16,7 +15,6 @@ from diffusers import (
     AutoencoderKL,
     DDPMScheduler,
     DDIMScheduler,
-    UNet2DConditionModel,
 )
 from diffusers.optimization import get_scheduler
 from diffusers.utils.import_utils import is_xformers_available
@@ -77,12 +75,8 @@ def train(
     train_temporal_conv: bool = False,
     checkpointing_steps: int = 1000,
     model_config: dict={},
-    # use_train_latents: bool=False,
-    # kwr
-    # **kwargs
 ):
     args = get_function_args()
-    # args.update(kwargs)
     train_dataset_config = copy.deepcopy(train_dataset)
     time_string = get_time_string()
     if logdir is None:
@@ -142,7 +136,6 @@ def train(
 
 
     if is_xformers_available() and enable_xformers:
-    # if False:  # Disable xformers for null inversion
         try:
             pipeline.enable_xformers_memory_efficient_attention()
             print('enable xformers in the training and testing')
@@ -211,7 +204,6 @@ def train(
         weight_decay=adam_weight_decay,
         eps=adam_epsilon,
     )
-    # End of config trainable parameters in Unet and optimizer
 
 
     prompt_ids = tokenizer(
@@ -336,7 +328,6 @@ def train(
 
     
     assert(train_dataset.overfit_length == 1), "Only support overfiting on a single video"
-    # batch = next(train_data_yielder)
 
         
     while step < train_steps:
@@ -387,7 +378,6 @@ def train(
                     
                     
                     validation_sample_logger.log_sample_images(
-                        # image=rearrange(train_dataset.get_all()["images"].to(accelerator.device, dtype=weight_dtype), "c f h w -> f c h w"), # torch.Size([8, 3, 512, 512])
                         image= val_image, # torch.Size([8, 3, 512, 512])
                         pipeline=pipeline,
                         device=accelerator.device,

@@ -1,0 +1,59 @@
+# CUDA_VISIBLE_DEVICES=4 python train_tune_a_video.py --config config/tune/man_skate.yaml
+pretrained_model_path: "./ckpt/stable-diffusion-v1-4"
+
+train_dataset:
+    path: "./data/shape/man_skate"
+    prompt: "A man rides a wooden skateboard on the rail with a helmet and arms outstretched"
+    n_sample_frame: 8
+    # n_sample_frame: 22
+    # class_data_root: "data/negative_reg/birds"
+    # class_data_prompt: "a photo of a bird"
+
+    sampling_rate: 1
+    stride: 80
+    offset: 
+        left: 0
+        right: 0
+        top: 0
+        bottom: 0
+
+validation_sample_logger_config:
+    use_train_latents: True
+    use_inversion_attention: True
+    guidance_scale: 7.5
+    prompts: [
+        # source prompt
+        A man rides a wooden skateboard on the rail with a helmet and arms outstretched,
+
+        # foreground color and species
+        A Wonder Woman rides a wooden skateboard on the rail with cowboy hat and arms outstretched,
+        A Batman rides a wooden skateboard on the rail and arms outstretched,
+    ]
+    clip_length: "${..train_dataset.n_sample_frame}"
+    sample_seeds: [12734]
+    val_all_frames: False
+    num_inference_steps: 50 # 15 minutes
+    strength: 0.99
+
+trainer_pipeline_config:
+    target: video_diffusion.trainer.ddpm_trainer.DDPMTrainer
+
+test_pipeline_config:
+    target: video_diffusion.pipelines.DDIMSpatioTemporalStableDiffusionPipeline.DDIMSpatioTemporalStableDiffusionPipeline
+
+model_config:
+    lora: 16
+    # temporal_downsample_time: 4
+    # SparseCausalAttention_index: [-1, 1, 'first', 'last'] 
+
+enable_xformers: True
+mixed_precision: 'fp16'
+gradient_checkpointing: True
+
+train_steps: 1000
+validation_steps: 50 # 10 minutes
+checkpointing_steps: 50
+seed: 74831
+learning_rate: 1e-5
+# prior_preservation: 1.0
+train_temporal_conv: True

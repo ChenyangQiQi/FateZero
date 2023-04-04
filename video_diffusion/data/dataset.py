@@ -34,7 +34,9 @@ class ImageSequenceDataset(Dataset):
             "right": 0,
             "top": 0,
             "bottom": 0
-        }
+        },
+        **args
+        
     ):
         self.path = path
         self.images = self.get_image_list(path)
