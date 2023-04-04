@@ -8,14 +8,14 @@
 [![GitHub](https://img.shields.io/github/stars/ChenyangQiQi/FateZero?style=social)](https://github.com/ChenyangQiQi/FateZero)
 
 
-<!-- ![fatezero_demo](./docs/teaser.png) -->
-
 <table class="center">
   <td><img src="docs/gif_results/17_car_posche_01_concat_result.gif"></td>
   <td><img src="docs/gif_results/3_sunflower_vangogh_conat_result.gif"></td>
+  <td><img src="docs/gif_results/attri/16_sq_eat_02_concat_result.gif"></td>
   <tr>
   <td width=25% style="text-align:center;">"silver jeep ➜ posche car"</td>
   <td width=25% style="text-align:center;">"+ Van Gogh style"</td>
+  <td width=25% style="text-align:center;">"squirrel, Carrot ➜ rabbit, eggplant"</td>
   <!-- <td width=25% style="text-align:center;">"Wonder Woman, wearing a cowboy hat, is skiing"</td>
   <td width=25% style="text-align:center;">"A man, wearing pink clothes, is skiing at sunset"</td> -->
 </tr>
