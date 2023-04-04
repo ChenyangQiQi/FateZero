@@ -56,7 +56,7 @@ previous works.
 </details>
 
 ## 📋 Changelog
-- 2023.04.04 Release shape editing ckpts, data and config
+- 2023.04.04 Release shape editing [ckpts](https://huggingface.co/chenyangqi/), [data](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/shape.zip) and [config](config/shape)
 - 2023.03.31 Refine hugging face demo
 <!-- - 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero)! (refinement is in progress) Enjoy the fun of zero-shot video editing freely!
 - 2023.03.27 Release [`attribute editing config`](config/attribute) and 
@@ -82,10 +82,10 @@ previous works.
 
 ## 🚧 Todo
 
-- [x] Release the edit config and data for all style and attribute results
+- [x] Release the edit config and data for all results
 - [x] Memory and runtime profiling and Editing guidance documents
 - [x] Colab and hugging-face
-- [ ] Tune-a-video optimization and shape editing configs
+- [ ] Tune-a-video optimization
 - [ ] Release more application
 
 ## 🛡 Setup Environment
@@ -219,8 +219,8 @@ wget https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/shape.zip
 
 Unzip and Place it in ['./data'](data). Then use the commands in ['config/style'](config/style) and ['config/attribute'](config/attribute) to get the results.
 
-To reproduce other shape editing results, download Tune-A-Video checkpoints:
-
+To reproduce other shape editing results, download Tune-A-Video checkpoints fomr [huggingface](https://huggingface.co/chenyangqi/) :
+<details><summary>Click for the bash command: </summary>
 ```
 mkdir ./ckpt
 cd ./ckpt
@@ -230,7 +230,7 @@ git clone https://huggingface.co/chenyangqi/man_skate_250
 git clone https://huggingface.co/chenyangqi/swan_150
 ```
 Then use the commands in ['config/shape'](config/shape).
-
+</details>
 ## Tuning guidance to edit YOUR video
 We provided a tuning guidance to edit in-the-wild video at [here](./docs/EditingGuidance.md). The work is still in progress. Welcome to give your feedback in issues.
 
