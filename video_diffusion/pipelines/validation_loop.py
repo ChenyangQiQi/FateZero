@@ -1,6 +1,6 @@
 import os
 import numpy as  np
-from typing import Callable, List, Optional, Union
+from typing import List, Union
 import PIL
 
 
@@ -84,7 +84,6 @@ class SampleLogger:
             for seed in self.sample_seeds:
                 generator = torch.Generator(device=device)
                 generator.manual_seed(seed)
-                # if isinstance(pipeline, SDeditSpatioTemporalStableDiffusionPipeline):
                 sequence_return = pipeline(
                     prompt=prompt,
                     edit_type = edit_type,
@@ -99,7 +98,6 @@ class SampleLogger:
                     latents = latents,
                     uncond_embeddings_list = uncond_embeddings_list,
                     # Put the source prompt at the first one, when using p2p
-                    # edit_type = edit_type
                 )
                 if self.prompt2prompt_edit:
                     sequence = sequence_return['sdimage_output'].images[0]
@@ -119,13 +117,7 @@ class SampleLogger:
                     samples_all.append(images)
                     if self.prompt2prompt_edit:
                         attention_all.append(attention_output)
-                # else:
                 save_path = os.path.join(self.logdir, f"step_{step}_{idx}_{seed}.gif")
-                # save_path_mp4 = save_path.replace('gif', 'mp4')
-                # save_path_folder = save_path.replace('.gif', '')
-                # save_images_as_gif(images, save_path)
-                # save_images_as_mp4(images, save_path_mp4)
-                # save_images_as_folder(images, save_path_folder)
                 save_gif_mp4_folder_type(images, save_path)
                 if self.prompt2prompt_edit:
                     save_gif_mp4_folder_type(attention_output, save_path.replace('.gif', 'atten.gif'))
@@ -133,12 +125,9 @@ class SampleLogger:
         if self.make_grid:
             samples_all = [make_grid(images, cols=int(np.ceil(np.sqrt(len(samples_all))))) for images in zip(*samples_all)]
             save_path = os.path.join(self.logdir, f"step_{step}.gif")
-            # save_images_as_gif(samples_all, save_path)
             save_gif_mp4_folder_type(samples_all, save_path)
             if self.prompt2prompt_edit:
                 attention_all = [make_grid(images, cols=1) for images in zip(*attention_all)]
-                # save_path = os.path.join(self.logdir, f"step_{step}.gif")
-                # save_images_as_gif(samples_all, save_path)
                 save_gif_mp4_folder_type(attention_all, save_path.replace('.gif', 'atten.gif'))
         return samples_all
 

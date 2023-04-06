@@ -15,7 +15,7 @@ from video_diffusion.common.image_util import make_grid, annotate_image
 from video_diffusion.common.image_util import save_gif_mp4_folder_type
 
 
-class p2pSampleLogger:
+class P2pSampleLogger:
     def __init__(
         self,
         prompts: List[str],

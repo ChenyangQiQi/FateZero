@@ -96,7 +96,7 @@ model_config:
     # least_sc_channel: 100000
 
 test_pipeline_config:
-    target: video_diffusion.pipelines.p2pDDIMSpatioTemporalPipeline.p2pDDIMSpatioTemporalPipeline
+    target: video_diffusion.pipelines.p2p_ddim_spatial_temporal.P2pDDIMSpatioTemporalPipeline
     num_inference_steps: "${..validation_sample_logger.num_inference_steps}"
 
 epsilon: 1e-5

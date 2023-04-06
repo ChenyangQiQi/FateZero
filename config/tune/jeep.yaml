@@ -38,7 +38,7 @@ trainer_pipeline_config:
     target: video_diffusion.trainer.ddpm_trainer.DDPMTrainer
 
 test_pipeline_config:
-    target: video_diffusion.pipelines.DDIMSpatioTemporalStableDiffusionPipeline.DDIMSpatioTemporalStableDiffusionPipeline
+    target: video_diffusion.pipelines.ddim_spatial_temporal.DDIMSpatioTemporalStableDiffusionPipeline
 
 model_config:
     lora: 160

@@ -14,11 +14,7 @@ from torchvision import transforms
 from einops import rearrange
 
 
-
-
-
-
-IMAGE_EXTENSION = (".jpg", ".jpeg", ".png", ".ppm", ".bmp", ".pgm", ".tif", ".tiff", ".webp")
+IMAGE_EXTENSION = (".jpg", ".jpeg", ".png", ".ppm", ".bmp", ".pgm", ".tif", ".tiff", ".webp", ".JPEG")
 
 FONT_URL = "https://raw.github.com/googlefonts/opensans/main/fonts/ttf/OpenSans-Regular.ttf"
 FONT_PATH = "./docs/OpenSans-Regular.ttf"
@@ -98,14 +94,7 @@ def save_images_as_mp4(
     images: Sequence[Image.Image],
     save_path: str,
 ) -> None:
-    # images[0].save(
-    #     save_path,
-    #     save_all=True,
-    #     append_images=images[1:],
-    #     optimize=optimize,
-    #     loop=loop,
-    #     duration=duration,
-    # )
+
     writer_edit = imageio.get_writer(
         save_path,
         fps=10)

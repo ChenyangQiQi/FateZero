@@ -26,7 +26,7 @@ from video_diffusion.data.dataset import ImageSequenceDataset
 from video_diffusion.common.util import get_time_string, get_function_args
 from video_diffusion.common.image_util import log_train_samples
 from video_diffusion.common.instantiate_from_config import instantiate_from_config
-from video_diffusion.pipelines.p2pvalidation_loop import p2pSampleLogger
+from video_diffusion.pipelines.p2p_validation_loop import P2pSampleLogger
 
 logger = get_logger(__name__)
 
@@ -173,7 +173,7 @@ def test(
     logger.info("***** wait to fix the logger path *****")
 
     if validation_sample_logger_config is not None and accelerator.is_main_process:
-        validation_sample_logger = p2pSampleLogger(**validation_sample_logger_config, logdir=logdir)
+        validation_sample_logger = P2pSampleLogger(**validation_sample_logger_config, logdir=logdir)
         # validation_sample_logger.log_sample_images(
         #     pipeline=pipeline,
         #     device=accelerator.device,

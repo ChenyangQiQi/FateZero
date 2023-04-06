@@ -1,17 +1,12 @@
-import inspect
-from typing import Callable, List, Optional, Union
+from typing import Union
 
 import torch
 import torch.nn.functional as F
 from einops import rearrange
 
-from diffusers.utils import is_accelerate_available
-from packaging import version
 from transformers import CLIPTextModel, CLIPTokenizer
 
-from diffusers.configuration_utils import FrozenDict
 from diffusers.models import AutoencoderKL
-from diffusers.pipeline_utils import DiffusionPipeline
 from diffusers.schedulers import (
     DDIMScheduler,
     DPMSolverMultistepScheduler,
@@ -20,8 +15,6 @@ from diffusers.schedulers import (
     LMSDiscreteScheduler,
     PNDMScheduler,
 )
-from diffusers.utils import deprecate, logging
-from diffusers.pipelines.stable_diffusion import StableDiffusionPipelineOutput
 from ..models.unet_3d_condition import UNetPseudo3DConditionModel
 from video_diffusion.pipelines.stable_diffusion import SpatioTemporalStableDiffusionPipeline
 
@@ -63,7 +56,6 @@ class DDPMTrainer(SpatioTemporalStableDiffusionPipeline):
             print('Use prior_preservation loss')
             self.unet2d.eval()
 
-        # with accelerator.accumulate(unet):
         # Convert images to latent space
         images = batch["images"].to(dtype=self.weight_dtype)
         b = images.shape[0]
@@ -119,7 +111,6 @@ class DDPMTrainer(SpatioTemporalStableDiffusionPipeline):
         return loss
     
     def step2d(self, class_images, prompt_ids
-            #  batch: dict = dict()
              ):
         
         self.vae.eval()
@@ -128,7 +119,7 @@ class DDPMTrainer(SpatioTemporalStableDiffusionPipeline):
         if self.prior_preservation is not None:
             self.unet2d.eval()
 
-        # with accelerator.accumulate(unet):
+
         # Convert images to latent space
         images = class_images.to(dtype=self.weight_dtype)
         b = images.shape[0]
