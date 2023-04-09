@@ -431,13 +431,11 @@ The original full-resolution video is [here](https://hkustconnect-my.sharepoint.
 ## 📍 Citation 
 
 ```
-@misc{qi2023fatezero,
+@article{qi2023fatezero,
       title={FateZero: Fusing Attentions for Zero-shot Text-based Video Editing}, 
       author={Chenyang Qi and Xiaodong Cun and Yong Zhang and Chenyang Lei and Xintao Wang and Ying Shan and Qifeng Chen},
       year={2023},
-      eprint={2303.09535},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+      journal={arXiv:2303.09535},
 }
 ``` 
 
