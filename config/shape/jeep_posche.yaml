@@ -2,9 +2,9 @@
 
 pretrained_model_path: "./ckpt/jeep_tuned_200"
 
-train_dataset:
+dataset_config:
     path: "data/teaser_car-turn"
-    prompt: "a silver jeep driving down a curvy road in the countryside,"
+    prompt: "a silver jeep driving down a curvy road in the countryside," # RENAME Inversion prompts
     n_sample_frame: 8
     sampling_rate: 1
     stride: 80
@@ -15,11 +15,11 @@ train_dataset:
         bottom: 0
 
 
-validation_sample_logger_config:
-    use_train_latents: true
+validation_sample_logger_config: # RENAME editing config
+    use_train_latents: true # RENAME used inversion latents
     use_inversion_attention: true
-    guidance_scale: 7.5
-    prompts: [
+    
+    prompts: [ # RENAME Editing prompts
         a silver jeep driving down a curvy road in the countryside,
         a Porsche car driving down a curvy road in the countryside,
     ]
@@ -32,7 +32,7 @@ validation_sample_logger_config:
 
             # Semantic layout preserving. High steps, replace more cross attention to preserve semantic layout
             cross_replace_steps: 
-                default_: 0.8
+                default_: 0.8 
 
             # Source background structure preserving, in [0, 1]. 
             # e.g., =0.6 Replace the first 60% steps self-attention
@@ -41,9 +41,9 @@ validation_sample_logger_config:
             
             # Amplify the target-words cross attention, larger value, more close to target
             # Usefull in style editing
-            eq_params: 
+            eq_params:  # RENAME Enhanced words
                 words: ["watercolor", "painting"]
-                values: [10,10] 
+                values: [10,10]  # RENAME ca_amp
             
             # Target structure-divergence hyperparames
             # If you change the shape of object better to use all three line, otherwise, no need.
@@ -70,11 +70,14 @@ validation_sample_logger_config:
             masked_self_attention: True
             bend_th: [0.3, 0.3]
             
-    clip_length: "${..train_dataset.n_sample_frame}"
+    clip_length: "${..dataset_config.n_sample_frame}"
     sample_seeds: [0]
+    prompt2prompt_edit: True # Need study
 
+    # DDIM parameters
+    guidance_scale: 7.5
     num_inference_steps: 50
-    prompt2prompt_edit: True
+    
 
     
 model_config:
@@ -85,9 +88,6 @@ test_pipeline_config:
     target: video_diffusion.pipelines.p2p_ddim_spatial_temporal.P2pDDIMSpatioTemporalPipeline
     num_inference_steps: "${..validation_sample_logger.num_inference_steps}"
 
-epsilon: 1e-5
-train_steps: 10
+
+
 seed: 0
-learning_rate: 1e-5
-train_temporal_conv: False
-guidance_scale: "${validation_sample_logger_config.guidance_scale}"

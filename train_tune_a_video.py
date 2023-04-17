@@ -49,7 +49,7 @@ def collate_fn(examples):
 def train(
     config: str,
     pretrained_model_path: str,
-    train_dataset: Dict,
+    dataset_config: Dict,
     logdir: str = None,
     train_steps: int = 300,
     validation_steps: int = 1000,
@@ -77,7 +77,7 @@ def train(
     model_config: dict={},
 ):
     args = get_function_args()
-    train_dataset_config = copy.deepcopy(train_dataset)
+    train_dataset_config = copy.deepcopy(dataset_config)
     time_string = get_time_string()
     if logdir is None:
         logdir = config.replace('config', 'result').replace('.yml', '').replace('.yaml', '')
@@ -207,7 +207,7 @@ def train(
 
 
     prompt_ids = tokenizer(
-        train_dataset["prompt"],
+        train_dataset_config["prompt"],
         truncation=True,
         padding="max_length",
         max_length=tokenizer.model_max_length,
@@ -226,7 +226,7 @@ def train(
         ).input_ids
     else:
         class_prompt_ids = None
-    train_dataset = ImageSequenceDataset(**train_dataset, prompt_ids=prompt_ids, class_prompt_ids=class_prompt_ids)
+    train_dataset = ImageSequenceDataset(**train_dataset_config, prompt_ids=prompt_ids, class_prompt_ids=class_prompt_ids)
 
     train_dataloader = torch.utils.data.DataLoader(
         train_dataset,
@@ -327,7 +327,7 @@ def train(
     train_data_yielder = make_data_yielder(train_dataloader)
 
     
-    assert(train_dataset.overfit_length == 1), "Only support overfiting on a single video"
+    assert(train_dataset.video_len == 1), "Only support overfiting on a single video"
 
         
     while step < train_steps:

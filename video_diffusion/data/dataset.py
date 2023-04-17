@@ -21,7 +21,7 @@ class ImageSequenceDataset(Dataset):
         start_sample_frame: int=0,
         n_sample_frame: int = 8,
         sampling_rate: int = 1,
-        stride: int = 1,
+        stride: int = -1, # only used during tuning to sample a long video
         image_mode: str = "RGB",
         image_size: int = 512,
         crop: str = "center",
@@ -42,18 +42,20 @@ class ImageSequenceDataset(Dataset):
         self.images = self.get_image_list(path)
         self.n_images = len(self.images)
         self.offset = offset
-        
-        if n_sample_frame < 0:
-            n_sample_frame = len(self.images)
         self.start_sample_frame = start_sample_frame
-        
+        if n_sample_frame < 0:
+            n_sample_frame = len(self.images)        
         self.n_sample_frame = n_sample_frame
+        # local sampling rate from the video
         self.sampling_rate = sampling_rate
 
         self.sequence_length = (n_sample_frame - 1) * sampling_rate + 1
         if self.n_images < self.sequence_length:
-            raise ValueError("self.n_images < self.sequence_length")
-        self.stride = stride
+            raise ValueError(f"self.n_images  {self.n_images } < self.sequence_length {self.sequence_length}: Required number of frames {self.sequence_length} larger than total frames in the dataset {self.n_images }")
+        
+        # During tuning if video is too long, we sample the long video every self.stride globally
+        self.stride = stride if stride > 0 else (self.n_images+1)
+        self.video_len = (self.n_images - self.sequence_length) // self.stride + 1
 
         self.image_mode = image_mode
         self.image_size = image_size
@@ -67,22 +69,20 @@ class ImageSequenceDataset(Dataset):
 
         self.prompt = prompt
         self.prompt_ids = prompt_ids
-        self.overfit_length = (self.n_images - self.sequence_length) // self.stride + 1
-        # Negative prompt for regularization
+        # Negative prompt for regularization to avoid overfitting during one-shot tuning
         if class_data_root is not None:
             self.class_data_root = Path(class_data_root)
             self.class_images_path = sorted(list(self.class_data_root.iterdir()))
             self.num_class_images = len(self.class_images_path)
             self.class_prompt_ids = class_prompt_ids
         
-        self.video_len = (self.n_images - self.sequence_length) // self.stride + 1
-
+        
     def __len__(self):
         max_len = (self.n_images - self.sequence_length) // self.stride + 1
         
         if hasattr(self, 'num_class_images'):
             max_len = max(max_len, self.num_class_images)
-        # return (self.n_images - self.sequence_length) // self.stride + 1
+        
         return max_len
 
     def __getitem__(self, index):
@@ -106,18 +106,6 @@ class ImageSequenceDataset(Dataset):
             return_batch["class_prompt_ids"] = self.class_prompt_ids
         return return_batch
     
-    def get_all(self, val_length=None):
-        if val_length is None:
-            val_length = len(self.images)
-        frame_indices = (i for i in range(val_length))
-        frames = [self.load_frame(i) for i in frame_indices]
-        frames = self.transform(frames)
-
-        return {
-            "images": frames,
-            "prompt_ids": self.prompt_ids,
-        }
-
     def transform(self, frames):
         frames = self.tensorize_frames(frames)
         frames = offset_crop(frames, **self.offset)

@@ -2,7 +2,7 @@
 
 pretrained_model_path: "./ckpt/jeep_tuned_200"
 
-train_dataset:
+dataset_config:
     path: "data/teaser_car-turn"
     prompt: "a silver jeep driving down a curvy road in the countryside,"
     n_sample_frame: 8
@@ -70,7 +70,7 @@ validation_sample_logger_config:
             masked_self_attention: True
             bend_th: [0.3, 0.3]
             
-    clip_length: "${..train_dataset.n_sample_frame}"
+    clip_length: "${..dataset_config.n_sample_frame}"
     sample_seeds: [0]
 
     num_inference_steps: 50
@@ -85,9 +85,7 @@ test_pipeline_config:
     target: video_diffusion.pipelines.p2p_ddim_spatial_temporal.P2pDDIMSpatioTemporalPipeline
     num_inference_steps: "${..validation_sample_logger.num_inference_steps}"
 
-epsilon: 1e-5
-train_steps: 10
+
+
 seed: 0
-learning_rate: 1e-5
-train_temporal_conv: False
-guidance_scale: "${validation_sample_logger_config.guidance_scale}"
+

@@ -2,7 +2,7 @@
 # There is no obvious difference between v1-4 and v1-4, we just choose to tune v1-5 randomly at the beginning of this project.
 pretrained_model_path: "./ckpt/stable-diffusion-v1-5"
 
-train_dataset:
+dataset_config:
     path: "data/shape/teaser_car-turn"
     prompt: "a silver jeep driving down a curvy road in the countryside,"
     n_sample_frame: 8
@@ -28,9 +28,9 @@ validation_sample_logger_config:
         watercolor painting of a silver jeep driving down a curvy road in the countryside,
 
     ]
-    clip_length: "${..train_dataset.n_sample_frame}"
+    clip_length: "${..dataset_config.n_sample_frame}"
     sample_seeds: [12734]
-    val_all_frames: False
+    
     num_inference_steps: 50 # 15 minutes
     strength: 0.99
 

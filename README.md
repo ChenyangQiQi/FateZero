@@ -83,6 +83,11 @@ previous works.
 - [x] Release the edit config and data for all results, Tune-a-video optimization
 - [x] Memory and runtime profiling and Editing guidance documents
 - [x] Colab and hugging-face
+- [ ] code refactoring,
+  <!-- - [ ] config cleaning
+  - [ ] attention code cleaning
+  - [ ] temporal model code cleaning -->
+- [ ] time&memory optimization
 - [ ] Release more application
 
 ## 🛡 Setup Environment
@@ -111,6 +116,11 @@ Validate the installation by
 ```
 python test_install.py
 ```
+You may download all data and checkpoints using the following bash command
+```
+bash download_all.sh
+```
+The above command take minutes and 100GB. Or you may download the required data and ckpts latter according to your interests.
 
 Our environment is similar to Tune-A-video ([official](https://github.com/showlab/Tune-A-Video), [unofficial](https://github.com/bryandlee/Tune-A-Video))  and [prompt-to-prompt](https://github.com/google/prompt-to-prompt/). You may check them for more details.
 
@@ -200,7 +210,7 @@ accelerate launch test_fatezero.py --config config/teaser/jeep_posche.yaml
 ```
 
 
-### Reproduce other results in the paper (in progress)
+### Reproduce other results in the paper
 <!-- Download the data of [style editing](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/EaTqRAuW0eJLj0z_JJrURkcBZCC3Zvgsdo6zsXHhpyHhHQ?e=FzuiNG) and [attribute editing](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/Ee7J2IzZuaVGkefh-ZRp1GwB7RCUYU7MVJCKqeNWmOIpfg?e=dcOwb7)
 -->
 Download the data

@@ -45,14 +45,14 @@ def collate_fn(examples):
 def test(
     config: str,
     pretrained_model_path: str,
-    train_dataset: Dict,
+    dataset_config: Dict,
     logdir: str = None,
     validation_sample_logger_config: Optional[Dict] = None,
     test_pipeline_config: Optional[Dict] = None,
     gradient_accumulation_steps: int = 1,
     seed: Optional[int] = None,
     mixed_precision: Optional[str] = "fp16",
-    train_batch_size: int = 1,
+    batch_size: int = 1,
     model_config: dict={},
     verbose: bool=True,
     **kwargs
@@ -130,17 +130,17 @@ def test(
     unet.requires_grad_(False)
     text_encoder.requires_grad_(False)
     prompt_ids = tokenizer(
-        train_dataset["prompt"],
+        dataset_config["prompt"],
         truncation=True,
         padding="max_length",
         max_length=tokenizer.model_max_length,
         return_tensors="pt",
     ).input_ids
-    train_dataset = ImageSequenceDataset(**train_dataset, prompt_ids=prompt_ids)
+    video_dataset = ImageSequenceDataset(**dataset_config, prompt_ids=prompt_ids)
 
     train_dataloader = torch.utils.data.DataLoader(
-        train_dataset,
-        batch_size=train_batch_size,
+        video_dataset,
+        batch_size=batch_size,
         shuffle=True,
         num_workers=4,
         collate_fn=collate_fn,
@@ -198,7 +198,7 @@ def test(
         unet.eval()
 
         text_embeddings = pipeline._encode_prompt(
-                train_dataset.prompt,
+                dataset_config.prompt,
                 device = accelerator.device,
                 num_images_per_prompt = 1,
                 do_classifier_free_guidance = True,
@@ -211,7 +211,7 @@ def test(
             batch_size = 1,
             num_images_per_prompt = 1,  # not sure how to use it
             text_embeddings = text_embeddings,
-            prompt = train_dataset.prompt,
+            prompt = dataset_config.prompt,
             store_attention=use_inversion_attention,
             LOW_RESOURCE = True, # not classifier-free guidance
             save_path = logdir if verbose else None

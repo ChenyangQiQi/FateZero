@@ -1,6 +1,6 @@
 pretrained_model_path: "./ckpt/stable-diffusion-v1-4"
 
-train_dataset:
+dataset_config:
     path: "data/style/sunflower"
     prompt: "a yellow sunflower"
     start_sample_frame: 0
@@ -59,9 +59,9 @@ validation_sample_logger_config:
                 words: ["van", "gogh"]
                 values: [10, 10] # amplify attention to the word "tiger" by *2 
             
-    clip_length: "${..train_dataset.n_sample_frame}"
+    clip_length: "${..dataset_config.n_sample_frame}"
     sample_seeds: [0]
-    val_all_frames: False
+    
 
     num_inference_steps: 50
     prompt2prompt_edit: True
@@ -78,9 +78,7 @@ test_pipeline_config:
     target: video_diffusion.pipelines.p2p_ddim_spatial_temporal.P2pDDIMSpatioTemporalPipeline
     num_inference_steps: "${..validation_sample_logger.num_inference_steps}"
 
-epsilon: 1e-5
-train_steps: 10
+
+
 seed: 0
-learning_rate: 1e-5
-train_temporal_conv: False
-guidance_scale: "${validation_sample_logger_config.guidance_scale}"
+

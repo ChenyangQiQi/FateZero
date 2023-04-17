@@ -1,7 +1,7 @@
 # CUDA_VISIBLE_DEVICES=1 python test_fatezero.py --config config/shape/man_wonder_bat_spider.yaml
 pretrained_model_path: "ckpt/man_skate_250"
 
-train_dataset:
+dataset_config:
     path: "data/shape/man_skate"
     prompt: "A man rides a wooden skateboard on the rail with a helmet and arms outstretched"
     n_sample_frame: 8
@@ -93,9 +93,9 @@ validation_sample_logger_config:
             bend_th: [0.3, 0.3]
 
 
-    clip_length: "${..train_dataset.n_sample_frame}"
+    clip_length: "${..dataset_config.n_sample_frame}"
     sample_seeds: [0]
-    val_all_frames: False
+    
 
     num_inference_steps: 50
     prompt2prompt_edit: True
@@ -112,9 +112,7 @@ test_pipeline_config:
     target: video_diffusion.pipelines.p2p_ddim_spatial_temporal.P2pDDIMSpatioTemporalPipeline
     num_inference_steps: "${..validation_sample_logger.num_inference_steps}"
 
-epsilon: 1e-5
-train_steps: 10
+
+
 seed: 0
-learning_rate: 1e-5
-train_temporal_conv: False
-guidance_scale: "${validation_sample_logger_config.guidance_scale}"
+

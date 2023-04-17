@@ -20,11 +20,11 @@ def run(edit_config, dataset_config):
 
         for p2p_config_index, p2p_config in Omegadict_edit_config['validation_sample_logger_config']['p2p_config'].items():
             edit_config_now = copy.deepcopy(Omegadict_edit_config)
-            edit_config_now['train_dataset'] = copy.deepcopy(Omegadict_dataset_config[data_sample])
-            edit_config_now['train_dataset'].pop('target')
-            if 'eq_params' in edit_config_now['train_dataset']:
-                edit_config_now['train_dataset'].pop('eq_params')
-            # edit_config_now['train_dataset']['prompt'] = Omegadict_dataset_config[data_sample]['source']
+            edit_config_now['dataset_config'] = copy.deepcopy(Omegadict_dataset_config[data_sample])
+            edit_config_now['dataset_config'].pop('target')
+            if 'eq_params' in edit_config_now['dataset_config']:
+                edit_config_now['dataset_config'].pop('eq_params')
+            # edit_config_now['dataset_config']['prompt'] = Omegadict_dataset_config[data_sample]['source']
             
             edit_config_now['validation_sample_logger_config']['prompts'] \
                 = copy.deepcopy( [Omegadict_dataset_config[data_sample]['prompt'],]+ OmegaConf.to_object(Omegadict_dataset_config[data_sample]['target']))

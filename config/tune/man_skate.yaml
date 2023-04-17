@@ -1,7 +1,7 @@
 # CUDA_VISIBLE_DEVICES=4 python train_tune_a_video.py --config config/tune/man_skate.yaml
 pretrained_model_path: "./ckpt/stable-diffusion-v1-4"
 
-train_dataset:
+dataset_config:
     path: "./data/shape/man_skate"
     prompt: "A man rides a wooden skateboard on the rail with a helmet and arms outstretched"
     n_sample_frame: 8
@@ -29,9 +29,9 @@ validation_sample_logger_config:
         A Wonder Woman rides a wooden skateboard on the rail with cowboy hat and arms outstretched,
         A Batman rides a wooden skateboard on the rail and arms outstretched,
     ]
-    clip_length: "${..train_dataset.n_sample_frame}"
+    clip_length: "${..dataset_config.n_sample_frame}"
     sample_seeds: [12734]
-    val_all_frames: False
+    
     num_inference_steps: 50 # 15 minutes
     strength: 0.99
 
