@@ -4,7 +4,7 @@ pretrained_model_path: "./ckpt/jeep_tuned_200"
 
 dataset_config:
     path: "data/teaser_car-turn"
-    prompt: "a silver jeep driving down a curvy road in the countryside," # RENAME Inversion prompts
+    prompt: "a silver jeep driving down a curvy road in the countryside," # RENAME Inversion editing_prompts
     n_sample_frame: 8
     sampling_rate: 1
     stride: 80
@@ -15,11 +15,11 @@ dataset_config:
         bottom: 0
 
 
-editing_config: # RENAME editing config
-    use_invertion_latents: true # RENAME used inversion latents
+editing_config:
+    use_invertion_latents: true
     use_inversion_attention: true
     
-    prompts: [ # RENAME Editing prompts
+    editing_prompts: [
         a silver jeep driving down a curvy road in the countryside,
         a Porsche car driving down a curvy road in the countryside,
     ]
@@ -41,7 +41,7 @@ editing_config: # RENAME editing config
             
             # Amplify the target-words cross attention, larger value, more close to target
             # Usefull in style editing
-            eq_params:  # RENAME Enhanced words
+            eq_params:  # equilizer_params
                 words: ["watercolor", "painting"]
                 values: [10,10]  # RENAME ca_amp
             

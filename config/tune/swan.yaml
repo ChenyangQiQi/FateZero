@@ -22,7 +22,7 @@ editing_config:
     use_invertion_latents: True
     use_inversion_attention: True
     guidance_scale: 7.5
-    prompts: [
+    editing_prompts: [
         # source prompt
         a black swan with a red beak swimming in a river near a wall and bushes,
 

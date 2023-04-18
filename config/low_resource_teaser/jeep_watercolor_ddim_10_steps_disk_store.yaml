@@ -20,7 +20,7 @@ editing_config:
     use_inversion_attention: true
     guidance_scale: 7.5
     source_prompt: "${dataset_config.prompt}"
-    prompts: [
+    editing_prompts: [
         # a silver jeep driving down a curvy road in the countryside,
         watercolor painting of a silver jeep driving down a curvy road in the countryside,
     ]

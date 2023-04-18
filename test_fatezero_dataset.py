@@ -26,10 +26,10 @@ def run(edit_config, dataset_config):
                 edit_config_now['dataset_config'].pop('eq_params')
             # edit_config_now['dataset_config']['prompt'] = Omegadict_dataset_config[data_sample]['source']
             
-            edit_config_now['editing_config']['prompts'] \
+            edit_config_now['editing_config']['editing_prompts'] \
                 = copy.deepcopy( [Omegadict_dataset_config[data_sample]['prompt'],]+ OmegaConf.to_object(Omegadict_dataset_config[data_sample]['target']))
             p2p_config_now = dict()
-            for i in range(len(edit_config_now['editing_config']['prompts'])):
+            for i in range(len(edit_config_now['editing_config']['editing_prompts'])):
                 p2p_config_now[i] = p2p_config
                 if 'eq_params' in Omegadict_dataset_config[data_sample]:
                     p2p_config_now[i]['eq_params'] = Omegadict_dataset_config[data_sample]['eq_params']

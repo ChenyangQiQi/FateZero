@@ -19,7 +19,7 @@ editing_config:
     use_invertion_latents: true
     use_inversion_attention: true
     guidance_scale: 7.5
-    prompts: [
+    editing_prompts: [
         a silver jeep driving down a curvy road in the countryside,
         watercolor painting of a silver jeep driving down a curvy road in the countryside,
     ]

@@ -18,7 +18,7 @@ from video_diffusion.common.image_util import save_gif_mp4_folder_type
 class P2pSampleLogger:
     def __init__(
         self,
-        prompts: List[str],
+        editing_prompts: List[str],
         clip_length: int,
         logdir: str,
         subdir: str = "sample",
@@ -38,7 +38,7 @@ class P2pSampleLogger:
         traverse_p2p_config: bool = False,
         **args
     ) -> None:
-        self.prompts = prompts
+        self.editing_prompts = editing_prompts
         self.clip_length = clip_length
         self.guidance_scale = guidance_scale
         self.num_inference_steps = num_inference_steps
@@ -85,7 +85,7 @@ class P2pSampleLogger:
                         ])
             else:
                 samples_all.append(input_pil_images)
-        for idx, prompt in enumerate(tqdm(self.prompts, desc="Generating sample images")):
+        for idx, prompt in enumerate(tqdm(self.editing_prompts, desc="Generating sample images")):
             if self.prompt2prompt_edit:
                 if self.traverse_p2p_config:
                     p2p_config_now = copy.deepcopy(self.p2p_config[idx])
@@ -111,7 +111,7 @@ class P2pSampleLogger:
                 generator.manual_seed(seed)
                 sequence_return = pipeline(
                     prompt=input_prompt,
-                    source_prompt = self.prompts[0] if self.source_prompt is None else self.source_prompt,
+                    source_prompt = self.editing_prompts[0] if self.source_prompt is None else self.source_prompt,
                     edit_type = edit_type,
                     image=image, # torch.Size([8, 3, 512, 512])
                     strength=self.strength,

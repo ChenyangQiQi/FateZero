@@ -20,7 +20,7 @@ editing_config:
     use_invertion_latents: True
     use_inversion_attention: True
     guidance_scale: 7.5
-    prompts: [
+    editing_prompts: [
         # source prompt
         a white and blue bus on the road,
 

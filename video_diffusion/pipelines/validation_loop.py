@@ -17,7 +17,7 @@ from video_diffusion.common.image_util import save_gif_mp4_folder_type
 class SampleLogger:
     def __init__(
         self,
-        prompts: List[str],
+        editing_prompts: List[str],
         clip_length: int,
         logdir: str,
         subdir: str = "sample",
@@ -34,7 +34,7 @@ class SampleLogger:
         **args
         
     ) -> None:
-        self.prompts = prompts
+        self.editing_prompts = editing_prompts
         self.clip_length = clip_length
         self.guidance_scale = guidance_scale
         self.num_inference_steps = num_inference_steps
@@ -73,7 +73,7 @@ class SampleLogger:
             samples_all.append([
                             annotate_image(image, "input sequence", font_size=self.annotate_size) for image in input_pil_images
                         ])
-        for idx, prompt in enumerate(tqdm(self.prompts, desc="Generating sample images")):
+        for idx, prompt in enumerate(tqdm(self.editing_prompts, desc="Generating sample images")):
             if self.prompt2prompt_edit:
                 if idx == 0:
                     edit_type = 'save'
