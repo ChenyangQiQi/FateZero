@@ -27,7 +27,7 @@ class P2pSampleLogger:
         num_inference_steps: int = 20,
         guidance_scale: float = 7,
         strength: float = None,
-        annotate: bool = True,
+        annotate: bool = False,
         annotate_size: int = 15,
         use_make_grid: bool = True,
         grid_column_size: int = 2,
@@ -126,7 +126,7 @@ class P2pSampleLogger:
                 if self.prompt2prompt_edit:
                     sequence = sequence_return['sdimage_output'].images[0]
                     attention_output = sequence_return['attention_output']
-                    mask_list = sequence_return.get('mask_list', None)
+                    
                 else:
                     sequence = sequence_return.images[0]
                 torch.cuda.empty_cache()
@@ -135,7 +135,8 @@ class P2pSampleLogger:
                     images = [
                         annotate_image(image, prompt, font_size=self.annotate_size) for image in sequence
                     ]
-
+                else:
+                    images = sequence
                 if self.make_grid:
                     samples_all.append(images)
                     if self.prompt2prompt_edit:
@@ -146,8 +147,7 @@ class P2pSampleLogger:
                 save_gif_mp4_folder_type(images, save_path)
 
                 if self.prompt2prompt_edit:
-                    if mask_list is not None and len(mask_list) > 0:
-                        save_gif_mp4_folder_type(mask_list, save_path.replace('.gif', 'mask.gif'))
+
                     if attention_output is not None:
                         save_gif_mp4_folder_type(attention_output, save_path.replace('.gif', 'atten.gif'))
 

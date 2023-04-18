@@ -205,8 +205,8 @@ class P2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
             controller = edit_controller, 
             # target_prompt = kwargs['prompts'][1],
             **kwargs)
-        if hasattr(edit_controller.local_blend, 'mask_list'):
-            mask_list = edit_controller.local_blend.mask_list
+        if hasattr(edit_controller.latent_blend, 'mask_list'):
+            mask_list = edit_controller.latent_blend.mask_list
         else:
             mask_list = None
         if len(edit_controller.attention_store.keys()) > 0:

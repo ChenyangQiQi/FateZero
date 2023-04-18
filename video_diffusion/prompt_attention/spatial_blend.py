@@ -228,7 +228,7 @@ class AttentionBlend:
         self.MAX_NUM_WORDS = 77
         self.NUM_DDIM_STEPS = NUM_DDIM_STEPS
         if save_path is not None:
-            self.save_path = save_path+'/blend_mask'
+            self.save_path = save_path+'/attention_blend_mask'
             os.makedirs(self.save_path, exist_ok='True')
         else:
             self.save_path = None

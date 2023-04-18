@@ -156,7 +156,7 @@ def log_train_reg_samples(
     save_gif_mp4_folder_type(train_samples, save_path)
 
 
-def save_gif_mp4_folder_type(images, save_path, save_gif=False):
+def save_gif_mp4_folder_type(images, save_path, save_gif=True):
 
     if isinstance(images[0], np.ndarray):
         images = [Image.fromarray(i) for i in images]

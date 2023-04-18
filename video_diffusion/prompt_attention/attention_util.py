@@ -48,7 +48,7 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
         x_t = super().step_callback(x_t)
         x_t_device = x_t.device
         x_t_dtype = x_t.dtype
-        if self.local_blend is not None:
+        if self.latent_blend is not None:
             if self.use_inversion_attention:
                 step_in_store = len(self.additional_attention_store.latents_store) - self.cur_step
             else:
@@ -72,7 +72,7 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
 
                     concate_attention = torch.cat([attention[None, ...], self.attention_store[key][i][None, ...]], dim=0)
                     blend_dict[key].append(copy.deepcopy(rearrange(concate_attention, ' p c h res words -> (p h) c res words')))
-            x_t = self.local_blend(copy.deepcopy(torch.cat([inverted_latents, x_t], dim=0)), copy.deepcopy(blend_dict))
+            x_t = self.latent_blend(copy.deepcopy(torch.cat([inverted_latents, x_t], dim=0)), copy.deepcopy(blend_dict))
             return x_t[1:, ...]
         else:
             return x_t
@@ -110,14 +110,14 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
             else:
                 step_in_store = self.cur_step
                 
-            place_in_unet_cross_atten_list = self.additional_attention_store.attention_store_all_step[step_in_store]
-            # todo, edit to step_in_store_atten_dict
-            if isinstance(place_in_unet_cross_atten_list, str): 
-                place_in_unet_cross_atten_list = torch.load(place_in_unet_cross_atten_list)
+            step_in_store_atten_dict = self.additional_attention_store.attention_store_all_step[step_in_store]
+            
+            if isinstance(step_in_store_atten_dict, str): 
+                step_in_store_atten_dict = torch.load(step_in_store_atten_dict)
             
             # Note that attn is append to step_store, 
             # if attn is get through clean -> noisy, we should inverse it
-            attn_base = place_in_unet_cross_atten_list[key][current_pos]          
+            attn_base = step_in_store_atten_dict[key][current_pos]          
             
             self.update_attention_position_dict(key)
             # save in format of [temporal, head, resolution, text_embedding]
@@ -133,12 +133,12 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
                 else:
                     
                     # start of masked self-attention
-                    if self.MB is not None and attn_repalce.shape[-2] <= 32 ** 2:
-                        # ca_this_step = place_in_unet_cross_atten_list
+                    if self.attention_blend is not None and attn_repalce.shape[-2] <= 32 ** 2:
+                        # ca_this_step = step_in_store_atten_dict
                         # query 1024, key 2048
                         h = int(np.sqrt(attn_repalce.shape[-2]))
                         w = h
-                        mask = self.MB(target_h = h, target_w =w, attention_store= place_in_unet_cross_atten_list, step_in_store=step_in_store)
+                        mask = self.attention_blend(target_h = h, target_w =w, attention_store= step_in_store_atten_dict, step_in_store=step_in_store)
                         # reshape from ([ 1, 2, 32, 32]) -> [2, 1, 1024, 1]
                         reshaped_mask = rearrange(mask, "d c h w -> c d (h w)")[..., None]
                         
@@ -173,10 +173,10 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
     def __init__(self, prompts, num_steps: int,
                  cross_replace_steps: Union[float, Tuple[float, float], Dict[str, Tuple[float, float]]],
                  self_replace_steps: Union[float, Tuple[float, float]],
-                 local_blend: Optional[LatentBlend], tokenizer=None, 
+                 latent_blend: Optional[LatentBlend], tokenizer=None, 
                  additional_attention_store: AttentionStore =None,
                  use_inversion_attention: bool=False,
-                 MB: AttentionBlend= None,
+                 attention_blend: AttentionBlend= None,
                  save_self_attention: bool=True,
                  disk_store=False
                  ):
@@ -185,7 +185,7 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
             disk_store=disk_store)
         self.additional_attention_store = additional_attention_store
         self.batch_size = len(prompts)
-        self.MB = MB
+        self.attention_blend = attention_blend
         if self.additional_attention_store is not None:
             # the attention_store is provided outside, only pass in one promp
             self.batch_size = len(prompts) //2
@@ -195,7 +195,7 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
         if type(self_replace_steps) is float:
             self_replace_steps = 0, self_replace_steps
         self.num_self_replace = int(num_steps * self_replace_steps[0]), int(num_steps * self_replace_steps[1])
-        self.local_blend = local_blend
+        self.latent_blend = latent_blend
         # We need to know the current position in attention
         self.prev_attention_key_name = 0
         self.use_inversion_attention = use_inversion_attention
@@ -223,16 +223,16 @@ class AttentionReplace(AttentionControlEdit):
             return torch.einsum('thpw,bwn->bthpn', attn_base, self.mapper)
       
     def __init__(self, prompts, num_steps: int, cross_replace_steps: float, self_replace_steps: float,
-                 local_blend: Optional[LatentBlend] = None, tokenizer=None,
+                 latent_blend: Optional[LatentBlend] = None, tokenizer=None,
                  additional_attention_store=None,
                  use_inversion_attention = False,
-                 MB: AttentionBlend=None,
+                 attention_blend: AttentionBlend=None,
                  save_self_attention: bool = True,
                  disk_store=False):
         super(AttentionReplace, self).__init__(
-            prompts, num_steps, cross_replace_steps, self_replace_steps, local_blend, tokenizer=tokenizer,
+            prompts, num_steps, cross_replace_steps, self_replace_steps, latent_blend, tokenizer=tokenizer,
             additional_attention_store=additional_attention_store, use_inversion_attention = use_inversion_attention,
-            MB=MB,
+            attention_blend=attention_blend,
             save_self_attention = save_self_attention,
             disk_store=disk_store
             )
@@ -253,17 +253,17 @@ class AttentionRefine(AttentionControlEdit):
         return attn_replace
 
     def __init__(self, prompts, num_steps: int, cross_replace_steps: float, self_replace_steps: float,
-                 local_blend: Optional[LatentBlend] = None, tokenizer=None,
+                 latent_blend: Optional[LatentBlend] = None, tokenizer=None,
                  additional_attention_store=None,
                  use_inversion_attention = False,
-                 MB: AttentionBlend=None,
+                 attention_blend: AttentionBlend=None,
                  save_self_attention : bool=True,
                  disk_store = False
                  ):
         super(AttentionRefine, self).__init__(
-            prompts, num_steps, cross_replace_steps, self_replace_steps, local_blend, tokenizer=tokenizer,
+            prompts, num_steps, cross_replace_steps, self_replace_steps, latent_blend, tokenizer=tokenizer,
             additional_attention_store=additional_attention_store, use_inversion_attention = use_inversion_attention,
-            MB=MB,
+            attention_blend=attention_blend,
             save_self_attention = save_self_attention,
             disk_store = disk_store
             )
@@ -286,18 +286,18 @@ class AttentionReweight(AttentionControlEdit):
         return attn_replace
 
     def __init__(self, prompts, num_steps: int, cross_replace_steps: float, self_replace_steps: float, equalizer,
-                local_blend: Optional[LatentBlend] = None, controller: Optional[AttentionControlEdit] = None, tokenizer=None,
+                latent_blend: Optional[LatentBlend] = None, controller: Optional[AttentionControlEdit] = None, tokenizer=None,
                 additional_attention_store=None,
                 use_inversion_attention = False,
-                MB: AttentionBlend=None,
+                attention_blend: AttentionBlend=None,
                 save_self_attention:bool = True,
                 disk_store = False
                 ):
         super(AttentionReweight, self).__init__(
-            prompts, num_steps, cross_replace_steps, self_replace_steps, local_blend, tokenizer=tokenizer,
+            prompts, num_steps, cross_replace_steps, self_replace_steps, latent_blend, tokenizer=tokenizer,
             additional_attention_store=additional_attention_store,
             use_inversion_attention = use_inversion_attention,
-            MB=MB,
+            attention_blend=attention_blend,
             save_self_attention=save_self_attention,
             disk_store = disk_store
             )
@@ -329,28 +329,28 @@ def make_controller(tokenizer, prompts: List[str], is_replace_controller: bool,
                     disk_store = False
                     ) -> AttentionControlEdit:
     if (blend_words is None) or (blend_words == 'None'):
-        lb = None
-        MB =None
+        latent_blend = None
+        attention_blend =None
     else:
         if masked_latents:
-            lb = LatentBlend( prompts, blend_words, tokenizer=tokenizer, th=bend_th, NUM_DDIM_STEPS=NUM_DDIM_STEPS,
+            latent_blend = LatentBlend( prompts, blend_words, tokenizer=tokenizer, th=bend_th, NUM_DDIM_STEPS=NUM_DDIM_STEPS,
                             save_path=save_path)
         else:
-            lb = None
+            latent_blend = None
         if masked_self_attention:
-            MB = AttentionBlend( prompts, blend_words, tokenizer=tokenizer, th=bend_th, NUM_DDIM_STEPS=NUM_DDIM_STEPS,
+            attention_blend = AttentionBlend( prompts, blend_words, tokenizer=tokenizer, th=bend_th, NUM_DDIM_STEPS=NUM_DDIM_STEPS,
                            save_path=save_path)
             print(f'Control self attention mask with threshold {bend_th}')   
         else:
-            MB = None
+            attention_blend = None
     if is_replace_controller:
         print('use replace controller')
         controller = AttentionReplace(prompts, NUM_DDIM_STEPS, 
                                       cross_replace_steps=cross_replace_steps, self_replace_steps=self_replace_steps, 
-                                      local_blend=lb, tokenizer=tokenizer,
+                                      latent_blend=latent_blend, tokenizer=tokenizer,
                                       additional_attention_store=additional_attention_store,
                                       use_inversion_attention = use_inversion_attention,
-                                      MB=MB,
+                                      attention_blend=attention_blend,
                                       save_self_attention = save_self_attention,
                                       disk_store=disk_store
                                       )
@@ -358,10 +358,10 @@ def make_controller(tokenizer, prompts: List[str], is_replace_controller: bool,
         print('use refine controller')
         controller = AttentionRefine(prompts, NUM_DDIM_STEPS,
                                      cross_replace_steps=cross_replace_steps, self_replace_steps=self_replace_steps,
-                                     local_blend=lb, tokenizer=tokenizer,
+                                     latent_blend=latent_blend, tokenizer=tokenizer,
                                      additional_attention_store=additional_attention_store,
                                      use_inversion_attention = use_inversion_attention,
-                                     MB=MB,
+                                     attention_blend=attention_blend,
                                      save_self_attention = save_self_attention,
                                      disk_store=disk_store
                                      )
@@ -369,11 +369,11 @@ def make_controller(tokenizer, prompts: List[str], is_replace_controller: bool,
         eq = get_equalizer(prompts[1], equilizer_params["words"], equilizer_params["values"], tokenizer=tokenizer)
         controller = AttentionReweight(prompts, NUM_DDIM_STEPS, 
                                        cross_replace_steps=cross_replace_steps, self_replace_steps=self_replace_steps, 
-                                       equalizer=eq, local_blend=lb, controller=controller, 
+                                       equalizer=eq, latent_blend=latent_blend, controller=controller, 
                                         tokenizer=tokenizer,
                                         additional_attention_store=additional_attention_store,
                                         use_inversion_attention = use_inversion_attention,
-                                        MB=MB,
+                                        attention_blend=attention_blend,
                                         save_self_attention = save_self_attention,
                                         disk_store=disk_store
                                        )
