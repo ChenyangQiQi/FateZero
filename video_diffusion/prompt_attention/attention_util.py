@@ -114,7 +114,7 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
             # todo, edit to step_in_store_atten_dict
             if isinstance(place_in_unet_cross_atten_list, str): 
                 place_in_unet_cross_atten_list = torch.load(place_in_unet_cross_atten_list)
-            # breakpoint()
+            
             # Note that attn is append to step_store, 
             # if attn is get through clean -> noisy, we should inverse it
             attn_base = place_in_unet_cross_atten_list[key][current_pos]          

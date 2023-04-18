@@ -3,7 +3,7 @@ register the attention controller into the UNet of stable diffusion
 Build a customized attention function `_attention'
 Replace the original attention function with `forward' and `spatial_temporal_forward' in attention_controlled_forward function
 Most of spatial_temporal_forward is directly copy from `video_diffusion/models/attention.py'
-
+TODO FIXME: merge redundant code with attention.py
 """
 
 from einops import rearrange
