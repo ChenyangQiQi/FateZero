@@ -83,10 +83,10 @@ previous works.
 - [x] Release the edit config and data for all results, Tune-a-video optimization
 - [x] Memory and runtime profiling and Editing guidance documents
 - [x] Colab and hugging-face
-- [ ] code refactoring,
-  <!-- - [ ] config cleaning
-  - [ ] attention code cleaning
-  - [ ] temporal model code cleaning -->
+- [-] code refactoring,
+  - [x] config cleaning
+  - [-] attention code cleaning
+  - [ ] temporal model code cleaning
 - [ ] time&memory optimization
 - [ ] Release more application
 
