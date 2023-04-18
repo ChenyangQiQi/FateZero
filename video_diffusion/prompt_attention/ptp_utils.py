@@ -19,13 +19,12 @@ utils code for image visualization
 
 import numpy as np
 import torch
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 import cv2
 from typing import Optional, Union, Tuple, List, Callable, Dict
-# from IPython.display import display
-from tqdm.notebook import tqdm
+
 import datetime
-import random
+
 
 def text_under_image(image: np.ndarray, text: str, text_color: Tuple[int, int, int] = (0, 0, 0)):
     h, w, c = image.shape
