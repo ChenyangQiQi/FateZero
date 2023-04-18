@@ -9,7 +9,7 @@
 
 
 <table class="center">
-  <td><img src="docs/gif_results/17_car_posche_01_concat_result.gif"></td>
+  <td><img src="docs/gif_results/car_posche_local_blend.gif"></td>
   <td><img src="docs/gif_results/3_sunflower_vangogh_conat_result.gif"></td>
   <td><img src="docs/gif_results/attri/16_sq_eat_02_concat_result.gif"></td>
   <tr>

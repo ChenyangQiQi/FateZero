@@ -16,8 +16,8 @@ dataset_config:
         top: 0
         bottom: 0
 
-validation_sample_logger_config:
-    use_train_latents: True
+editing_config:
+    use_invertion_latents: True
     use_inversion_attention: True
     guidance_scale: 7.5
     prompts: [

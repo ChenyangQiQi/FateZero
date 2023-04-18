@@ -18,7 +18,7 @@ def run(edit_config, dataset_config):
     for data_sample in data_sample_list:
         print(f'Evaluate {data_sample}')
 
-        for p2p_config_index, p2p_config in Omegadict_edit_config['validation_sample_logger_config']['p2p_config'].items():
+        for p2p_config_index, p2p_config in Omegadict_edit_config['editing_config']['p2p_config'].items():
             edit_config_now = copy.deepcopy(Omegadict_edit_config)
             edit_config_now['dataset_config'] = copy.deepcopy(Omegadict_dataset_config[data_sample])
             edit_config_now['dataset_config'].pop('target')
@@ -26,17 +26,17 @@ def run(edit_config, dataset_config):
                 edit_config_now['dataset_config'].pop('eq_params')
             # edit_config_now['dataset_config']['prompt'] = Omegadict_dataset_config[data_sample]['source']
             
-            edit_config_now['validation_sample_logger_config']['prompts'] \
+            edit_config_now['editing_config']['prompts'] \
                 = copy.deepcopy( [Omegadict_dataset_config[data_sample]['prompt'],]+ OmegaConf.to_object(Omegadict_dataset_config[data_sample]['target']))
             p2p_config_now = dict()
-            for i in range(len(edit_config_now['validation_sample_logger_config']['prompts'])):
+            for i in range(len(edit_config_now['editing_config']['prompts'])):
                 p2p_config_now[i] = p2p_config
                 if 'eq_params' in Omegadict_dataset_config[data_sample]:
                     p2p_config_now[i]['eq_params'] = Omegadict_dataset_config[data_sample]['eq_params']
             
-            edit_config_now['validation_sample_logger_config']['p2p_config'] = copy.deepcopy(p2p_config_now)
-            edit_config_now['validation_sample_logger_config']['source_prompt'] = Omegadict_dataset_config[data_sample]['prompt']
-            # edit_config_now['validation_sample_logger_config']['source_prompt'] = Omegadict_dataset_config[data_sample]['eq_params']
+            edit_config_now['editing_config']['p2p_config'] = copy.deepcopy(p2p_config_now)
+            edit_config_now['editing_config']['source_prompt'] = Omegadict_dataset_config[data_sample]['prompt']
+            # edit_config_now['editing_config']['source_prompt'] = Omegadict_dataset_config[data_sample]['eq_params']
             
             
             # if 'logdir' not in edit_config_now:

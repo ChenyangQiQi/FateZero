@@ -79,9 +79,12 @@ class P2pSampleLogger:
         # handle input image
         if image is not None:
             input_pil_images = pipeline.numpy_to_pil(tensor_to_numpy(image))[0]
-            samples_all.append([
+            if self.annotate :
+                samples_all.append([
                             annotate_image(image, "input sequence", font_size=self.annotate_size) for image in input_pil_images
                         ])
+            else:
+                samples_all.append(input_pil_images)
         for idx, prompt in enumerate(tqdm(self.prompts, desc="Generating sample images")):
             if self.prompt2prompt_edit:
                 if self.traverse_p2p_config:

@@ -15,8 +15,8 @@ dataset_config:
         bottom: 0
 
 
-validation_sample_logger_config: # RENAME editing config
-    use_train_latents: true # RENAME used inversion latents
+editing_config: # RENAME editing config
+    use_invertion_latents: true # RENAME used inversion latents
     use_inversion_attention: true
     
     prompts: [ # RENAME Editing prompts

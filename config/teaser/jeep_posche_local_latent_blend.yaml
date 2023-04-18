@@ -1,4 +1,4 @@
-# CUDA_VISIBLE_DEVICES=0 python test_fatezero.py --config config/teaser/jeep_posche.yaml
+# CUDA_VISIBLE_DEVICES=5 python test_fatezero.py --config config/teaser/jeep_posche_local_latent_blend.yaml
 
 pretrained_model_path: "./ckpt/jeep_tuned_200"
 
@@ -15,50 +15,17 @@ dataset_config:
         bottom: 0
 
 
-validation_sample_logger_config:
-    use_train_latents: true
+editing_config:
+    use_invertion_latents: true
     use_inversion_attention: true
-    guidance_scale: 7.5
-    prompts: [
-        a silver jeep driving down a curvy road in the countryside,
+    annotate: False
+    prompts: [ # RENAME Editing prompts
+        # a silver jeep driving down a curvy road in the countryside,
         a Porsche car driving down a curvy road in the countryside,
     ]
     p2p_config:
-        0: 
-            # Whether to directly copy the cross attention from source 
-            # True: directly copy, better for object replacement
-            # False: keep source attention, better for style
-            is_replace_controller: False
 
-            # Semantic layout preserving. High steps, replace more cross attention to preserve semantic layout
-            cross_replace_steps: 
-                default_: 0.8
-
-            # Source background structure preserving, in [0, 1]. 
-            # e.g., =0.6 Replace the first 60% steps self-attention
-            self_replace_steps: 0.9
-
-            
-            # Amplify the target-words cross attention, larger value, more close to target
-            # Usefull in style editing
-            eq_params: 
-                words: ["watercolor", "painting"]
-                values: [10,10] 
-            
-            # Target structure-divergence hyperparames
-            # If you change the shape of object better to use all three line, otherwise, no need.
-            # Without following three lines, all self-attention will be replaced
-            # Usefull in shape editing
-            blend_words: [['jeep',], ["car",]] 
-            masked_self_attention:  True
-            # masked_latents: False   #  Directly copy the latents, performance not so good in our case           
-            
-            # preserve source structure of blend_words , [0, 1]
-            # bend_th-> [1.0, 1.0], mask -> 0, use inversion-time attention, the structure is similar to the input
-            # bend_th-> [0.0, 0.0], mask -> 1, use more edit self-attention, more generated shape, less source acttention
-            bend_th: [0.3, 0.3]
-
-        1:
+        0:
             cross_replace_steps: 
                 default_: 0.5
             self_replace_steps: 0.5

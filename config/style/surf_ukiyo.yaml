@@ -8,10 +8,10 @@ dataset_config:
     sampling_rate: 8
 
 
-# use_train_latents: True
+# use_invertion_latents: True
 
-validation_sample_logger_config:
-    use_train_latents: true
+editing_config:
+    use_invertion_latents: true
     use_inversion_attention: true
     guidance_scale: 7.5
     prompts: [

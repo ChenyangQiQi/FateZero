@@ -53,7 +53,7 @@ def train(
     logdir: str = None,
     train_steps: int = 300,
     validation_steps: int = 1000,
-    validation_sample_logger_config: Optional[Dict] = None,
+    editing_config: Optional[Dict] = None,
     test_pipeline_config: Optional[Dict] = dict(),
     trainer_pipeline_config: Optional[Dict] = dict(),
     gradient_accumulation_steps: int = 1,
@@ -131,7 +131,7 @@ def train(
             subfolder="scheduler",
         ),
     )
-    pipeline.scheduler.set_timesteps(validation_sample_logger_config['num_inference_steps'])
+    pipeline.scheduler.set_timesteps(editing_config['num_inference_steps'])
     pipeline.set_progress_bar_config(disable=True)
 
 
@@ -307,8 +307,8 @@ def train(
     step = 0
     # End of config trainer
     
-    if validation_sample_logger_config is not None and accelerator.is_main_process:
-        validation_sample_logger = SampleLogger(**validation_sample_logger_config, logdir=logdir)
+    if editing_config is not None and accelerator.is_main_process:
+        validation_sample_logger = SampleLogger(**editing_config, logdir=logdir)
 
 
     # Only show the progress bar once on each machine.
@@ -350,7 +350,7 @@ def train(
                     val_image = rearrange(batch["images"].to(dtype=weight_dtype), "b c f h w -> (b f) c h w")
                     
                     # Unet is changing in different iteration; we should invert online
-                    if validation_sample_logger_config.get('use_train_latents', False):
+                    if editing_config.get('use_invertion_latents', False):
                         # Precompute the latents for this video to align the initial latents in training and test
                         assert batch["images"].shape[0] == 1, "Only support, overfiting on a single video"
                         # we only inference for latents, no training

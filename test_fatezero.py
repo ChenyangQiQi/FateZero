@@ -47,7 +47,7 @@ def test(
     pretrained_model_path: str,
     dataset_config: Dict,
     logdir: str = None,
-    validation_sample_logger_config: Optional[Dict] = None,
+    editing_config: Optional[Dict] = None,
     test_pipeline_config: Optional[Dict] = None,
     gradient_accumulation_steps: int = 1,
     seed: Optional[int] = None,
@@ -113,7 +113,7 @@ def test(
         ),
         disk_store=kwargs.get('disk_store', False)
     )
-    pipeline.scheduler.set_timesteps(validation_sample_logger_config['num_inference_steps'])
+    pipeline.scheduler.set_timesteps(editing_config['num_inference_steps'])
     pipeline.set_progress_bar_config(disable=True)
 
 
@@ -172,8 +172,8 @@ def test(
         accelerator.init_trackers("video")  # , config=vars(args))
     logger.info("***** wait to fix the logger path *****")
 
-    if validation_sample_logger_config is not None and accelerator.is_main_process:
-        validation_sample_logger = P2pSampleLogger(**validation_sample_logger_config, logdir=logdir)
+    if editing_config is not None and accelerator.is_main_process:
+        validation_sample_logger = P2pSampleLogger(**editing_config, logdir=logdir, source_prompt=dataset_config['prompt'])
         # validation_sample_logger.log_sample_images(
         #     pipeline=pipeline,
         #     device=accelerator.device,
@@ -189,7 +189,7 @@ def test(
 
     
     batch = next(train_data_yielder)
-    if validation_sample_logger_config.get('use_train_latents', False):
+    if editing_config.get('use_invertion_latents', False):
         # Precompute the latents for this video to align the initial latents in training and test
         assert batch["images"].shape[0] == 1, "Only support, overfiting on a single video"
         # we only inference for latents, no training
@@ -205,7 +205,7 @@ def test(
                 negative_prompt=None
         )
        
-        use_inversion_attention =  validation_sample_logger_config.get('use_inversion_attention', False)
+        use_inversion_attention =  editing_config.get('use_inversion_attention', False)
         batch['latents_all_step'] = pipeline.prepare_latents_ddim_inverted(
             rearrange(batch["images"].to(dtype=weight_dtype), "b c f h w -> (b f) c h w"),
             batch_size = 1,
