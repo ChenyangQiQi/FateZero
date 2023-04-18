@@ -135,7 +135,7 @@ class P2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
         uncond_embeddings, cond_embeddings = text_embeddings.chunk(2)
         all_latent = [latent]
         latent = latent.clone().detach()
-        print(' Invert clean image to noise latents by DDIM and Unet')
+        print('Invert clean image to noise latents by DDIM and Unet')
         for i in trange(len(self.scheduler.timesteps)):
             t = self.scheduler.timesteps[len(self.scheduler.timesteps) - i - 1]
             
@@ -409,7 +409,6 @@ class P2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
                 
                 # Edit the latents using attention map
                 if controller is not None: 
-                    latents_old = latents
                     dtype = latents.dtype
                     latents_new = controller.step_callback(latents)
                     latents = latents_new.to(dtype)

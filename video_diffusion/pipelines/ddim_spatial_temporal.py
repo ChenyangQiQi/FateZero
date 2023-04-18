@@ -95,7 +95,7 @@ class DDIMSpatioTemporalStableDiffusionPipeline(SpatioTemporalStableDiffusionPip
         uncond_embeddings, cond_embeddings = text_embeddings.chunk(2)
         all_latent = [latent]
         latent = latent.clone().detach()
-        print(' Invert clean image to noise latents by DDIM and Unet')
+        print('Invert clean image to noise latents by DDIM and Unet')
         for i in trange(len(self.scheduler.timesteps)):
             t = self.scheduler.timesteps[len(self.scheduler.timesteps) - i - 1]
             # noise_pred = self.get_noise_pred_single(latent, t, cond_embeddings)

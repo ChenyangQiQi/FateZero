@@ -1,3 +1,8 @@
+'''
+utils code for image visualization
+'''
+
+
 # Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,68 +69,10 @@ def view_images(images, num_rows=1, offset_ratio=0.02, save_path=None):
         pil_img.save(f'{save_path}/{now}.png')
     # display(pil_img)
 
-def load_512(image_path, left=0, right=0, top=0, bottom=0):
-    if type(image_path) is str:
-        image = np.array(Image.open(image_path))[:, :, :3]
-    else:
-        image = image_path
-    h, w, c = image.shape
-    left = min(left, w-1)
-    right = min(right, w - left - 1)
-    top = min(top, h - left - 1)
-    bottom = min(bottom, h - top - 1)
-    image = image[top:h-bottom, left:w-right]
-    h, w, c = image.shape
-    if h < w:
-        offset = (w - h) // 2
-        image = image[:, offset:offset + h]
-    elif w < h:
-        offset = (h - w) // 2
-        image = image[offset:offset + w]
-    image = np.array(Image.fromarray(image).resize((512, 512)))
-    return image
-
-def set_seed(seed: int):
-    """
-    Helper function for reproducible behavior to set the seed in `random`, `numpy`, `torch`.
-
-    Args:
-        seed (`int`): The seed to set.
-        device_specific (`bool`, *optional*, defaults to `False`):
-            Whether to differ the seed on each device slightly with `self.process_index`.
-    """
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    torch.cuda.manual_seed_all(seed)
-    torch.backends.cudnn.benchmark = False
-    torch.use_deterministic_algorithms(True)
 
 
-
-def latent2image(vae, latents):
-    latents = 1 / 0.18215 * latents
-    image = vae.decode(latents)['sample']
-    image = (image / 2 + 0.5).clamp(0, 1)
-    image = image.cpu().permute(0, 2, 3, 1).numpy()
-    image = (image * 255).astype(np.uint8)
-    return image
-
-
-def init_latent(latent, model, height, width, generator, batch_size):
-    # Expand latent with given shape, or randonly initialize it
-    if latent is None:
-        latent = torch.randn(
-            (1, model.unet.in_channels, height // 8, width // 8),
-            generator=generator,
-        )
-    latents = latent.expand(batch_size,  model.unet.in_channels, height // 8, width // 8).to(model.device)
-    return latent, latents
-
-
-
-def register_attention_control(model, controller):
-    "Connect a model with a controller"
+def register_attention_control_p2p_deprecated(model, controller):
+    "Original code from prompt to prompt"
     def ca_forward(self, place_in_unet):
         to_out = self.to_out
         if type(to_out) is torch.nn.modules.container.ModuleList:
