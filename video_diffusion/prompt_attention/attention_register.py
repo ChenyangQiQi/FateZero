@@ -2,11 +2,13 @@
 register the attention controller into the UNet of stable diffusion
 Build a customized attention function `_attention'
 Replace the original attention function with `forward' and `spatial_temporal_forward' in attention_controlled_forward function
+Most of spatial_temporal_forward is directly copy from `video_diffusion/models/attention.py'
 
 """
 
 from einops import rearrange
 import torch
+import torch.nn.functional as F
 
 
 def register_attention_control(model, controller):
@@ -43,11 +45,10 @@ def register_attention_control(model, controller):
             attention_probs = attention_probs.to(value.dtype)
 
             # KEY FUNCTION:
-            # Record and edit the attention probs
-            attention_probs_th = reshape_batch_dim_to_temporal_heads(attention_probs)
+            # Record during inversion and edit the attention probs during editing
             attention_probs = controller(reshape_batch_dim_to_temporal_heads(attention_probs), 
                                          is_cross, place_in_unet)
-            attention_probs = reshape_temporal_heads_to_batch_dim(attention_probs_th)
+            attention_probs = reshape_temporal_heads_to_batch_dim(attention_probs)
             # compute attention output
             hidden_states = torch.bmm(attention_probs, value)
 
@@ -132,6 +133,14 @@ def register_attention_control(model, controller):
             clip_length: int = None,
             SparseCausalAttention_index: list = [-1, 'first']
         ):
+            """
+            Most of spatial_temporal_forward is directly copy from `video_diffusion/models/attention.py'
+            We add two modification
+            1. use self defined attention function that is controlled by AttentionControlEdit module
+            2. move the dropout to reduce randomness
+            FIXME: merge redundant code with attention.py
+
+            """
             if (
                 self.added_kv_proj_dim is not None
                 or encoder_hidden_states is not None
@@ -153,9 +162,9 @@ def register_attention_control(model, controller):
                 value = rearrange(value, "(b f) d c -> b f d c", f=clip_length)
 
 
-                #  ***********************Start of SparseCausalAttention_index**********
+                #  *********************** Start of Spatial-temporal attention **********
                 frame_index_list = []
-                # print(f'SparseCausalAttention_index {str(SparseCausalAttention_index)}')
+                
                 if len(SparseCausalAttention_index) > 0:
                     for index in SparseCausalAttention_index:
                         if isinstance(index, str):
@@ -177,7 +186,7 @@ def register_attention_control(model, controller):
                                         ], dim=2)
 
 
-                #  ***********************End of SparseCausalAttention_index**********
+                #  *********************** End of Spatial-temporal attention **********
                 key = rearrange(key, "b f d c -> (b f) d c", f=clip_length)
                 value = rearrange(value, "b f d c -> (b f) d c", f=clip_length)
             

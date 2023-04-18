@@ -368,7 +368,7 @@ class SparseCausalAttention(CrossAttention):
             value = rearrange(value, "(b f) d c -> b f d c", f=clip_length)
 
 
-            #  ***********************Start of SparseCausalAttention_index**********
+            #  *********************** Start of Spatial-temporal attention **********
             frame_index_list = []
             # print(f'SparseCausalAttention_index {str(SparseCausalAttention_index)}')
             if len(SparseCausalAttention_index) > 0:
@@ -393,71 +393,11 @@ class SparseCausalAttention(CrossAttention):
                                     ], dim=2)
 
 
-            #  ***********************End of SparseCausalAttention_index**********
+            #  *********************** End of Spatial-temporal attention **********
             key = rearrange(key, "b f d c -> (b f) d c", f=clip_length)
             value = rearrange(value, "b f d c -> (b f) d c", f=clip_length)
         
         
-        key = self.reshape_heads_to_batch_dim(key)
-        value = self.reshape_heads_to_batch_dim(value)
-        
-        # attention, what we cannot get enough of
-        if self._use_memory_efficient_attention_xformers:
-            hidden_states = self._memory_efficient_attention_xformers(query, key, value, attention_mask)
-            # Some versions of xformers return output in fp32, cast it back to the dtype of the input
-            hidden_states = hidden_states.to(query.dtype)
-        else:
-            if self._slice_size is None or query.shape[0] // self._slice_size == 1:
-                hidden_states = self._attention(query, key, value, attention_mask)
-            else:
-                hidden_states = self._sliced_attention(
-                    query, key, value, hidden_states.shape[1], dim, attention_mask
-                )
-
-        # linear proj
-        hidden_states = self.to_out[0](hidden_states)
-
-        # dropout
-        hidden_states = self.to_out[1](hidden_states)
-        return hidden_states
-
-# FIXME
-class SparseCausalAttention_fixme(CrossAttention):
-    def forward(
-        self,
-        hidden_states,
-        encoder_hidden_states=None,
-        attention_mask=None,
-        clip_length: int = None,
-    ):
-        if (
-            self.added_kv_proj_dim is not None
-            or encoder_hidden_states is not None
-            or attention_mask is not None
-        ):
-            raise NotImplementedError
-
-        if self.group_norm is not None:
-            hidden_states = self.group_norm(hidden_states.transpose(1, 2)).transpose(1, 2)
-
-        query = self.to_q(hidden_states)
-        dim = query.shape[-1]
-        query = self.reshape_heads_to_batch_dim(query)
-
-        key = self.to_k(hidden_states)
-        value = self.to_v(hidden_states)
-
-        prev_frame_index = torch.arange(clip_length) - 1
-        prev_frame_index[0] = 0
-
-        key = rearrange(key, "(b f) d c -> b f d c", f=clip_length)
-        key = torch.cat([key[:, [0] * clip_length], key[:, prev_frame_index]], dim=2)
-        key = rearrange(key, "b f d c -> (b f) d c", f=clip_length)
-
-        value = rearrange(value, "(b f) d c -> b f d c", f=clip_length)
-        value = torch.cat([value[:, [0] * clip_length], value[:, prev_frame_index]], dim=2)
-        value = rearrange(value, "b f d c -> (b f) d c", f=clip_length)
-
         key = self.reshape_heads_to_batch_dim(key)
         value = self.reshape_heads_to_batch_dim(value)
         

@@ -34,24 +34,20 @@ def aggregate_attention(prompts, attention_store: AttentionStore, res: int, from
 
 def show_cross_attention(tokenizer, prompts, attention_store: AttentionStore, 
                          res: int, from_where: List[str], select: int = 0, save_path = None):
-    """_summary_
-
-        tokenizer (_type_): _description_
-        prompts (_type_): _description_
-        attention_store (AttentionStore): _description_
+    """
+        attention_store (AttentionStore): 
             ["down", "mid", "up"] X ["self", "cross"]
             4,         1,    6
             head*res*text_token_len = 8*res*77
             res=1024 -> 64 -> 1024
         res (int): res
         from_where (List[str]): "up", "down'
-        select (int, optional): _description_. Defaults to 0.
     """
     if isinstance(prompts, str):
         prompts = [prompts,]
-    tokens = tokenizer.encode(prompts[select]) # list of length 9, [0-49 K]
+    tokens = tokenizer.encode(prompts[select]) 
     decoder = tokenizer.decode
-    # 16, 16, 7, 7
+    
     attention_maps = aggregate_attention(prompts, attention_store, res, from_where, True, select)
     os.makedirs('trash', exist_ok=True)
     attention_list = []

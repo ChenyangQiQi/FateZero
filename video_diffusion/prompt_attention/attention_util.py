@@ -1,6 +1,6 @@
 """
 Collect all function in prompt_attention folder.
-Provide a API ```to be called in the main validation loop.
+Provide a API `make_controller' to return an initialized AttentionControlEdit class object in the main validation loop.
 """
 
 from typing import Optional, Union, Tuple, List, Dict
