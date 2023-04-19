@@ -45,7 +45,7 @@ eq_params:
 # Blend the self-attention and latents for better local editing
 # Blending is usefull in local shape editing.
 # Without following three lines, self-attention maps at all HXW spatial pixels will be replaced
-blend_words: [['jeep',], ["car",]] 
+blend_words: [['jeep',], ["car",]] # `blend_words' are words in the source prompt that we want to edit, while other words in the source prompt are try to be preserved.
 blend_self_attention:  True # Attention map of spatial-temporal self attention
 blend_latents: True   # Latents at each time step. False for style editing. Can be True for local shape or attribute editing.
 blend_th: [0.3, 0.3] # Threshold of blending mask, where the cross attention has beed normalized to [0, 1]. 0.3 can be a good choice
