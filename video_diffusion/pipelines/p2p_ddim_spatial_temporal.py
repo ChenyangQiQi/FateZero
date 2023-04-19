@@ -189,9 +189,9 @@ class P2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
                             equilizer_params=kwargs.get('eq_params', None),
                             additional_attention_store=self.store_controller,
                             use_inversion_attention = kwargs['use_inversion_attention'],
-                            bend_th = kwargs.get('bend_th', (0.3, 0.3)),
-                            masked_self_attention = kwargs.get('masked_self_attention', None),
-                            masked_latents=kwargs.get('masked_latents', None),
+                            blend_th = kwargs.get('blend_th', (0.3, 0.3)),
+                            blend_self_attention = kwargs.get('blend_self_attention', None),
+                            blend_latents=kwargs.get('blend_latents', None),
                             save_path=kwargs.get('save_path', None),
                             save_self_attention = kwargs.get('save_self_attention', True),
                             disk_store = kwargs.get('disk_store', False)

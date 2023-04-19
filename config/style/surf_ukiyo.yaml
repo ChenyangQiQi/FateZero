@@ -43,12 +43,12 @@ editing_config:
             # If you change the shape of object better to use all three line, otherwise, no need.
             # Without following three lines, all self-attention will be replaced
             blend_words: [['cat',], ["cat",]] 
-            masked_self_attention:  True
-            # masked_latents: False   # performance not so good in our case, need debug            
-            bend_th: [2, 2]
+            blend_self_attention:  True
+            # blend_latents: False   # performance not so good in our case, need debug            
+            blend_th: [2, 2]
             # preserve source structure of blend_words , [0, 1]
-            # default is bend_th: [2, 2]  # preserve all source self-attention 
-            # bend_th : [0.0, 0.0], mask -> 1, use more att_replace, more generated attention, less source acttention
+            # default is blend_th: [2, 2]  # preserve all source self-attention 
+            # blend_th : [0.0, 0.0], mask -> 1, use more att_replace, more generated attention, less source acttention
         
         1:
             is_replace_controller: False

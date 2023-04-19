@@ -54,7 +54,7 @@ previous works.
 </details>
 
 ## 📋 Changelog
-- 2023.04.18 Code refactoring. Release a config with optional local blending [here](config/teaser/jeep_posche_local_latent_blend.yaml) using `masked_latents` option. 
+- 2023.04.18 Code refactoring. Release a config with optional local blending [here](config/teaser/jeep_posche_local_latent_blend.yaml) using `blend_latents` option. 
 - 2023.04.04 Release Enhanced Tuning-a-Video [configs](config/tune) and shape editing [ckpts](https://huggingface.co/chenyangqi/), [data](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/shape.zip) and [config](config/shape)
 - 2023.03.31 Refine hugging face demo
 <!-- - 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero)! (refinement is in progress) Enjoy the fun of zero-shot video editing freely!

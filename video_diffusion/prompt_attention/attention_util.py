@@ -320,10 +320,10 @@ def get_equalizer(text: str, word_select: Union[int, Tuple[int, ...]], values: U
 def make_controller(tokenizer, prompts: List[str], is_replace_controller: bool,
                     cross_replace_steps: Dict[str, float], self_replace_steps: float=0.0, 
                     blend_words=None, equilizer_params=None, 
-                    additional_attention_store=None, use_inversion_attention = False, bend_th: float=(0.3, 0.3),
+                    additional_attention_store=None, use_inversion_attention = False, blend_th: float=(0.3, 0.3),
                     NUM_DDIM_STEPS=None,
-                    masked_latents = False,
-                    masked_self_attention=False,
+                    blend_latents = False,
+                    blend_self_attention=False,
                     save_path = None,
                     save_self_attention = True,
                     disk_store = False
@@ -332,15 +332,15 @@ def make_controller(tokenizer, prompts: List[str], is_replace_controller: bool,
         latent_blend = None
         attention_blend =None
     else:
-        if masked_latents:
-            latent_blend = LatentBlend( prompts, blend_words, tokenizer=tokenizer, th=bend_th, NUM_DDIM_STEPS=NUM_DDIM_STEPS,
+        if blend_latents:
+            latent_blend = LatentBlend( prompts, blend_words, tokenizer=tokenizer, th=blend_th, NUM_DDIM_STEPS=NUM_DDIM_STEPS,
                             save_path=save_path)
         else:
             latent_blend = None
-        if masked_self_attention:
-            attention_blend = AttentionBlend( prompts, blend_words, tokenizer=tokenizer, th=bend_th, NUM_DDIM_STEPS=NUM_DDIM_STEPS,
+        if blend_self_attention:
+            attention_blend = AttentionBlend( prompts, blend_words, tokenizer=tokenizer, th=blend_th, NUM_DDIM_STEPS=NUM_DDIM_STEPS,
                            save_path=save_path)
-            print(f'Control self attention mask with threshold {bend_th}')   
+            print(f'Control self attention mask with threshold {blend_th}')   
         else:
             attention_blend = None
     if is_replace_controller:

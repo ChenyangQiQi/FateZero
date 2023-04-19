@@ -34,9 +34,9 @@ editing_config:
             is_replace_controller: True
 
             blend_words: [['silver', 'jeep'], ["Porsche", 'car']] # for local edit. If it is not local yet - use only the source object: blend_word = ((('cat',), ("cat",))).
-            masked_self_attention: True
-            masked_latents: True
-            bend_th: [0.3, 0.3]
+            blend_self_attention: True
+            blend_latents: True
+            blend_th: [0.3, 0.3]
             
     clip_length: "${..dataset_config.n_sample_frame}"
     sample_seeds: [0]

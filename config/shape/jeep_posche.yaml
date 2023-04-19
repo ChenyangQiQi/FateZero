@@ -50,13 +50,13 @@ editing_config:
             # Without following three lines, all self-attention will be replaced
             # Usefull in shape editing
             blend_words: [['jeep',], ["car",]] 
-            masked_self_attention:  True
-            # masked_latents: False   #  Directly copy the latents, performance not so good in our case           
+            blend_self_attention:  True
+            # blend_latents: False   #  Directly copy the latents, performance not so good in our case           
             
             # preserve source structure of blend_words , [0, 1]
-            # bend_th-> [1.0, 1.0], mask -> 0, use inversion-time attention, the structure is similar to the input
-            # bend_th-> [0.0, 0.0], mask -> 1, use more edit self-attention, more generated shape, less source acttention
-            bend_th: [0.3, 0.3]
+            # blend_th-> [1.0, 1.0], mask -> 0, use inversion-time attention, the structure is similar to the input
+            # blend_th-> [0.0, 0.0], mask -> 1, use more edit self-attention, more generated shape, less source acttention
+            blend_th: [0.3, 0.3]
 
         1:
             cross_replace_steps: 
@@ -67,8 +67,8 @@ editing_config:
             is_replace_controller: True
 
             blend_words: [['silver', 'jeep'], ["Porsche", 'car']] # for local edit. If it is not local yet - use only the source object: blend_word = ((('cat',), ("cat",))).
-            masked_self_attention: True
-            bend_th: [0.3, 0.3]
+            blend_self_attention: True
+            blend_th: [0.3, 0.3]
             
     clip_length: "${..dataset_config.n_sample_frame}"
     sample_seeds: [0]
