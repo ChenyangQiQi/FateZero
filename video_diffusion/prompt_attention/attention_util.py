@@ -14,7 +14,7 @@ import torch.nn.functional as F
 
 import video_diffusion.prompt_attention.ptp_utils as ptp_utils
 import video_diffusion.prompt_attention.seq_aligner as seq_aligner
-from video_diffusion.prompt_attention.spatial_blend import LatentBlend, AttentionBlend
+from video_diffusion.prompt_attention.spatial_blend import SpatialBlender
 from video_diffusion.prompt_attention.visualization import show_cross_attention, show_self_attention_comp
 from video_diffusion.prompt_attention.attention_store import AttentionStore, AttentionControl
 from video_diffusion.prompt_attention.attention_register import register_attention_control
@@ -71,8 +71,8 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
                 for i, attention in enumerate(place_in_unet_cross_atten_list):
 
                     concate_attention = torch.cat([attention[None, ...], self.attention_store[key][i][None, ...]], dim=0)
-                    blend_dict[key].append(copy.deepcopy(rearrange(concate_attention, ' p c h res words -> (p h) c res words')))
-            x_t = self.latent_blend(copy.deepcopy(torch.cat([inverted_latents, x_t], dim=0)), copy.deepcopy(blend_dict))
+                    blend_dict[key].append(copy.deepcopy(concate_attention))
+            x_t = self.latent_blend(x_t = copy.deepcopy(torch.cat([inverted_latents, x_t], dim=0)), attention_store = copy.deepcopy(blend_dict))
             return x_t[1:, ...]
         else:
             return x_t
@@ -173,10 +173,10 @@ class AttentionControlEdit(AttentionStore, abc.ABC):
     def __init__(self, prompts, num_steps: int,
                  cross_replace_steps: Union[float, Tuple[float, float], Dict[str, Tuple[float, float]]],
                  self_replace_steps: Union[float, Tuple[float, float]],
-                 latent_blend: Optional[LatentBlend], tokenizer=None, 
+                 latent_blend: Optional[SpatialBlender], tokenizer=None, 
                  additional_attention_store: AttentionStore =None,
                  use_inversion_attention: bool=False,
-                 attention_blend: AttentionBlend= None,
+                 attention_blend: SpatialBlender= None,
                  save_self_attention: bool=True,
                  disk_store=False
                  ):
@@ -223,10 +223,10 @@ class AttentionReplace(AttentionControlEdit):
             return torch.einsum('thpw,bwn->bthpn', attn_base, self.mapper)
       
     def __init__(self, prompts, num_steps: int, cross_replace_steps: float, self_replace_steps: float,
-                 latent_blend: Optional[LatentBlend] = None, tokenizer=None,
+                 latent_blend: Optional[SpatialBlender] = None, tokenizer=None,
                  additional_attention_store=None,
                  use_inversion_attention = False,
-                 attention_blend: AttentionBlend=None,
+                 attention_blend: SpatialBlender=None,
                  save_self_attention: bool = True,
                  disk_store=False):
         super(AttentionReplace, self).__init__(
@@ -253,10 +253,10 @@ class AttentionRefine(AttentionControlEdit):
         return attn_replace
 
     def __init__(self, prompts, num_steps: int, cross_replace_steps: float, self_replace_steps: float,
-                 latent_blend: Optional[LatentBlend] = None, tokenizer=None,
+                 latent_blend: Optional[SpatialBlender] = None, tokenizer=None,
                  additional_attention_store=None,
                  use_inversion_attention = False,
-                 attention_blend: AttentionBlend=None,
+                 attention_blend: SpatialBlender=None,
                  save_self_attention : bool=True,
                  disk_store = False
                  ):
@@ -286,10 +286,10 @@ class AttentionReweight(AttentionControlEdit):
         return attn_replace
 
     def __init__(self, prompts, num_steps: int, cross_replace_steps: float, self_replace_steps: float, equalizer,
-                latent_blend: Optional[LatentBlend] = None, controller: Optional[AttentionControlEdit] = None, tokenizer=None,
+                latent_blend: Optional[SpatialBlender] = None, controller: Optional[AttentionControlEdit] = None, tokenizer=None,
                 additional_attention_store=None,
                 use_inversion_attention = False,
-                attention_blend: AttentionBlend=None,
+                attention_blend: SpatialBlender=None,
                 save_self_attention:bool = True,
                 disk_store = False
                 ):
@@ -333,14 +333,21 @@ def make_controller(tokenizer, prompts: List[str], is_replace_controller: bool,
         attention_blend =None
     else:
         if blend_latents:
-            latent_blend = LatentBlend( prompts, blend_words, tokenizer=tokenizer, th=blend_th, NUM_DDIM_STEPS=NUM_DDIM_STEPS,
-                            save_path=save_path)
+            latent_blend = SpatialBlender( prompts, blend_words, 
+                                       start_blend = 0.2, end_blend=0.8,
+                                       tokenizer=tokenizer, th=blend_th, NUM_DDIM_STEPS=NUM_DDIM_STEPS,
+                            save_path=save_path+f'/latent_blend_mask',
+                            prompt_choose='both')
+            print(f'Blend latent mask with threshold {blend_th}')
         else:
             latent_blend = None
         if blend_self_attention:
-            attention_blend = AttentionBlend( prompts, blend_words, tokenizer=tokenizer, th=blend_th, NUM_DDIM_STEPS=NUM_DDIM_STEPS,
-                           save_path=save_path)
-            print(f'Control self attention mask with threshold {blend_th}')   
+            attention_blend = SpatialBlender( prompts, blend_words, 
+                                                    start_blend = 0.0, end_blend=2,
+                                                  tokenizer=tokenizer, th=blend_th, NUM_DDIM_STEPS=NUM_DDIM_STEPS,
+                           save_path=save_path+f'/attention_blend_mask',
+                           prompt_choose='source')
+            print(f'Blend self attention mask with threshold {blend_th}')
         else:
             attention_blend = None
     if is_replace_controller:

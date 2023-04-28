@@ -22,10 +22,9 @@ from diffusers.schedulers import (
     PNDMScheduler,
 )
 
-from video_diffusion.prompt_attention.attention_util import make_controller
 from ..models.unet_3d_condition import UNetPseudo3DConditionModel
 from .stable_diffusion import SpatioTemporalStableDiffusionPipeline
-from ..prompt_attention import attention_util
+from video_diffusion.prompt_attention import attention_util
 logger = logging.get_logger(__name__)  # pylint: disable=invalid-name
 
 
@@ -178,7 +177,7 @@ class P2pDDIMSpatioTemporalPipeline(SpatioTemporalStableDiffusionPipeline):
         len_target = {len(kwargs['prompt'].split(' '))}
         equal_length = (len_source == len_target)
         print(f" len_source: {len_source}, len_target: {len_target}, equal_length: {equal_length}")
-        edit_controller = make_controller(
+        edit_controller = attention_util.make_controller(
                             self.tokenizer, 
                             [ kwargs['source_prompt'], kwargs['prompt']],
                             NUM_DDIM_STEPS = kwargs['num_inference_steps'],
