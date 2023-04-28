@@ -1,6 +1,5 @@
 """
 Code of spatial blending module for latents and self-attention
-TODO FIXME: Merge the LatentBlend and AttentionBlend class in this file
 """
 
 from typing import List
