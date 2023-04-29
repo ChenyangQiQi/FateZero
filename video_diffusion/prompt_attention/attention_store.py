@@ -88,6 +88,8 @@ class AttentionStore(AttentionControl):
                 else:
                     append_tensor = attn
                 self.step_store[key].append(copy.deepcopy(append_tensor))
+                # FIXME: Are these deepcopy all necessary?
+                # self.step_store[key].append(append_tensor)
         return attn
 
     def between_steps(self):

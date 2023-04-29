@@ -44,11 +44,13 @@ def register_attention_control(model, controller):
             # cast back to the original dtype
             attention_probs = attention_probs.to(value.dtype)
 
-            # KEY FUNCTION:
+            # START OF CORE FUNCTION
             # Record during inversion and edit the attention probs during editing
             attention_probs = controller(reshape_batch_dim_to_temporal_heads(attention_probs), 
                                          is_cross, place_in_unet)
             attention_probs = reshape_temporal_heads_to_batch_dim(attention_probs)
+            # END OF CORE FUNCTION
+            
             # compute attention output
             hidden_states = torch.bmm(attention_probs, value)
 
@@ -134,10 +136,10 @@ def register_attention_control(model, controller):
             SparseCausalAttention_index: list = [-1, 'first']
         ):
             """
-            Most of spatial_temporal_forward is directly copy from `video_diffusion/models/attention.py'
+            Most of spatial_temporal_forward is directly copy from `video_diffusion.models.attention.SparseCausalAttention'
             We add two modification
             1. use self defined attention function that is controlled by AttentionControlEdit module
-            2. move the dropout to reduce randomness
+            2. remove the dropout to reduce randomness
             FIXME: merge redundant code with attention.py
 
             """
@@ -194,6 +196,8 @@ def register_attention_control(model, controller):
             value = self.reshape_heads_to_batch_dim(value)
 
             if self._use_memory_efficient_attention_xformers and query.shape[-2] > 32 ** 2:
+                # FIXME there should be only one variable to control whether use xformers
+                # if self._use_memory_efficient_attention_xformers:
                 # for large attention map of 64X64, use xformers to save memory
                 hidden_states = self._memory_efficient_attention_xformers(query, key, value, attention_mask)
                 # Some versions of xformers return output in fp32, cast it back to the dtype of the input
