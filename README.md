@@ -81,14 +81,15 @@ previous works.
 
 ## 🚧 Todo
 
+<details><summary>Click for Previous todos </summary>
+
 - [x] Release the edit config and data for all results, Tune-a-video optimization
 - [x] Memory and runtime profiling and Editing guidance documents
 - [x] Colab and hugging-face
-- [-] code refactoring,
-  - [x] config cleaning
-  - [-] attention code cleaning
-  - [ ] temporal model code cleaning
-- [ ] time&memory optimization
+- [x] code refactoring
+</details>
+
+- [ ] time & memory optimization
 - [ ] Release more application
 
 ## 🛡 Setup Environment
