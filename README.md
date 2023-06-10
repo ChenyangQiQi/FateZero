@@ -54,13 +54,16 @@ previous works.
 </details>
 
 ## 📋 Changelog
-- 2023.04.18 Code refactoring. Release a config with optional local blending [here](config/teaser/jeep_posche_local_latent_blend.yaml) using `blend_latents` option. 
+- 2023.06.10 Two examples of large motion and multiple object.
+- 2023.04.18 Code refactoring and support local blending using [blend_latents option](config/teaser/jeep_posche_local_latent_blend.yaml). 
+<!-- - 2023.04.18 Code refactoring. Release a config with optional local blending [here](config/teaser/jeep_posche_local_latent_blend.yaml) using `blend_latents` option.  -->
 - 2023.04.04 Release Enhanced Tuning-a-Video [configs](config/tune) and shape editing [ckpts](https://huggingface.co/chenyangqi/), [data](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/shape.zip) and [config](config/shape)
 - 2023.03.31 Refine hugging face demo
 <!-- - 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero)! (refinement is in progress) Enjoy the fun of zero-shot video editing freely!
 - 2023.03.27 Release [`attribute editing config`](config/attribute) and 
   [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/attribute.zip) used in the paper. -->
-- 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero), [`attribute editing config`](config/attribute) and [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/attribute.zip) used in the paper. Enjoy the fun of zero-shot video editing freely!
+- 2023.03.27 Excited to Release [`Hugging face demo`](https://huggingface.co/spaces/chenyangqi/FateZero), [`attribute editing config`](config/attribute) and [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/attribute.zip)
+ <!-- used in the paper. Enjoy the fun of zero-shot video editing freely! -->
 <!-- - 2023.03.27 Release [`attribute editing config`](config/attribute) and  -->
   <!-- [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/attribute.zip) used in the paper. -->
 
@@ -73,9 +76,11 @@ previous works.
 
 - 2023.03.22 Upload [`style editing config`](config/style) and <!--[`data`](https://hkustconnect-my.sharepoint.com/:u:/g/personal/cqiaa_connect_ust_hk/EaTqRAuW0eJLj0z_JJrURkcBZCC3Zvgsdo6zsXHhpyHhHQ?e=FzuiNG) -->
   [`data`](https://github.com/ChenyangQiQi/FateZero/releases/download/v0.0.1/style.zip)
-  used in the paper and a `colab notebook` [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb).
+   and a `colab notebook` [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ChenyangQiQi/FateZero/blob/main/colab_fatezero.ipynb).
 
-- 2023.03.21 [Editing guidance](docs/EditingGuidance.md) is provided to help users to edit in-the-wild video. Update the `codebase and configuration`. Now, it can run with lower resources (16G GPU and less than 16G CPU RAM) with [new configuration](config/low_resource_teaser) in `config/low_resource_teaser`. Welcome to play and give feedback! 
+- 2023.03.21 Provide [Editing guidance](docs/EditingGuidance.md) for in-the-wild video. Update the [`config`](config/low_resource_teaser) for lower resources computers (16G GPU and less than 16G CPU RAM).
+<!-- - in `config/low_resource_teaser`. -->
+<!-- -  Welcome to play and give feedback!  -->
 <!-- A new option store all the attentions in hard disk, which require less ram. -->
 - 2023.03.17 Release Code and Paper!
 
@@ -284,7 +289,7 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 <tr>
   <td><img src="docs/gif_results/style/4_rabit_pokemon_01_concat_result.gif"></td>
   <td><img src="docs/gif_results/style/5_train_shikai_01_concat_result.gif"></td>
-  <td><img src="docs/gif_results/style/7_swan_carton_01_concat_result.gif"></td>
+  <td><img src="docs/gif_results/style/parkour_watercolor_0_-1.gif"></td>
 
 </tr>
 <tr>
@@ -293,7 +298,7 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
 <tr>
   <td width=25% style="text-align:center;">"+ Pokémon cartoon style"</td>
   <td width=25% style="text-align:center;">"+ Makoto Shinkai style"</td>
-  <td width=25% style="text-align:center;">"+ cartoon style"</td>
+  <td width=25% style="text-align:center;">"+ watercolor painting"</td>
 </tr>
 </table>
 
@@ -313,19 +318,7 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
   <td width=25% style="text-align:center;">"rabbit, strawberry ➜ white rabbit, leaves"</td>
 
 </tr>
-<tr>
 
-  <td><img src="docs/gif_results/attri/16_sq_eat_04_concat_result.gif"></td>
-  <td><img src="docs/gif_results/attri/16_sq_eat_02_concat_result.gif"></td>
-  <td><img src="docs/gif_results/attri/16_sq_eat_03_concat_result.gif"></td>
-
-</tr>
-<tr>
-  <td width=25% style="text-align:center;">"squirrel ➜ robot squirrel"</td>
-  <td width=25% style="text-align:center;">"squirrel, Carrot ➜ rabbit, eggplant"</td>
-  <td width=25% style="text-align:center;">"squirrel, Carrot ➜ robot mouse, screwdriver"</td>
-
-</tr>
 
 <tr>
 
@@ -351,6 +344,21 @@ Please check our [Project Page](https://fate-zero-edit.github.io/) for mp4 files
   <td width=25% style="text-align:center;">"cat ➜ black cat, grass..."</td>
   <td width=25% style="text-align:center;">"cat ➜ red tiger"</td>
   <td width=25% style="text-align:center;">"cat ➜ Shiba-Inu"</td>
+
+</tr>
+
+
+<tr>
+  <td><img src="docs/gif_results/attri/goldfish_yellow.gif"></td>
+  <td><img src="docs/gif_results/attri/16_sq_eat_04_concat_result.gif"></td>
+
+  <td><img src="docs/gif_results/attri/16_sq_eat_03_concat_result.gif"></td>
+
+</tr>
+<tr>
+  <td width=25% style="text-align:center;">"orange fish ➜ yellow fish"</td>
+  <td width=25% style="text-align:center;">"squirrel ➜ robot squirrel"</td>
+  <td width=25% style="text-align:center;">"squirrel, Carrot ➜ robot mouse, screwdriver"</td>
 
 </tr>
 
