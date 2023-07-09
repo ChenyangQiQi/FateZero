@@ -260,7 +260,7 @@ unzip negative_reg
 cd ..
 accelerate launch train_tune_a_video.py --config config/tune/jeep.yaml
 ```
-
+To evaluate our results quantitatively, we provide `CLIP/frame_acc_tem_con.py` to calculate frame accuracy and temporal consistency using pretrained CLIP.
 </details>
 
 ## Editing guidance for YOUR video

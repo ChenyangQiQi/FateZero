@@ -1,0 +1,52 @@
+swan_cartoon: 
+  path: result/paper/main/0226_swan_multi_prompt_230226-170444/train_samples
+  source: a black swan with a red beak swimming in a river near a wall and bushes
+  target: cartoon photo of a black swan with a red beak swimming in a river near a wall and bushes,
+
+swan_duck: 
+  path: result/paper/main/0226_swan_multi_prompt_230226-170444/train_samples
+  source: a black swan with a red beak swimming in a river near a wall and bushes
+  target: a white duck with a yellow beak swimming in a river near a wall and bushes,
+
+swan_flamingo: 
+  path: result/paper/main/0226_swan_multi_prompt_230226-170444/train_samples
+  source: a black swan with a red beak swimming in a river near a wall and bushes
+  target: a pink flamingo with a red beak walking in a river near a wall and bushes
+
+swan_swarov: 
+  path: result/paper/main/0226_swan_multi_prompt_230226-170444/train_samples
+  source: a black swan with a red beak swimming in a river near a wall and bushes
+  target: a Swarovski crystal swan with a red beak swimming in a river near a wall and bushes,
+
+
+car_posche: 
+  path: result/paper/main/0225_jeep_style_blend_mask_beach_sea_230226-162553/train_samples
+  source: a silver jeep driving down a curvy road in the countryside
+  target: a Porsche car driving down a curvy road in the countryside,
+
+car_watercolor: 
+  path: result/paper/main/0225_jeep_style_blend_mask_beach_sea_230226-162553/train_samples
+  source: a silver jeep driving down a curvy road in the countryside
+  target: watercolor painting of a silver jeep driving down a curvy road in the countryside,
+
+
+
+surf_ukiyo: 
+  path: result/paper/main/0304_surf_ukiyo_longer_video_86_230304-161100/train_samples
+  source: a man with round helmet surfing on a white wave in blue ocean with a rope
+  target: a man with round helmet surfing on a white wave in blue ocean with a rope in the Ukiyo-e style painting
+
+rabit_pokemon: 
+  path: result/paper/main/0226_rabit_reproduce_50_style_single_frame_230226-213139/train_samples
+  source: A rabbit is eating a watermelon,
+  target: pokemon cartoon of A rabbit is eating a watermelon
+
+
+train_shinkai:
+  path: result/paper/main/0304_train_Makoto_Shinkai_230304-161204/train_samples
+  sampling_rate: 28
+  source: a train traveling down tracks next to a forest filled with trees and flowers and a man on the side of the track,
+  target: a train traveling down tracks next to a forest filled with trees and flowers and a man on the side of the track Makoto Shinkai style,
+
+
+
