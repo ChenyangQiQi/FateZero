@@ -21,6 +21,18 @@ During stylization, you may use a very simple source prompt "A photo" as a basel
 
 
 ## FateZero hyperparameters
+Each test config first inverts the source video using `dataset_config.prompt`. 
+
+Every editing_prompt in `editing_config.editing_prompts` guides the generation of new video one-by-one in a loop.
+
+Each section of hyperparameters in `p2p_config` corresponds to one editing_prompt before.
+e.g., `p2p_config.0` is for `a silver jeep driving down a curvy road in the countryside,`,
+`p2p_config.1` is for `watercolor painting of a silver jeep driving down a curvy road in the countryside,`.
+
+In most configs, the first editing prompt is a validation to reconstruct the source video where the editing prompt is the same as inversion prompt
+The second editing prompt is for the editing stage, which has a
+new editing prompt different from the source prompt.
+
 We give a simple analysis of the involved hyperparaters as follows:
 ``` yaml
 # For edited words (e.g., posche car) , whether to directly copy the cross attention from source according to the word index, although the original word is different (e.g., silver jeed)

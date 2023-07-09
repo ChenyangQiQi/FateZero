@@ -24,11 +24,12 @@ from einops import rearrange
 from video_diffusion.models.unet_3d_condition import UNetPseudo3DConditionModel
 from video_diffusion.data.dataset import ImageSequenceDataset
 from video_diffusion.common.util import get_time_string, get_function_args
+from video_diffusion.common.logger import get_logger_config_path
 from video_diffusion.common.image_util import log_train_samples
 from video_diffusion.common.instantiate_from_config import instantiate_from_config
 from video_diffusion.pipelines.p2p_validation_loop import P2pSampleLogger
 
-logger = get_logger(__name__)
+# logger = get_logger(__name__)
 
 
 def collate_fn(examples):
@@ -72,6 +73,7 @@ def test(
     if accelerator.is_main_process:
         os.makedirs(logdir, exist_ok=True)
         OmegaConf.save(args, os.path.join(logdir, "config.yml"))
+    logger = get_logger_config_path(logdir)
 
     if seed is not None:
         set_seed(seed)
@@ -115,7 +117,7 @@ def test(
     )
     pipeline.scheduler.set_timesteps(editing_config['num_inference_steps'])
     pipeline.set_progress_bar_config(disable=True)
-
+    pipeline.print_pipeline(logger)
 
     if is_xformers_available():
         try:
