@@ -1,4 +1,4 @@
-### FateZero: Fusing Attentions for Zero-shot Text-based Video Editing (ICCV23')
+### FateZero: Fusing Attentions for Zero-shot Text-based Video Editing (ICCV23 Oral')
 
 [Chenyang Qi](https://chenyangqiqi.github.io/), [Xiaodong Cun](http://vinthony.github.io/), [Yong Zhang](https://yzhang2016.github.io), [Chenyang Lei](https://chenyanglei.github.io/), [Xintao Wang](https://xinntao.github.io/), [Ying Shan](https://scholar.google.com/citations?hl=zh-CN&user=4oXBp9UAAAAJ), and [Qifeng Chen](https://cqf.io)
 
